@@ -9,8 +9,8 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      'serif': ['"Bungee Inline"'],
-      'sans': ['KoHo']
+      'serif': ['var(--font-serif-bungee)'],
+      'sans': ['var(--font-sans-koho)']
     },
 
     extend: {

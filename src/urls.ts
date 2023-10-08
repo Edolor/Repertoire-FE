@@ -1,5 +1,6 @@
 /** BASE URL FOR BACKEND API */
 const baseURL = "https://api.aghoghomena.com";
+const resumeLink = "/AkasukpeAghoghomena-Resume.pdf";
 
 const twitterUrl = "https://twitter.com/aghoghomena2";
 const linkedinUrl = "https://linkedin.com/in/aghoghomena-akasukpe";
@@ -30,5 +31,6 @@ export {
     emailUrl,
     hackerrankUrl,
     codewarsUrl,
-    leetcodeUrl
+    leetcodeUrl,
+    resumeLink
 };

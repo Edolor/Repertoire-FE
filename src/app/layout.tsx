@@ -1,12 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { koho, bungee } from "@/fonts";
 import AboutProvider from "@/context/AboutContext/AboutContext";
 import ThemeProvider from "@/context/ThemeContext/ThemeContext";
 import ContactProvider from "@/context/ContactContext/ContactContext";
 import ProjectProvider from "@/context/ProjectContext/ProjectContext";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,16 +17,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider>
-          <ProjectProvider>
-            <ContactProvider>
-              <AboutProvider>{children}</AboutProvider>
-            </ContactProvider>
-          </ProjectProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ThemeProvider>
+      <ProjectProvider>
+        <ContactProvider>
+          <AboutProvider>
+            <html lang="en">
+              <body className={`${koho.variable} ${bungee.variable} font-sans`}>
+                {children}
+              </body>
+            </html>
+          </AboutProvider>
+        </ContactProvider>
+      </ProjectProvider>
+    </ThemeProvider>
   );
 }
