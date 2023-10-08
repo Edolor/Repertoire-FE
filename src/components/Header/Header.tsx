@@ -3,8 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 // import { useLocation } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
-import logoBlack from "@/Assets/img/logo-black.svg";
-import logoWhite from "@/Assets/img/logo-white.svg";
 import Icon from "@/components/Icon/Icon";
 import { resumeLink } from "@/urls";
 import { LINKS } from "./data";
@@ -50,15 +48,19 @@ export default function Header() {
       <div className="mx-auto py-4 flex items-center justify-between lg:container">
         <Link href="/">
           <Image
-            src={logoBlack}
+            src="/logo-black.svg"
             className={`${theme !== "light" && "hidden"}`}
             alt="Logo"
+            width={160}
+            height={51}
             priority
           />
           <Image
-            src={logoWhite}
+            src="/logo-white.svg"
             className={`${theme !== "dark" && "hidden"}`}
             alt="Logo"
+            width={160}
+            height={51}
             priority
           />
         </Link>

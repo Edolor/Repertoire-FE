@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { HeaderProps } from "./Header.types";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 export default function DesktopLink({ content }: HeaderProps) {
-  const location = useRouter();
-  const isActive = location.pathname === content.path;
+  const location = usePathname();
+  const isActive = location === content.path;
 
   return (
     <Link

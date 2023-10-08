@@ -1,5 +1,6 @@
 export type MessageProps = {
   type: string,
   message: string,
-  show?: boolean
+  show?: boolean,
+  status?: string
 } 

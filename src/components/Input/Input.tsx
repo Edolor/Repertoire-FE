@@ -4,11 +4,15 @@ type InputProps = {
   type: string;
   name: string;
   id: string;
-  error: string;
+  error: boolean;
   disabled: boolean;
-  inputRef?: LegacyRef<HTMLInputElement> | undefined
-  textareaRef?: LegacyRef<HTMLTextAreaElement> | undefined
-  handleChange: (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => void
+  inputRef?: LegacyRef<HTMLInputElement> | undefined;
+  textareaRef?: LegacyRef<HTMLTextAreaElement> | undefined;
+  handleChange: (
+    event:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>
+  ) => void;
 };
 
 function Input({

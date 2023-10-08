@@ -1,5 +1,4 @@
 import Link from "next/link";
-import logo from "@/assets/img/logo-white.svg";
 import Icon from "@/components/Icon/Icon";
 import { resumeLink } from "@/urls";
 import Image from "next/image";
@@ -11,7 +10,7 @@ export default function Footer() {
         <p className="text-base sm:text-lg">&copy;2023, Edolor</p>
 
         <Link href="/" className="hidden sm:block">
-          <Image src={logo} alt="Logo" />
+          <Image src="/logo-white.svg" alt="Logo" width={160} height={51} />
         </Link>
 
         <a

@@ -16,10 +16,12 @@ export default function ThemeProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "");
+  const [theme, setTheme] = useState<string>("");
 
   /** One time check in load */
   useEffect(() => {
+    setTheme(() => localStorage.getItem("theme") ?? "");
+
     if (localStorage.getItem("theme") === "dark") {
       setTheme("dark");
     } else if (
