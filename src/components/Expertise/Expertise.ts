@@ -1,0 +1,35 @@
+export const EXPERTISE = [
+    {
+      icon: "computer",
+      alt: "Computer icon",
+      title: "FRONT-END",
+      body: "I develop clear, fast and easy-to-use interfaces. My favorite frameworks are React JS for Javascript and Tailwind for CSS.",
+      dim: "28px",
+      // color: "#E2E2E2",
+      color: "#3F3F46",
+    },
+    {
+      icon: "cog",
+      alt: "Cog icon",
+      title: "BACK-END",
+      body: "I build scalable RESTful API's and server side rendered applications. My favorite technology is Django (Django Rest Framework).",
+      dim: "32px",
+      color: "#3F3F46",
+    },
+    {
+      icon: "brush",
+      alt: "Paint brush icon",
+      title: "GRAPHIC-DESIGN",
+      body: "I design for the web and for the print (flyer, logo, business card, ...). I mainly use Adobe software (Photoshop, Illustrator, XD).",
+      dim: "24px",
+      color: "#3F3F46",
+    },
+    {
+      icon: "server",
+      alt: "Server icon",
+      title: "DevOps",
+      body: "I install, configure and maintain Linux (Debian) web servers. I setup CI/CD pipelines for applications and frequently use dockerized containers.",
+      dim: "24px",
+      color: "#3F3F46",
+    },
+];
