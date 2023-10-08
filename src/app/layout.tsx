@@ -1,6 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { koho, bungee } from "@/fonts";
+import AboutProvider from "@/context/AboutContext/AboutContext";
+import ThemeProvider from "@/context/ThemeContext/ThemeContext";
+import ContactProvider from "@/context/ContactContext/ContactContext";
+import ProjectProvider from "@/context/ProjectContext/ProjectContext";
 
 export const metadata: Metadata = {
   title: "Home - Edolor",
@@ -13,10 +17,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${koho.variable} ${bungee.variable} font-sans`}>
-        {children}
-      </body>
-    </html>
+    <ThemeProvider>
+      <ProjectProvider>
+        <ContactProvider>
+          <AboutProvider>
+            <html lang="en">
+              <body className={`${koho.variable} ${bungee.variable} font-sans`}>
+                {children}
+              </body>
+            </html>
+          </AboutProvider>
+        </ContactProvider>
+      </ProjectProvider>
+    </ThemeProvider>
   );
 }

@@ -1,3 +1,4 @@
+"use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import useFetch from "@/hooks/useFetch";
@@ -36,18 +37,21 @@ function Projects() {
   const [selectedField, setSelectedField] = useState(fields[0]);
   const selectedRef = useRef(selectedField);
 
-  const handleSearch = useCallback((field: string) => {
-    if (field === "All") {
-      setProjects(() => data);
-    } else {
-      // Filtering by field name
-      setProjects(() => {
-        return data.filter((project: BaseProjectProps) => {
-          return project.tags.includes(field);
+  const handleSearch = useCallback(
+    (field: string) => {
+      if (field === "All") {
+        setProjects(() => data);
+      } else {
+        // Filtering by field name
+        setProjects(() => {
+          return data.filter((project: BaseProjectProps) => {
+            return project.tags.includes(field);
+          });
         });
-      });
-    }
-  }, []);
+      }
+    },
+    [data]
+  );
 
   useEffect(() => {
     let firstRender = true;
