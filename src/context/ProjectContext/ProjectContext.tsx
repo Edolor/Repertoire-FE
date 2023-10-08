@@ -1,67 +1,76 @@
-import React, { useContext, createContext, useEffect } from 'react';
-import { baseURL, PATHS } from '../../Routes/url';
-import axios from "axios";
+"use client";
+import { useContext, createContext, useEffect } from "react";
+import { baseURL, PATHS } from "../../urls";
+import axios, { AxiosResponse } from "axios";
 
+type ProjectContextProps = {
+  getProjects: (size?: number) => Promise<any>;
+  getProjectDetails: (projectId: string) => Promise<AxiosResponse<any, any>>;
+  fetchProjects: (size?: number) => Promise<AxiosResponse<any, any>>;
+};
+const ProjectContext = createContext<ProjectContextProps>(
+  {} as ProjectContextProps
+);
+export const useProject = () => {
+  return useContext(ProjectContext);
+};
 
-const ProjectContext = createContext();
-const useProject = () => {
-    return useContext(ProjectContext)
-}
+export default function ProjectProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const client = axios.create({ baseURL: baseURL });
 
-function ProjectProvider({ children }) {
-    const client = axios.create({ baseURL: baseURL });
+  useEffect(() => {
+    let firstRender = false;
 
-    useEffect(() => {
-        let firstRender = false;
-
-        const checkHealth = async () => {
-            if (!firstRender) {
-                try {
-                    return await client.get(`${PATHS.health}`);
-                } catch (e) {
-                    return [];
-                }
-            }
+    const checkHealth = async () => {
+      if (!firstRender) {
+        try {
+          return await client.get(`${PATHS.health}`);
+        } catch (e) {
+          return [];
         }
+      }
+    };
 
-        checkHealth(); // Call request
+    checkHealth(); // Call request
 
-        return () => {
-            firstRender = true;
-        }
-    }, [client]);
+    return () => {
+      firstRender = true;
+    };
+  }, [client]);
 
-    const getProjects = async (size = 3) => {
-        /** Return 3 projects for the home page */
-        const response = await client.get(`${PATHS.projects}?size=${size}`).then(res => {
-            return res.data;
-        });
+  const getProjects = async (size = 3) => {
+    /** Return 3 projects for the home page */
+    const response = await client
+      .get(`${PATHS.projects}?size=${size}`)
+      .then((res) => {
+        return res.data;
+      });
 
-        return response
-    }
+    return response;
+  };
 
-    const fetchProjects = async (size = 3) => {
-        /** Return 3 projects for the home page */
-        return client.get(`${PATHS.projects}?size=${size}`);
-    }
+  const fetchProjects = async (size = 3) => {
+    /** Return 3 projects for the home page */
+    return client.get(`${PATHS.projects}?size=${size}`);
+  };
 
-    const getProjectDetails = async (projectId) => { // Id passed by loader automatically
-        /** Return 3 projects for the home page */
-        return await client.get(`${PATHS.projectDetail}${projectId}/`);
-    }
+  const getProjectDetails = async (projectId: string) => {
+    // Id passed by loader automatically
+    /** Return 3 projects for the home page */
+    return await client.get(`${PATHS.projectDetail}${projectId}/`);
+  };
 
-    const value = {
-        getProjects,
-        getProjectDetails,
-        fetchProjects,
-    }
+  const value = {
+    getProjects,
+    getProjectDetails,
+    fetchProjects,
+  };
 
-    return (
-        <ProjectContext.Provider value={value}>
-            {children}
-        </ProjectContext.Provider>
-    )
+  return (
+    <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>
+  );
 }
-
-export default ProjectProvider;
-export { useProject };

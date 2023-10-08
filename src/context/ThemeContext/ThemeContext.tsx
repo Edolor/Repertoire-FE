@@ -1,20 +1,21 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+"use client";
+import { createContext, useContext, useState, useEffect } from "react";
 
 type ThemeContextProps = {
-  theme: string
-  setTheme: React.Dispatch<React.SetStateAction<string>>
-}
+  theme: string;
+  setTheme: React.Dispatch<React.SetStateAction<string>>;
+};
 const ThemeContext = createContext<ThemeContextProps>({} as ThemeContextProps);
 
-const useTheme = () => {
+export const useTheme = () => {
   return useContext(ThemeContext);
 };
 
-type ThemeProps = {
+export default function ThemeProvider({
+  children,
+}: {
   children: React.ReactNode;
-};
-
-function ThemeProvider({ children }: ThemeProps) {
+}) {
   const [theme, setTheme] = useState(localStorage.getItem("theme") ?? "");
 
   /** One time check in load */
@@ -49,6 +50,3 @@ function ThemeProvider({ children }: ThemeProps) {
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 }
-
-export default ThemeProvider;
-export { useTheme };
