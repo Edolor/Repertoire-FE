@@ -14,7 +14,6 @@ export default function Error() {
     <main>
       <section className="w-full min-h-[80vh] flex items-center bg-zinc-200 dark:bg-zinc-700">
         <div className="container mx-auto grid place-items-center h-full px-4 sm:px-0">
-          {/* <h1 className="font-serif text-7xl dark:text-zinc-100">404</h1> */}
           <h2 className="font-serif text-6xl text-center sm:text-7xl dark:text-zinc-100">
             Page not found
           </h2>
