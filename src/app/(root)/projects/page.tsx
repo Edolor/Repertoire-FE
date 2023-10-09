@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, MutableRefObject, RefObject } from "react";
 import Image from "next/image";
 import useFetch from "@/hooks/useFetch";
 import head from "@/assets/img/code-head-1.png";
@@ -8,6 +8,7 @@ import Message from "@/components/Message/Message";
 import ProjectLoading from "@/components/Card/ProjectLoading";
 import { useProject } from "@/context/ProjectContext/ProjectContext";
 import { BaseProjectProps } from "@/types/Project.types";
+import { ServerResponse } from "./Projects.types";
 
 function Projects() {
   const SIZEOFPAGER = 6; // USED FOR PAGINATION
@@ -21,7 +22,7 @@ function Projects() {
     "Random",
   ];
 
-  const nextRef = useRef(null);
+  const nextRef = useRef<string | null>(null);
   const [nextCounter, setNextCounter] = useState(SIZEOFPAGER);
   const { fetchData } = useFetch();
 
@@ -31,8 +32,10 @@ function Projects() {
   const [data, setData] = useState<BaseProjectProps[]>(
     [] as BaseProjectProps[]
   );
-  const [DATA, setDATA] = useState([]);
-  const [projects, setProjects] = useState([]);
+
+
+  const [DATA, setDATA] = useState<ServerResponse>({} as ServerResponse);
+  const [projects, setProjects] = useState<BaseProjectProps[]>([]);
   const [projectIsLoading, setProjectIsLoading] = useState(true);
   const [selectedField, setSelectedField] = useState(fields[0]);
   const selectedRef = useRef(selectedField);
@@ -92,23 +95,26 @@ function Projects() {
     if (nextRef.current) {
       try {
         // Send request to get next sequence of products
-        let response = await fetchData(nextRef.current);
-        response = response.data;
+        let r = await fetchData(nextRef.current);
+      
+        const response:ServerResponse = r.data;
 
-        // Set next url
-        nextRef.current = response.next;
-
-        // Increase counter that controls 'Show more' button visibility
-        setNextCounter((prev) => prev + SIZEOFPAGER);
-
-        // Add the new products to the data
-        setData((projects) => [...projects, ...response.results]);
-
-        // Display success message
-        setTimeout(() => setSuccess(() => true), 700);
-
-        // Remove success message
-        setTimeout(() => setSuccess(() => false), 5000);
+        if (nextRef.current !== null) {
+          // Set next url
+          nextRef.current = response.next;
+  
+          // Increase counter that controls 'Show more' button visibility
+          setNextCounter((prev) => prev + SIZEOFPAGER);
+  
+          // Add the new products to the data
+          setData((projects) => [...projects, ...response.results]);
+  
+          // Display success message
+          setTimeout(() => setSuccess(() => true), 700);
+  
+          // Remove success message
+          setTimeout(() => setSuccess(() => false), 5000);
+        }
       } catch (error) {}
     }
 

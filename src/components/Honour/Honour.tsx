@@ -20,7 +20,16 @@ export default function Honour({ data }: HonourProps) {
 
   return (
     <div className="flex flex-col space-y-2 items-center">
-      <Image src={`${data.banner}`} className="h-32" alt={data.sub_about ? data.sub_about : ""} />
+      <figure className="relative h-32 w-40">
+        {data.banner && (
+          <Image
+            src={`${data.banner}`}
+            className="object-contain"
+            fill={true}
+            alt={data.sub_about ? data.sub_about : ""}
+          />
+        )}
+      </figure>
 
       <h4 className="text-lg text-center font-bold dark:text-zinc-100">
         {data.title}
