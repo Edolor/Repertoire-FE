@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import background from "@/assets/img/home-background.png";
 import personalSelfie from "@/assets/img/personal-selfie.png";
