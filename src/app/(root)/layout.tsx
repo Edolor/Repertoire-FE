@@ -10,22 +10,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
   const [showTopButton, setShowTopButton] = useState(false);
 
-  // Change document title
-  //   const location = useRouter();
-  //   const path = location.pathname;
-
-  //   if (path === "/") {
-  //     document.title = "Home - Edolor";
-  //   } else if (path === "/projects") {
-  //     document.title = "My Projects - Edolor";
-  //   } else if (path === "/about") {
-  //     document.title = "About Me - Edolor";
-  //   } else if (path === "/contact") {
-  //     document.title = "Contact Me - Edolor";
-  //   } else if (path === "/coding-profiles") {
-  //     document.title = "Coding Profiles - Edolor";
-  //   }
-
   useEffect(() => {
     const handleScrollEvent = () => {
       if (window.scrollY > 400) {
@@ -74,7 +58,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           color="#ffffff"
           classes={`h-7 -mt-p ${theme !== "dark" && "hidden"}`}
         />
-        {/* <Icon name="arrow-upward" color={theme === "light" ? "#000000" : "#ffffff"} classes="h-7 -mt-px" /> */}
         <span className="w-1 h-1 overflow-hidden hidden">Go to top</span>
       </button>
       <Footer />

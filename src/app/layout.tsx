@@ -73,21 +73,5 @@ content="Explore Aghoghomena Akasukpes' portfolio website, a skilled full-stack 
 <meta name="twitter:title" content="Edolor portfolio website | Full stack developer | Cybersecurity enthusiast" />
 <meta name="twitter:description"
 content="Explore Aghoghomena Akasukpes' portfolio website, a skilled full-stack developer showcasing a range of projects and skills. Discover his expertise in web development, software engineering, and more" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-href="https://fonts.googleapis.com/css2?family=KoHo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Bungee+Inline&display=swap"
-rel="stylesheet" />
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-L3K9VKV1Y0"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag() {
-dataLayer.push(arguments);
-}
-gtag("js", new Date());
-
-gtag("config", "G-L3K9VKV1Y0");
-</script> */
+*/
 }
