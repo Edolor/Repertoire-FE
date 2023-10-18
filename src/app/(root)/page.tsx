@@ -10,11 +10,18 @@ import Project from "@/components/Project/Project";
 import Expertise from "@/components/Expertise/Expertise";
 import { EXPERTISE } from "@/components/Expertise/data";
 import Icon from "@/components/Icon/Icon";
-import { twitterUrl, githubUrl, emailUrl, phoneNumber, baseURL } from "@/urls";
+import {
+  twitterUrl,
+  githubUrl,
+  emailUrl,
+  phoneNumber,
+  baseURL,
+  resumeLink,
+} from "@/urls";
 import ProjectLoading from "@/components/Card/ProjectLoading";
 import { useProject } from "@/context/ProjectContext/ProjectContext";
 import { BaseProjectProps } from "@/types/Project.types";
-import { PATHS } from "@/urls";
+import { getProjects } from "@/utils";
 
 const heroStyleWhite = {
   backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(${background.src})`,
@@ -27,14 +34,6 @@ const heroStyleDark = {
   backgroundSize: "cover",
   backgroundRepeat: "no-repeat",
 };
-
-async function getProjects() {
-  const response = await fetch(`${baseURL}${PATHS.projects}?size=3`);
-
-  const data = await response.json();
-
-  return data.data;
-}
 
 export default function Home() {
   const { theme } = useTheme();
@@ -51,11 +50,10 @@ export default function Home() {
       try {
         if (firstRender) {
           // Fetch data only once
-          // const res = await fetchProjects(3); // Fetch projects
+          const res = await getProjects(3);
 
-          const res = await getProjects();
-          if (res.status === 200) {
-            setProjects(() => res.data.results);
+          if (res.count > 0) {
+            setProjects(() => res.results);
           }
 
           setProjectIsLoading(() => false);
