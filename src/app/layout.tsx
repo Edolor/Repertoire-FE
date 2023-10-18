@@ -11,8 +11,16 @@ export const metadata: Metadata = {
   title: "Home - Edolor",
   description:
     "Explore Edolor's digital universe—a Software Developer, Designer, DevOps Pro, and Computer Scientist. Dive into a portfolio merging innovation and skill, showcasing seamless solutions, elegant designs, and efficient DevOps practices. Witness the convergence of art and code, reflecting a commitment to pushing the boundaries of technology.",
+  openGraph: {
+    type: "website",
+    url: "https://www.aghoghomena.com",
+    title: "Home - Edolor",
+    description:
+      "Explore Edolor's digital universe—a Software Developer, Designer, DevOps Pro, and Computer Scientist. Dive into a portfolio merging innovation and skill, showcasing seamless solutions, elegant designs, and efficient DevOps practices. Witness the convergence of art and code, reflecting a commitment to pushing the boundaries of technology.",
+    siteName: "Edolor Portfolio",
+  },
   themeColor: "#027373",
-  manifest: "/public/manifest.json",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({

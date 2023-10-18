@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-// import { useLocation } from "react-router-dom";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import Icon from "@/components/Icon/Icon";
 import { resumeLink } from "@/urls";
 import { LINKS } from "./data";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import MobileLink from "./MobileLink";
 import DesktopLink from "./DesktopLink";
 
@@ -17,21 +16,21 @@ export default function Header() {
     /** Handles the opening and closing of the mobile nav */
     setOpen((prev) => {
       if (prev === false) {
-        // document.body.style = "overflow: hidden;";
+        document.body.style.cssText = "overflow: hidden;";
       } else {
-        // document.body.style = "";
+        document.body.style.cssText = "";
       }
 
       return !prev;
     });
   };
 
-  const location = useRouter();
+  const location = usePathname();
   // const navClasses = `duration-200 transform ease-out opacity-0 transition`
 
   useEffect(() => {
     setOpen(false);
-    // document.body.style = "";
+    document.body.style.cssText = "";
 
     window.scrollTo(0, 0);
   }, [location]);

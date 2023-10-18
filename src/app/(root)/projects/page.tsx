@@ -1,12 +1,5 @@
 "use client";
-import {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  MutableRefObject,
-  RefObject,
-} from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import useFetch from "@/hooks/useFetch";
 import head from "@/assets/img/code-head-1.png";
