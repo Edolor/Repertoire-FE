@@ -55,7 +55,9 @@ function Projects() {
         // Filtering by field name
         setProjects(() => {
           return data.filter((project: BaseProjectProps) => {
-            return project.tags.includes(field);
+            return project.tags !== undefined
+              ? project.tags.includes(field)
+              : [];
           });
         });
       }

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     "Explore Edolor's digital universe—a Software Developer, Designer, DevOps Pro, and Computer Scientist. Dive into a portfolio merging innovation and skill, showcasing seamless solutions, elegant designs, and efficient DevOps practices. Witness the convergence of art and code, reflecting a commitment to pushing the boundaries of technology.",
   themeColor: "#027373",
-  // manifest: "/public/manifest.json",
+  manifest: "/public/manifest.json",
 };
 
 export default function RootLayout({

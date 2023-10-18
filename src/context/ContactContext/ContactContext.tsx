@@ -20,7 +20,13 @@ export default function ContactProvider({
 }) {
   const client = axios.create({ baseURL: baseURL });
 
-  const createMessage = async (data) => {
+  type MessageProp = {
+    name: string;
+    email: string;
+    message: string;
+  };
+
+  const createMessage = async (data: MessageProp) => {
     /** Create a contact message */
     const response = await client.post(PATHS.contact, data);
 
