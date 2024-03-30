@@ -25,7 +25,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleScroll = () => {
-    /** Scroll to top button */
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -43,8 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         type="button"
         className={`flex items-center justify-center w-14 h-14 bg-white dark:bg-zinc-400 border 
           border-zinc-100 rounded-full 
-          shadow-md shadown-inner z-20 fixed bottom-6 right-6 sm:bottom-10 sm:right-10 ${
-            showTopButton === false ? "hidden" : ""
+          shadow-md shadown-inner z-20 fixed bottom-6 right-6 sm:bottom-10 sm:right-10 ${showTopButton === false ? "hidden" : ""
           }`}
         onClick={handleScroll}
       >

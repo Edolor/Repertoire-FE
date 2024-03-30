@@ -50,7 +50,7 @@ export default function Home() {
 
           setProjectIsLoading(() => false);
         }
-      } catch (err) {}
+      } catch (err) { }
     };
 
     getData();
@@ -194,7 +194,7 @@ export default function Home() {
             className="mt-6 w-full flex flex-wrap items-start justify-center pt-1 pb-3 px-1 gap-6
                xl:justify-between md:gap-x-12"
           >
-            {/** PROJECTS */}
+            {/* PROJECTS */}
             {!projectIsLoading &&
               projects.map((project) => {
                 return <Project key={project.url} project={project} />;
@@ -320,7 +320,7 @@ export default function Home() {
             </p>
           </div>
 
-          {/** Expertise section */}
+          {/* Expertise section */}
           <div
             className="grid grid-cols-1 gap-14 px-8 py-14 border-gray-100 dark:border-zinc-500 border-y-[1px] 
                 lg:border-r-[1px] sm:py-20 sm:px-14 sm:grid-cols-2"
