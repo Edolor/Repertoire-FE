@@ -13,7 +13,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
-    /** Handles the opening and closing of the mobile nav */
+    /* Handles the opening and closing of the mobile nav */
     setOpen((prev) => {
       if (prev === false) {
         document.body.style.cssText = "overflow: hidden;";
@@ -38,7 +38,7 @@ export default function Header() {
   const { theme, setTheme } = useTheme();
 
   const handleTheme = () => {
-    /** Handle theme switching */
+    /* Handle theme switching */
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 

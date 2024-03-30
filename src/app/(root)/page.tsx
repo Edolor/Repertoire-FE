@@ -255,7 +255,7 @@ export default function Home() {
             </figure>
 
             <p className="font-serif hidden text-4xl font-extrabold text-center items-center flex-col dark:text-zinc-100 md:text-5xl sm:flex">
-              Akauskpe Aghoghomena
+              Akasukpe Aghoghomena
             </p>
 
             <p className="font-serif font-extrabold text-center items-center flex leading-none flex-col dark:text-zinc-100 text-[40px] sm:hidden">
