@@ -1,11 +1,15 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { koho, bungee } from "@/fonts";
 import AboutProvider from "@/context/AboutContext/AboutContext";
 import ThemeProvider from "@/context/ThemeContext/ThemeContext";
 import ContactProvider from "@/context/ContactContext/ContactContext";
 import ProjectProvider from "@/context/ProjectContext/ProjectContext";
+
+export const viewport: Viewport = {
+  themeColor: "#027373",
+};
 
 export const metadata: Metadata = {
   title: "Home - Edolor",
@@ -19,7 +23,6 @@ export const metadata: Metadata = {
       "Explore Edolor's digital universe—a Software Developer, Designer, DevOps Pro, and Computer Scientist. Dive into a portfolio merging innovation and skill, showcasing seamless solutions, elegant designs, and efficient DevOps practices. Witness the convergence of art and code, reflecting a commitment to pushing the boundaries of technology.",
     siteName: "Edolor Portfolio",
   },
-  themeColor: "#027373",
   manifest: "/manifest.json",
 };
 
