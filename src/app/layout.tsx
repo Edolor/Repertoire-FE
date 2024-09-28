@@ -50,7 +50,6 @@ export default function RootLayout({
 
                   gtag("config", "G-L3K9VKV1Y0");`}
                 </Script>{" "}
-                */
               </body>
             </html>
           </AboutProvider>

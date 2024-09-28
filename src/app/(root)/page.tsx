@@ -50,7 +50,7 @@ export default function Home() {
 
           setProjectIsLoading(() => false);
         }
-      } catch (err) { }
+      } catch (err) {}
     };
 
     getData();
