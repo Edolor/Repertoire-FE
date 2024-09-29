@@ -93,7 +93,7 @@ function About() {
       <section id="about" className="w-full dark:bg-zinc-800">
         <div className="container mx-auto py-20 flex gap-6 items-center justify-center sm:px-0">
           <div className="w-1/2 hidden justify-center lg:flex">
-            <figure className="mb-4 overflow-hidden">
+            <figure className="w-full max-w-[600px] mb-4 overflow-hidden">
               <Image
                 src={potrait}
                 loading="lazy"

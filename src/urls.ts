@@ -7,30 +7,30 @@ const linkedinUrl = "https://linkedin.com/in/aghoghomena-akasukpe";
 const githubUrl = "https://github.com/edolor";
 
 const phoneNumber = "+2348081674327";
-const emailUrl = "aghoghomena2@gmail.com";
+const emailUrl = "edolor121@gmail.com";
 
 const hackerrankUrl = "https://www.hackerrank.com/aghoghomena3";
 const codewarsUrl = "https://www.codewars.com/users/edolor";
 const leetcodeUrl = "https://leetcode.com/aghoghomena2/";
 
 const PATHS = {
-    projects: "/projects/list/",
-    projectDetail: "/projects/",
-    contact: "/contact/create-message/",
-    about: "/about/",
-    health: "/",
-}
+  projects: "/projects/list/",
+  projectDetail: "/projects/",
+  contact: "/contact/create-message/",
+  about: "/about/",
+  health: "/",
+};
 
 export {
-    baseURL,
-    PATHS,
-    twitterUrl,
-    linkedinUrl,
-    githubUrl,
-    phoneNumber,
-    emailUrl,
-    hackerrankUrl,
-    codewarsUrl,
-    leetcodeUrl,
-    resumeLink
+  baseURL,
+  PATHS,
+  twitterUrl,
+  linkedinUrl,
+  githubUrl,
+  phoneNumber,
+  emailUrl,
+  hackerrankUrl,
+  codewarsUrl,
+  leetcodeUrl,
+  resumeLink,
 };

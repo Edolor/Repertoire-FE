@@ -181,11 +181,11 @@ function Projects() {
         className="w-full dark:bg-zinc-800 px-0 sm:px-4"
       >
         <div className="container mx-auto pt-12 px-4 sm:px-0 sm:pt-10">
-          <h2 className="font-serif text-5xl font-extrabold dark:text-zinc-100 text-center space-y-1 xl:text-left">
+          <h2 className="font-serif text-5xl font-extrabold dark:text-zinc-100 text-center space-y-1">
             Projects
           </h2>
 
-          <div className="flex top-0 space-x-6 mt-4 justify-center flex-wrap gap-y-4 xl:justify-start">
+          <div className="flex top-0 space-x-6 mt-4 justify-center flex-wrap gap-y-4">
             {fields.map((field, index) => {
               return (
                 <button
@@ -208,7 +208,7 @@ function Projects() {
             })}
           </div>
 
-          <div className="mt-6 w-full grid grid-cols-auto pt-1 pb-3 gap-10 justify-center xl:gap-x-16 xl:justify-start">
+          <div className="mt-6 w-full grid grid-cols-auto pt-1 pb-3 gap-10 justify-center xl:gap-x-16">
             {/** PROJECTS */}
             {!projectIsLoading &&
               projects.map((project: BaseProjectProps) => {
