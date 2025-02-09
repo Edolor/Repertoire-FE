@@ -11,7 +11,7 @@ const emailUrl = "edolor121@gmail.com";
 
 const hackerrankUrl = "https://www.hackerrank.com/aghoghomena3";
 const codewarsUrl = "https://www.codewars.com/users/edolor";
-const leetcodeUrl = "https://leetcode.com/aghoghomena2/";
+const leetcodeUrl = "https://leetcode.com/edolor/";
 
 const PATHS = {
   projects: "/projects/list/",

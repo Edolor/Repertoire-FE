@@ -137,16 +137,37 @@ function About() {
 
             <div className="space-y-2">
               <p className="text-lg mt-1 text-gray-800 dark:text-zinc-100 text-center max-w-5xl leading-loose block lg:leading-9 lg:text-xl sm:text-left">
-                I am a computer scientist who graduated from Babcock University,
-                Nigeria. My fascination with computers and software began at a
-                young age, and I have over 4 years of experience developing
-                software that spans a wide range of domains.
+                I am a computer scientist and software engineer with a Bachelor
+                of Science in Computer Science from Babcock University, Nigeria,
+                where I graduated Summa Cum Laude with a 4.88/5.0 CGPA.
+                Currently, I am pursuing a Master of Science in Computer Science
+                (Thesis-Based) at Ontario Tech University, specializing in
+                Networking and IT Security.
               </p>
 
               <p className="text-lg mt-1 text-gray-800 dark:text-zinc-100 text-center max-w-5xl leading-loose block lg:leading-9 lg:text-xl sm:text-left">
-                Aside from writing software, I spend the majority of my days
-                reading, growing, and experimenting with new productivity hacks.
-                I am quite the young explorer :).
+                With over four years of experience, I have contributed to
+                full-stack development, system optimization, and cloud-based
+                solutions, working with companies such as Cavista Technologies
+                and Azul Nigeria. My expertise spans Django, Next.js, React,
+                ASP.NET, and cloud platforms like AWS and Docker, with a strong
+                foundation in cybersecurity, machine learning, and scalable
+                system design.
+              </p>
+              <p className="text-lg mt-1 text-gray-800 dark:text-zinc-100 text-center max-w-5xl leading-loose block lg:leading-9 lg:text-xl sm:text-left">
+                Beyond software development, I am passionate about mentorship,
+                research, and innovation. I have actively contributed to student
+                tutoring, blockchain development, and software engineering
+                communities, mentoring aspiring developers through organizations
+                like the Google Developer Student Clubs and the Babcock
+                University Computer Club.
+              </p>
+              <p className="text-lg mt-1 text-gray-800 dark:text-zinc-100 text-center max-w-5xl leading-loose block lg:leading-9 lg:text-xl sm:text-left">
+                I spend my days exploring new technologies, refining my
+                problem-solving skills, and experimenting with productivity
+                hacks to enhance both personal and professional growth. I thrive
+                on curiosity, collaboration, and a relentless pursuit of
+                excellence in everything I do.
               </p>
             </div>
 
