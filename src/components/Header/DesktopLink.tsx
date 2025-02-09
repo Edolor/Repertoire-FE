@@ -8,7 +8,9 @@ export default function DesktopLink({ content }: HeaderProps) {
 
   return (
     <Link
-      href={`${window.location.origin}/${content.link}`}
+      href={`${window != undefined && window?.location?.origin}/${
+        content.link
+      }`}
       className={`hover:text-primary text-lg dark:hover:text-zinc-50 border-t-2 
           border-b-2 border-transparent ${
             isActive
