@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import MobileLink from "./MobileLink";
 import DesktopLink from "./DesktopLink";
 
-export default function Header() {
+export default function Header({ links }: { links: any }) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -67,7 +67,7 @@ export default function Header() {
         <nav className="hidden flex-row items-center justify-between max-w-md w-full lg:flex dark:text-zinc-100">
           {
             // DESKTOP HEADER LINKS
-            LINKS.map((content, index) => (
+            links.map((content: any, index: number) => (
               <DesktopLink content={content} key={index} />
             ))
           }
@@ -123,8 +123,6 @@ export default function Header() {
               Menu
             </span>
           </button>
-
-
         </div>
       </div>
 

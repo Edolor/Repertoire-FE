@@ -5,6 +5,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import Icon from "@/components/Icon/Icon";
 import Contact from "@/components/Contact/Contact";
+import { LINKS } from "@/components/Header/data";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme();
@@ -32,7 +33,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
   return (
     <div className={`w-full ${theme === "dark" ? "dark" : ""}`}>
-      <Header />
+      <Header links={LINKS} />
       <main className="pt-20 md:pt-[83px]">
         {children}
         <Contact />
@@ -42,7 +43,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         type="button"
         className={`flex items-center justify-center w-14 h-14 bg-white dark:bg-zinc-400 border 
           border-zinc-100 rounded-full 
-          shadow-md shadown-inner z-20 fixed bottom-6 right-6 sm:bottom-10 sm:right-10 ${showTopButton === false ? "hidden" : ""
+          shadow-md shadown-inner z-20 fixed bottom-6 right-6 sm:bottom-10 sm:right-10 ${
+            showTopButton === false ? "hidden" : ""
           }`}
         onClick={handleScroll}
       >

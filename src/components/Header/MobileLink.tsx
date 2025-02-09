@@ -9,7 +9,7 @@ export default function MobileLink({ content }: HeaderProps) {
 
   return (
     <Link
-      href={content.link}
+      href={`${window.location.origin}/${content.link}`}
       className="font-serif text-lg flex w-full px-4 font-semibold border-gray-100 dark:border-zinc-400 
           items-center justify-between text-gray-800 dark:text-gray-200 space-x-4 border-b-[1px] py-4 active:underline"
     >
