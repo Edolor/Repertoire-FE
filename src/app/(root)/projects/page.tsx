@@ -69,7 +69,7 @@ function Projects() {
             const res = await getProjectsNoCache(6);
 
             if (res.count > 0) {
-              nextRef.current = res.next; // Set next pager
+              nextRef.current = res.next.replace(/http:\/\//gi, "https://"); // Set next pager
               setDATA(() => res);
               setData(() => res.results);
             }
@@ -104,7 +104,9 @@ function Projects() {
 
         if (nextRef.current !== null) {
           // Set next url
-          nextRef.current = response.next;
+          nextRef.current = response.next
+            ? response.next.replace(/http:\/\//gi, "https://")
+            : response.next;
 
           // Increase counter that controls 'Show more' button visibility
           setNextCounter((prev) => prev + SIZEOFPAGER);
