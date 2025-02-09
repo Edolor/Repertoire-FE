@@ -1,16 +1,23 @@
 import Link from "next/link";
 import { HeaderProps } from "./Header.types";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function DesktopLink({ content }: HeaderProps) {
   const location = usePathname();
   const isActive = location === content.path;
 
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setOrigin(window.location.origin); // This will only run in the browser
+    }
+  }, []);
+
   return (
     <Link
-      href={`${window != undefined && window?.location?.origin}/${
-        content.link
-      }`}
+      href={`${origin}/${content.link}`}
       className={`hover:text-primary text-lg dark:hover:text-zinc-50 border-t-2 
           border-b-2 border-transparent ${
             isActive

@@ -3,15 +3,22 @@ import Link from "next/link";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { HeaderProps } from "./Header.types";
 import Icon from "@/components/Icon/Icon";
+import { useEffect, useState } from "react";
 
 export default function MobileLink({ content }: HeaderProps) {
   const { theme } = useTheme();
 
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setOrigin(window.location.origin); // This will only run in the browser
+    }
+  }, []);
+
   return (
     <Link
-      href={`${window != undefined && window?.location?.origin}/${
-        content.link
-      }`}
+      href={`${origin}/${content.link}`}
       className="font-serif text-lg flex w-full px-4 font-semibold border-gray-100 dark:border-zinc-400 
           items-center justify-between text-gray-800 dark:text-gray-200 space-x-4 border-b-[1px] py-4 active:underline"
     >
