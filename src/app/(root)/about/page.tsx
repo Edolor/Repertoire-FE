@@ -56,14 +56,12 @@ function About() {
   const fields = ["Experience", "Awards", "Education", "Certifications"];
 
   const descriptions = {
-    Experience:
-      "An overview of my professional life as a Nigerian born computer scientist.",
+    Experience: "An overview of my professional life as a computer scientist.",
     Awards:
       "A selection of awards and honors I have received for my work and in life.",
-    Education:
-      "An overview of my academic life as a Nigerian born computer scientist.",
+    Education: "An overview of my academic life as a computer scientist.",
     Certifications:
-      "A selection of certifications  I have gotten in my professional pursuit for excellence.",
+      "A selection of certifications I have gotten in my professional pursuit for excellence.",
   };
 
   const [selectedField, setSelectedField] = useState(fields[0]);
@@ -90,38 +88,12 @@ function About() {
         </div>
       </section>
 
-      <section id="about" className="w-full dark:bg-zinc-800">
+      {/* <section id="about" className="w-full dark:bg-zinc-800">
         <div className="container mx-auto py-20 flex gap-6 items-center justify-center sm:px-0">
-          <div className="w-1/2 hidden justify-center lg:flex">
-            <figure className="w-full max-w-[600px] mb-4 overflow-hidden">
-              <Image
-                src={potrait}
-                loading="lazy"
-                alt="A portrait of myself"
-                className="color-transparent object-cover"
-              />
-
-              <figcaption className="hidden indent-[100%] whitespace-nowrap">
-                My image
-              </figcaption>
-            </figure>
-          </div>
-
           <div
             className="relative flex flex-col justify-center px-6 rounded-md
-              items-center gap:3 sm:gap-5 sm:items-start md:px-0 lg:w-1/2 lg:mr-4"
+              items-center gap:3 sm:gap-5 sm:items-start md:px-0 lg:mr-4"
           >
-            <figure className="w-64 h-64 -translate-y-4 overflow-hidden bg-white rounded-full lg:hidden">
-              <Image
-                src={personalSelfie}
-                loading="lazy"
-                alt="A selfie of myself"
-                className="color-transparent object-cover indent-[100%] whitespace-nowrap"
-              />
-
-              <figcaption className="hidden">My image</figcaption>
-            </figure>
-
             <div className="space-y-1">
               <h2 className="uppercase text-lg text-center text-primary font-bold sm:text-left">
                 ABOUT ME
@@ -186,7 +158,7 @@ function About() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section
         id="content"

@@ -198,17 +198,6 @@ function Contact() {
               </a>
 
               <a
-                href={`tel:${phoneNumber}`}
-                rel="noopener noreferrer"
-                className="group text-xl dark:text-zinc-100 py-1 flex items-center"
-              >
-                <span>Phone: </span>
-                <span className="underline group-hover:no-underline">
-                  {phoneNumber}
-                </span>
-              </a>
-
-              <a
                 href={twitterUrl}
                 target="_blank"
                 rel="noopener noreferrer"

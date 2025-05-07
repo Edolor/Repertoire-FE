@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import Project from "@/components/Project/Project";
@@ -79,55 +80,60 @@ function ProjectDetail({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        {/** Photo Gallery */}
+        {/* Photo Gallery */}
         <div className="container mx-auto flex justify-center gap-10 overflow-x-auto -mt-7 scrollbar-hide">
-          <div className="h-[400px] w-11/12 bg-zinc-600 sm:w-10/12 md:w-8/12 relative">
+          <div className="h-[400px] w-11/12 bg-zinc-600 sm:w-10/12 md:w-8/12 relative overflow-hidden rounded-xl">
             {!projectIsLoading ? (
-              images.current.map((image: string, index) => {
-                if (!image) return undefined;
-
-                return (
-                  <Image
-                    src={`${image}`}
-                    key={index}
-                    loading="lazy"
-                    fill={true}
-                    className={`w-full h-full object-cover ${
-                      image !== selectedImage && "hidden"
-                    }`}
-                    alt={`Project image ${index + 1}`}
-                  />
-                );
-              })
+              <AnimatePresence mode="wait">
+                {images.current.filter(Boolean).map((image: string, index) =>
+                  image === selectedImage ? (
+                    <motion.div
+                      key={image}
+                      className="absolute inset-0 w-full h-full"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Image
+                        src={image}
+                        alt={`Project image ${index + 1}`}
+                        fill
+                        priority
+                        className="w-full h-full object-cover"
+                      />
+                    </motion.div>
+                  ) : null
+                )}
+              </AnimatePresence>
             ) : (
-              <div className="h-full w-full bg-zinc-300 animate-pulse"></div>
+              <div className="h-full w-full bg-zinc-300 animate-pulse rounded-xl"></div>
             )}
 
             {!projectIsLoading && images.current.length === 0 && (
-              <p className="text-white text-2xl text-center font-semibold absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">{`No images yet :(`}</p>
+              <p className="text-white text-2xl text-center font-semibold absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
+                No images yet :(
+              </p>
             )}
           </div>
         </div>
 
-        {!projectIsLoading && (
-          <div className="flex justify-center mt-4 space-x-2">
-            {images.current.length > 1 &&
-              images.current.map((image, index) => {
-                return (
-                  <button
-                    className={`
-                    w-3 h-3 rounded-full ${
-                      image === selectedImage ? "bg-primary" : "bg-zinc-400"
-                    }`}
-                    onClick={() => {
-                      setSelectedImage(() => image);
-                    }}
-                    key={index}
-                  >
-                    &nbsp;
-                  </button>
-                );
-              })}
+        {/* Image Selector Tabs */}
+        {!projectIsLoading && images.current.length > 1 && (
+          <div className="flex justify-center mt-4 space-x-3">
+            {images.current.map((image, index) => (
+              <button
+                key={index}
+                aria-label={`View image ${index + 1}`}
+                aria-pressed={selectedImage === image}
+                onClick={() => setSelectedImage(image)}
+                className={`w-4 h-4 rounded-full transition-all duration-200 ${
+                  selectedImage === image
+                    ? "bg-primary scale-110"
+                    : "bg-zinc-400"
+                }`}
+              />
+            ))}
           </div>
         )}
 

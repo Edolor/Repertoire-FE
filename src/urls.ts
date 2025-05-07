@@ -7,7 +7,7 @@ const linkedinUrl = "https://linkedin.com/in/aghoghomena-akasukpe";
 const githubUrl = "https://github.com/edolor";
 
 const phoneNumber = "+2348081674327";
-const emailUrl = "edolor121@gmail.com";
+const emailUrl = "me@aghoghomena.com";
 
 const hackerrankUrl = "https://www.hackerrank.com/aghoghomena3";
 const codewarsUrl = "https://www.codewars.com/users/edolor";

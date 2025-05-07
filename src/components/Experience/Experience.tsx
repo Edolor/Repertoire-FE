@@ -1,4 +1,4 @@
-import { ExperienceProps } from "./Experience.types"; 
+import { ExperienceProps } from "./Experience.types";
 
 const months = [
   "Jan",
@@ -30,10 +30,10 @@ function Experience({ data }: ExperienceProps) {
 
   return (
     <div className="bg-primaryAbout dark:bg-zinc-500 flex items-center px-6 py-8 gap-12 sm:px-12">
-      <div className="bg-black p-12 hidden flex-col gap-6 items-center md:flex">
-        <p className="uppercase text-2xl text-white font-bold">{`${s_month} ${s_year}`}</p>
+      <div className="bg-black p-6 hidden flex-col gap-6 items-center md:flex">
+        <p className="uppercase text-xl text-white font-bold">{`${s_month} ${s_year}`}</p>
         <div className="w-16 h-px bg-white">&nbsp;</div>
-        <p className="uppercase text-2xl text-white font-bold">
+        <p className="uppercase text-xl text-white font-bold">
           {!data.end_date ? "Present" : `${e_month} ${e_year}`}
         </p>
       </div>

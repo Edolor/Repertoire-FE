@@ -7,7 +7,7 @@ export default function ProjectLoading() {
         className="w-full block group shrink-0 drop-shadow-lg rounded-xl self-stretch cursor-pointer 
             sm:max-w-sm active:drop-shadow-none"
       >
-        <div className=" border-2 border-gray-200 rounded-lg overflow-hidden">
+        <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
           <div className="h-60 bg-gray-400 w-full object-cover object-center"></div>
           <div className="p-6">
             <p className="bg-gray-400 animate-pulse h-4 w-1/4 mb-2"></p>
