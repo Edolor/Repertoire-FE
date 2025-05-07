@@ -1,12 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
-
 import Experience from "@/components/Experience/Experience";
 import Honour from "@/components/Honour/Honour";
 import AboutLoading from "@/components/Card/AboutLoading";
 import { useAbout } from "@/context/AboutContext/AboutContext";
 import { AboutProps } from "@/types/About.types";
-
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
