@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="w-full bg-black dark:bg-zinc-900 py-4 px-2 sm:py-2">
       <div className="container mx-auto flex flex-col gap-6 items-center justify-between text-white sm:flex-row">
-        <p className="text-base sm:text-lg">&copy;2023, Edolor</p>
+        <p className="text-base sm:text-lg">&copy;2025, Edolor</p>
 
         <Link href="/" className="hidden sm:block">
           <Image src="/logo-white.svg" alt="Logo" width={160} height={51} />

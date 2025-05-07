@@ -1,8 +1,6 @@
-"use client";
 import Link from "next/link";
 import type { Metadata } from "next";
 import "./globals.css";
-import { koho, bungee } from "@/fonts";
 
 export const metadata: Metadata = {
   title: "Page not found(404) - Edolor",

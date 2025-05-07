@@ -8,7 +8,7 @@ import Input from "@/components/Input/Input";
 import Error from "@/components/Input/Error";
 import Label from "@/components/Input/Label";
 import Message from "@/components/Message/Message";
-import { twitterUrl, linkedinUrl, emailUrl, phoneNumber } from "@/urls";
+import { twitterUrl, linkedinUrl, emailUrl } from "@/urls";
 
 const heroStyleWhite = {
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${background.src})`,
