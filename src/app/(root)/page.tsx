@@ -401,6 +401,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.6 }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="w-full sm:w-auto"
                 >
                   <Project project={project} />
                 </motion.div>
@@ -449,7 +450,7 @@ export default function Home() {
               sm:shadow-md sm:space-y-5"
           >
             <h2
-              className="absolute top-0 left-0 font-serif font-extrabold uppercase p-3 px-6
+              className="absolute top-0 left-2 font-serif font-extrabold uppercase p-3 px-6
                 -translate-y-2/4 text-primary bg-white text-xl border border-primary md:left-10"
             >
               About Me
