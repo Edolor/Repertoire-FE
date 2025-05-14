@@ -12,10 +12,10 @@ import background from "@/assets/img/home-background.png";
 import awsBadge from "@/assets/img/badges/aws.png";
 import ccBadge from "@/assets/img/badges/cc.png";
 import homeCareFinancialBadge from "@/assets/img/badges/home_care_financial.png";
+import securityPlusBadge from "@/assets/img/badges/SecurityPlus.png";
 import { motion } from "framer-motion";
 import homeHealthFinancialBadge from "@/assets/img/badges/home_health_financial.png";
 import hospiceFinancialBadge from "@/assets/img/badges/hospice_financial.png";
-import palliativeFinancialBadge from "@/assets/img/badges/palliative_care_financial.png";
 import Project from "@/components/Project/Project";
 import Expertise from "@/components/Expertise/Expertise";
 import { EXPERTISE } from "@/components/Expertise/data";
@@ -141,12 +141,12 @@ export default function Home() {
   });
 
   const badges = [
+    { src: securityPlusBadge, alt: "Security Plus Badge" },
     { src: awsBadge, alt: "AWS Certification Badge" },
     { src: ccBadge, alt: "CC Badge" },
     { src: homeCareFinancialBadge, alt: "Home Care Financial Badge" },
     { src: homeHealthFinancialBadge, alt: "Home Health Financial Badge" },
     { src: hospiceFinancialBadge, alt: "Hospice Financial Badge" },
-    { src: palliativeFinancialBadge, alt: "Palliative Financial Badge" },
   ];
 
   useEffect(() => {
