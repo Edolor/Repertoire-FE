@@ -195,7 +195,7 @@ export default function Home() {
                 variants={badgePulse}
                 animate="animate"
               >
-                🚀 Open to Work!
+                🚀 Open to Chat!
               </motion.h2>
 
               <motion.h1
