@@ -6,7 +6,6 @@ const twitterUrl = "https://twitter.com/aghoghomena2";
 const linkedinUrl = "https://linkedin.com/in/aghoghomena-akasukpe";
 const githubUrl = "https://github.com/edolor";
 
-const phoneNumber = "+2348081674327";
 const emailUrl = "me@aghoghomena.com";
 
 const hackerrankUrl = "https://www.hackerrank.com/aghoghomena3";
@@ -27,7 +26,6 @@ export {
   twitterUrl,
   linkedinUrl,
   githubUrl,
-  phoneNumber,
   emailUrl,
   hackerrankUrl,
   codewarsUrl,

@@ -40,19 +40,23 @@ export default function RootLayout({
               <body className={`${koho.variable} ${bungee.variable} font-sans`}>
                 {children}
                 {/* Google Tracking */}
-                <Script
-                  async
-                  src="https://www.googletagmanager.com/gtag/js?id=G-L3K9VKV1Y0"
-                ></Script>
-                <Script id="google-script">
-                  {`window.dataLayer = window.dataLayer || [];
+                {process.env.NEXT_PUBLIC_GA_ID && (
+                  <>
+                    <Script
+                      async
+                      src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+                    ></Script>
+                    <Script id="google-script">
+                      {`window.dataLayer = window.dataLayer || [];
                   function gtag() {
                     dataLayer.push(arguments);
                   }
                   gtag("js", new Date());
 
-                  gtag("config", "G-L3K9VKV1Y0");`}
-                </Script>{" "}
+                  gtag("config", "${process.env.NEXT_PUBLIC_GA_ID}");`}
+                    </Script>
+                  </>
+                )}{" "}
               </body>
             </html>
           </AboutProvider>

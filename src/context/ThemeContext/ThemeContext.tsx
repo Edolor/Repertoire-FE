@@ -20,12 +20,11 @@ export default function ThemeProvider({
 
   /** One time check in load */
   useEffect(() => {
-    setTheme(() => localStorage.getItem("theme") ?? "");
-
-    if (localStorage.getItem("theme") === "dark") {
+    const stored = localStorage.getItem("theme");
+    if (stored === "dark") {
       setTheme("dark");
     } else if (
-      localStorage.getItem("theme") === null &&
+      stored === null &&
       window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {
       setTheme("dark");

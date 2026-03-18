@@ -2,6 +2,15 @@ import React from "react";
 import Icon from "../Icon/Icon";
 import { BaseProjectProps } from "@/types/Project.types";
 
+function isSafeUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" || parsed.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 type DetailProps = {
   project: BaseProjectProps;
   theme: string;
@@ -64,7 +73,7 @@ const DetailSide: React.FC<DetailProps> = ({ project, theme, loading }) => {
           )}
 
           <div className="pt-3 space-y-4 w-full">
-            {project.live_url && (
+            {project.live_url && isSafeUrl(project.live_url) && (
               <a
                 href={project.live_url}
                 target="_blank"
@@ -83,7 +92,7 @@ const DetailSide: React.FC<DetailProps> = ({ project, theme, loading }) => {
               </a>
             )}
 
-            {project.github_url && (
+            {project.github_url && isSafeUrl(project.github_url) && (
               <a
                 href={project.github_url}
                 target="_blank"
@@ -102,7 +111,7 @@ const DetailSide: React.FC<DetailProps> = ({ project, theme, loading }) => {
               </a>
             )}
 
-            {project.figma_url && (
+            {project.figma_url && isSafeUrl(project.figma_url) && (
               <a
                 href={project.figma_url}
                 target="_blank"

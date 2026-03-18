@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, use } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
@@ -13,11 +13,11 @@ type ImageProp = {
   src: string;
 };
 
-function ProjectDetail({ params }: { params: { id: string } }) {
+function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
   const [project, setProject] = useState<BaseProjectProps>(
     {} as BaseProjectProps
   );
-  const projectId = params.id;
+  const { id: projectId } = use(params);
   const { getProjectDetails } = useProject();
   const { theme } = useTheme();
   const [projectIsLoading, setProjectIsLoading] = useState(true);

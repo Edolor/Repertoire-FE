@@ -128,10 +128,10 @@ function Contact() {
           messageRef.current.value = "";
         }
       } catch (error: any) {
-        setError(() => `${error.response.statusText}!`);
+        setError(() => "Something went wrong. Please try again.");
+      } finally {
+        setStatus(() => "normal");
       }
-
-      setStatus(() => "normal");
     }
   };
 
