@@ -1,15 +1,21 @@
-import { KoHo, Bungee_Inline } from "next/font/google";
+import localFont from "next/font/local";
 
-export const koho = KoHo({
-    subsets: ["latin"],
-    weight: ["300", "400", "500", "600", "700"],
+export const koho = localFont({
+    src: [
+        { path: "./fonts/KoHo-Light.woff2", weight: "300", style: "normal" },
+        { path: "./fonts/KoHo-Regular.woff2", weight: "400", style: "normal" },
+        { path: "./fonts/KoHo-Medium.woff2", weight: "500", style: "normal" },
+        { path: "./fonts/KoHo-SemiBold.woff2", weight: "600", style: "normal" },
+        { path: "./fonts/KoHo-Bold.woff2", weight: "700", style: "normal" },
+    ],
     variable: "--font-sans-koho",
     fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
 });
 
-export const bungee = Bungee_Inline({
-    subsets: ["latin"],
-    weight: ["400"],
+export const bungee = localFont({
+    src: [
+        { path: "./fonts/BungeeInline-Regular.woff2", weight: "400", style: "normal" },
+    ],
     variable: "--font-serif-bungee",
     fallback: ['Georgia', 'Times New Roman', 'serif'],
 });

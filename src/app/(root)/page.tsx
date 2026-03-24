@@ -1,10 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Experience from "@/components/Experience/Experience";
 import Honour from "@/components/Honour/Honour";
 import AboutLoading from "@/components/Card/AboutLoading";
-import { useAbout } from "@/context/AboutContext/AboutContext";
-import { AboutProps } from "@/types/About.types";
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
@@ -22,9 +20,7 @@ import { EXPERTISE } from "@/components/Expertise/data";
 import Icon from "@/components/Icon/Icon";
 import { githubUrl, emailUrl, linkedinUrl } from "@/urls";
 import ProjectLoading from "@/components/Card/ProjectLoading";
-import { useProject } from "@/context/ProjectContext/ProjectContext";
-import { BaseProjectProps } from "@/types/Project.types";
-import { getProjects } from "@/utils";
+import { useAboutQuery, useProjectsQuery } from "@/hooks/useQueries";
 
 const heroStyleWhite = {
   backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url(${background.src})`,
@@ -40,32 +36,7 @@ const heroStyleDark = {
 
 export default function Home() {
   const { theme } = useTheme();
-  const { getAbout } = useAbout();
-  const [about, setAbout] = useState<AboutProps>({} as AboutProps);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let firstRender = true;
-
-    const getData = async () => {
-      try {
-        if (firstRender) {
-          // Fetch data only once
-          const res = await getAbout(); // Fetch projects
-          if (res.status === 200) {
-            setAbout(() => res.data);
-          }
-
-          setLoading(() => false);
-        }
-      } catch (err) {}
-    };
-
-    getData();
-    return () => {
-      firstRender = false;
-    };
-  }, [getAbout]);
+  const { data: about, isLoading: loading } = useAboutQuery();
 
   const fields = ["Experience", "Awards", "Education", "Certifications"];
 
@@ -79,11 +50,8 @@ export default function Home() {
   };
 
   const [selectedField, setSelectedField] = useState(fields[0]);
-  const { fetchProjects } = useProject();
-  const [projects, setProjects] = useState<BaseProjectProps[]>(
-    [] as BaseProjectProps[]
-  );
-  const [projectIsLoading, setProjectIsLoading] = useState(true);
+  const { data: projectsData, isLoading: projectIsLoading } = useProjectsQuery(3);
+  const projects = projectsData?.results ?? [];
 
   const badgeVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -148,30 +116,6 @@ export default function Home() {
     { src: homeHealthFinancialBadge, alt: "Home Health Financial Badge" },
     { src: hospiceFinancialBadge, alt: "Hospice Financial Badge" },
   ];
-
-  useEffect(() => {
-    let firstRender = true;
-
-    const getData = async () => {
-      try {
-        if (firstRender) {
-          // Fetch data only once
-          const res = await getProjects(3);
-
-          if (res.count > 0) {
-            setProjects(() => res.results);
-          }
-
-          setProjectIsLoading(() => false);
-        }
-      } catch (err) {}
-    };
-
-    getData();
-    return () => {
-      firstRender = false;
-    };
-  }, [fetchProjects]);
 
   return (
     <>
@@ -457,7 +401,7 @@ export default function Home() {
             </h2>
 
             <div className="container max-w-5xl pb-10 border-b-[1.5px] border-b-zinc-400 px-6 mx-auto">
-              {loading ? (
+              {loading || !about ? (
                 <AboutLoading />
               ) : (
                 <>

@@ -1,19 +1,17 @@
 "use client";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
-import useFetch from "@/hooks/useFetch";
 import head from "@/assets/img/code-head-1.png";
 import Project from "@/components/Project/Project";
 import Message from "@/components/Message/Message";
 import ProjectLoading from "@/components/Card/ProjectLoading";
-import { useProject } from "@/context/ProjectContext/ProjectContext";
 import { BaseProjectProps } from "@/types/Project.types";
 import { ServerResponse } from "./Projects.types";
-import { getProjectsNoCache } from "@/utils";
+import { useProjectsQuery } from "@/hooks/useQueries";
+import { fetchProjectsPage } from "@/lib/queries";
 
 function Projects() {
-  const SIZEOFPAGER = 6; // USED FOR PAGINATION
-  const { fetchProjects } = useProject();
+  const SIZEOFPAGER = 6;
   const fields = [
     "All",
     "Machine Learning",
@@ -25,70 +23,51 @@ function Projects() {
 
   const nextRef = useRef<string | null>(null);
   const [nextCounter, setNextCounter] = useState(SIZEOFPAGER);
-  const { fetchData } = useFetch();
 
   const [success, setSuccess] = useState(false);
-  const initial = useRef(true);
 
-  const [data, setData] = useState<BaseProjectProps[]>(
-    [] as BaseProjectProps[]
-  );
-
-  const [DATA, setDATA] = useState<ServerResponse>({} as ServerResponse);
+  const [extraData, setExtraData] = useState<BaseProjectProps[]>([]);
   const [projects, setProjects] = useState<BaseProjectProps[]>([]);
-  const [projectIsLoading, setProjectIsLoading] = useState(true);
   const [selectedField, setSelectedField] = useState(fields[0]);
   const selectedRef = useRef(selectedField);
+
+  const { data: initialData, isLoading: projectIsLoading } = useProjectsQuery(6);
+
+  // Combine initial data with paginated extra data
+  const allData = useMemo(
+    () => [...(initialData?.results ?? []), ...extraData],
+    [initialData?.results, extraData]
+  );
+
+  const totalCount = initialData?.count ?? 0;
+
+  // Set the next URL from initial data
+  useEffect(() => {
+    if (initialData?.next && nextRef.current === null) {
+      nextRef.current = initialData.next.replace(/http:\/\//gi, "https://");
+    }
+  }, [initialData]);
 
   const handleSearch = useCallback(
     (field: string) => {
       if (field === "All") {
-        setProjects(() => data);
+        setProjects(allData);
       } else {
-        // Filtering by field name
-        setProjects(() => {
-          return data.filter((project: BaseProjectProps) => {
+        setProjects(
+          allData.filter((project: BaseProjectProps) => {
             return project.tags !== undefined
               ? project.tags.includes(field)
               : [];
-          });
-        });
+          })
+        );
       }
     },
-    [data]
+    [allData]
   );
 
   useEffect(() => {
-    let firstRender = true;
-
-    const getData = async () => {
-      try {
-        if (firstRender) {
-          if (initial.current) {
-            // Fetch data only once
-            const res = await getProjectsNoCache(6);
-
-            if (res.count > 0) {
-              nextRef.current = res.next.replace(/http:\/\//gi, "https://"); // Set next pager
-              setDATA(() => res);
-              setData(() => res.results);
-            }
-
-            initial.current = false;
-            setProjectIsLoading(() => false);
-          }
-
-          setProjects(() => data);
-          handleSearch(selectedRef.current);
-        }
-      } catch (err) {}
-    };
-
-    getData();
-    return () => {
-      firstRender = false;
-    };
-  }, [data, fetchProjects, handleSearch]);
+    handleSearch(selectedRef.current);
+  }, [allData.length, handleSearch]);
 
   const [loading, setLoading] = useState(false);
 
@@ -97,27 +76,17 @@ function Projects() {
 
     if (nextRef.current) {
       try {
-        // Send request to get next sequence of products
-        let r = await fetchData(nextRef.current);
-
-        const response: ServerResponse = r.data;
+        const response: ServerResponse = await fetchProjectsPage(nextRef.current);
 
         if (nextRef.current !== null) {
-          // Set next url
           nextRef.current = response.next
             ? response.next.replace(/http:\/\//gi, "https://")
             : response.next;
 
-          // Increase counter that controls 'Show more' button visibility
           setNextCounter((prev) => prev + SIZEOFPAGER);
+          setExtraData((prev) => [...prev, ...response.results]);
 
-          // Add the new products to the data
-          setData((projects) => [...projects, ...response.results]);
-
-          // Display success message
           setTimeout(() => setSuccess(() => true), 700);
-
-          // Remove success message
           setTimeout(() => setSuccess(() => false), 5000);
         }
       } catch (error) {}
@@ -200,7 +169,7 @@ function Projects() {
                   onClick={() => {
                     setSelectedField(() => field);
                     selectedRef.current = field;
-                    handleSearch(field); // filter tags
+                    handleSearch(field);
                   }}
                   key={index}
                 >
@@ -233,7 +202,7 @@ function Projects() {
           </div>
 
           {!projectIsLoading &&
-            DATA.count > nextCounter && ( // nextCounter changes as new products are gotten
+            totalCount > nextCounter && (
               <div className="flex justify-center mt-8 sm:mt-10">
                 <button
                   type="button"

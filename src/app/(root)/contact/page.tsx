@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useState } from "react";
-import { useContact } from "@/context/ContactContext/ContactContext";
 import background from "@/assets/img/contact-background.png";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import Icon from "@/components/Icon/Icon";
@@ -9,6 +8,7 @@ import Error from "@/components/Input/Error";
 import Label from "@/components/Input/Label";
 import Message from "@/components/Message/Message";
 import { twitterUrl, linkedinUrl, emailUrl } from "@/urls";
+import { useCreateMessage } from "@/hooks/useQueries";
 
 const heroStyleWhite = {
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${background.src})`,
@@ -24,7 +24,7 @@ const heroStyleDark = {
 
 function Contact() {
   const { theme } = useTheme();
-  const { createMessage } = useContact();
+  const mutation = useCreateMessage();
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -33,7 +33,6 @@ function Contact() {
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [messageError, setMessageError] = useState("");
-  const [status, setStatus] = useState("normal");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
@@ -72,8 +71,8 @@ function Contact() {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setStatus(() => "loading");
     setSuccess(() => false);
+    setError(() => "");
     let bug = false;
 
     if (
@@ -106,8 +105,6 @@ function Contact() {
       }
 
       if (bug) {
-        // Check for any error
-        setStatus(() => "normal");
         return;
       }
 
@@ -117,21 +114,17 @@ function Contact() {
         message: messageRef.current.value.trim(),
       };
 
-      try {
-        const response = await createMessage(data);
-        if (response.status === 201) {
-          // Successfully created
+      mutation.mutate(data, {
+        onSuccess: () => {
           setSuccess(() => true);
-
-          nameRef.current.value = "";
-          emailRef.current.value = "";
-          messageRef.current.value = "";
-        }
-      } catch (error: any) {
-        setError(() => "Something went wrong. Please try again.");
-      } finally {
-        setStatus(() => "normal");
-      }
+          if (nameRef.current) nameRef.current.value = "";
+          if (emailRef.current) emailRef.current.value = "";
+          if (messageRef.current) messageRef.current.value = "";
+        },
+        onError: () => {
+          setError(() => "Something went wrong. Please try again.");
+        },
+      });
     }
   };
 
@@ -177,7 +170,7 @@ function Contact() {
         <div className="container mx-auto py-10 flex flex-col gap-x-10 lg:flex-row">
           <article className="w-full flex flex-col items-center py-10 lg:w-1/3 lg:items-start">
             <div
-              className="bg-white -mt-32 dark:bg-zinc-800 rounded-xl p-6 max-w-md space-y-2 flex flex-col 
+              className="bg-white -mt-32 dark:bg-zinc-800 rounded-xl p-6 max-w-md space-y-2 flex flex-col
                 items-center drop-shadow-lg sm:p-10 sm:py-12 md:mx-0"
             >
               <div className="flex justify-center">
@@ -250,7 +243,7 @@ function Contact() {
                 <div>
                   <Input
                     type="text"
-                    disabled={status === "loading"}
+                    disabled={mutation.isPending}
                     name="name"
                     id="name"
                     inputRef={nameRef}
@@ -266,7 +259,7 @@ function Contact() {
                 <div>
                   <Input
                     type="email"
-                    disabled={status === "loading"}
+                    disabled={mutation.isPending}
                     name="email"
                     id="email"
                     inputRef={emailRef}
@@ -282,7 +275,7 @@ function Contact() {
                 <div>
                   <Input
                     type="textarea"
-                    disabled={status === "loading"}
+                    disabled={mutation.isPending}
                     name="message"
                     id="message"
                     textareaRef={messageRef}
@@ -296,13 +289,13 @@ function Contact() {
               <div className="flex justify-center mt-8 sm:mt-10">
                 <button
                   type="submit"
-                  disabled={status === "loading"}
+                  disabled={mutation.isPending}
                   className="flex flex-row items-center text-base font-semibold px-5 pl-6 py-4 bg-primary rounded-md
                       text-white gap-x-2 drop-shadow-lg disabled:opacity-50 disabled:cursor-not-allowed outline-offset-2 outline-primary outline-1 focus:outline
                       active:drop-shadow-none hover:underline hover:bg-primaryLight"
                 >
                   <span className={`text-lg sm:text-xl`}>
-                    {status === "loading"
+                    {mutation.isPending
                       ? "Message sending..."
                       : "Send Message"}
                   </span>

@@ -13,5 +13,6 @@ export type BaseProjectProps = {
     figma_url?: string,
     github_url?: string
     tools?: Array<string>,
+    images?: Array<string>,
     other_projects?: Array<BaseProjectProps>
 }
