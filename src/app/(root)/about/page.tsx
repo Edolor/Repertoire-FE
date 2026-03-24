@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import background from "@/assets/img/about-background.png";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import Experience from "@/components/Experience/Experience";
 import Honour from "@/components/Honour/Honour";
 import AboutLoading from "@/components/Card/AboutLoading";
-import { useAbout } from "@/context/AboutContext/AboutContext";
-import { AboutProps } from "@/types/About.types";
+import { useAboutQuery } from "@/hooks/useQueries";
 
 const heroStyleWhite = {
   backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${background.src})`,
@@ -22,32 +21,7 @@ const heroStyleDark = {
 
 function About() {
   const { theme } = useTheme();
-  const { getAbout } = useAbout();
-  const [about, setAbout] = useState<AboutProps>({} as AboutProps);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let firstRender = true;
-
-    const getData = async () => {
-      try {
-        if (firstRender) {
-          // Fetch data only once
-          const res = await getAbout(); // Fetch projects
-          if (res.status === 200) {
-            setAbout(() => res.data);
-          }
-
-          setLoading(() => false);
-        }
-      } catch (err) {}
-    };
-
-    getData();
-    return () => {
-      firstRender = false;
-    };
-  }, [getAbout]);
+  const { data: about, isLoading: loading } = useAboutQuery();
 
   const fields = ["Experience", "Awards", "Education", "Certifications"];
 
@@ -89,7 +63,7 @@ function About() {
         className="w-full bg-zinc-100 dark:bg-zinc-700 py-16"
       >
         <div className="container max-w-5xl pb-10 border-b-[1.5px] border-b-zinc-400 px-6 mx-auto">
-          {loading ? (
+          {loading || !about ? (
             <AboutLoading />
           ) : (
             <>

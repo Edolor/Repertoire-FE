@@ -2,10 +2,8 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { koho, bungee } from "@/fonts";
-import AboutProvider from "@/context/AboutContext/AboutContext";
 import ThemeProvider from "@/context/ThemeContext/ThemeContext";
-import ContactProvider from "@/context/ContactContext/ContactContext";
-import ProjectProvider from "@/context/ProjectContext/ProjectContext";
+import QueryProvider from "@/providers/QueryProvider";
 
 export const viewport: Viewport = {
   themeColor: "#027373",
@@ -33,35 +31,31 @@ export default function RootLayout({
 }) {
   return (
     <ThemeProvider>
-      <ProjectProvider>
-        <ContactProvider>
-          <AboutProvider>
-            <html lang="en">
-              <body className={`${koho.variable} ${bungee.variable} font-sans`}>
-                {children}
-                {/* Google Tracking */}
-                {process.env.NEXT_PUBLIC_GA_ID && (
-                  <>
-                    <Script
-                      async
-                      src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-                    ></Script>
-                    <Script id="google-script">
-                      {`window.dataLayer = window.dataLayer || [];
+      <QueryProvider>
+        <html lang="en">
+          <body className={`${koho.variable} ${bungee.variable} font-sans`}>
+            {children}
+            {/* Google Tracking */}
+            {process.env.NEXT_PUBLIC_GA_ID && (
+              <>
+                <Script
+                  async
+                  src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+                ></Script>
+                <Script id="google-script">
+                  {`window.dataLayer = window.dataLayer || [];
                   function gtag() {
                     dataLayer.push(arguments);
                   }
                   gtag("js", new Date());
 
                   gtag("config", "${process.env.NEXT_PUBLIC_GA_ID}");`}
-                    </Script>
-                  </>
-                )}{" "}
-              </body>
-            </html>
-          </AboutProvider>
-        </ContactProvider>
-      </ProjectProvider>
+                </Script>
+              </>
+            )}{" "}
+          </body>
+        </html>
+      </QueryProvider>
     </ThemeProvider>
   );
 }

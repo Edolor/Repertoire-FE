@@ -1,74 +1,42 @@
 "use client";
-import { useEffect, useState, useRef, use } from "react";
+import { useEffect, useState, useMemo, use } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import Project from "@/components/Project/Project";
 import DetailSide from "@/components/Project/DetailSide";
-import { useProject } from "@/context/ProjectContext/ProjectContext";
-import { BaseProjectProps } from "@/types/Project.types";
 import ProjectLoading from "@/components/Card/ProjectLoading";
-
-type ImageProp = {
-  src: string;
-};
+import { useProjectDetailQuery } from "@/hooks/useQueries";
 
 function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
-  const [project, setProject] = useState<BaseProjectProps>(
-    {} as BaseProjectProps
-  );
   const { id: projectId } = use(params);
-  const { getProjectDetails } = useProject();
+  const { data: project, isLoading: projectIsLoading } = useProjectDetailQuery(projectId);
   const { theme } = useTheme();
-  const [projectIsLoading, setProjectIsLoading] = useState(true);
-  const loadingRef = useRef(true);
 
-  const images = useRef([]);
+  const images = useMemo(
+    () => project?.images?.filter((image: string) => image !== null) ?? [],
+    [project?.images]
+  );
   const [selectedImage, setSelectedImage] = useState<string>("");
 
   useEffect(() => {
-    let firstRender = true;
-
-    const getData = async () => {
-      setProjectIsLoading(() => true);
-      loadingRef.current = true;
-
-      try {
-        if (firstRender) {
-          // Fetch data only once
-          const res = await getProjectDetails(projectId); // Fetch project details
-          if (res.status === 200) {
-            setProject(() => res.data);
-            setProjectIsLoading(() => false);
-            loadingRef.current = false;
-
-            // Handling images
-            images.current =
-              res.data.images.filter((image: string) => image !== null) ?? [];
-            setSelectedImage(images.current[0]);
-          }
-        }
-      } catch (err) {}
-    };
-
-    getData();
-    return () => {
-      firstRender = false;
-    };
-  }, [projectId, getProjectDetails]);
+    if (images.length > 0 && !selectedImage) {
+      setSelectedImage(images[0]);
+    }
+  }, [images, selectedImage]);
 
   useEffect(() => {
-    if (project && !loadingRef.current) {
+    if (project && !projectIsLoading) {
       document.title = `${project.title.trim()} - Edolor`;
     }
-  }, [project]);
+  }, [project, projectIsLoading]);
 
   return (
     <>
       <section id="details" className="dark:bg-zinc-700">
         <div className="w-full bg-zinc-100 dark:bg-zinc-900 py-6 pb-12 md:py-10 md:pb-16">
           <div className="container mx-auto">
-            {!projectIsLoading ? (
+            {!projectIsLoading && project ? (
               <h1 className="font-serif text-3xl font-extrabold px-4 dark:text-zinc-100 text-center space-y-1 md:text-5xl">
                 {project.title}
               </h1>
@@ -85,7 +53,7 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
           <div className="h-[400px] w-11/12 bg-zinc-600 sm:w-10/12 md:w-8/12 relative overflow-hidden rounded-xl">
             {!projectIsLoading ? (
               <AnimatePresence mode="wait">
-                {images.current.filter(Boolean).map((image: string, index) =>
+                {images.filter(Boolean).map((image: string, index: number) =>
                   image === selectedImage ? (
                     <motion.div
                       key={image}
@@ -110,7 +78,7 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
               <div className="h-full w-full bg-zinc-300 animate-pulse rounded-xl"></div>
             )}
 
-            {!projectIsLoading && images.current.length === 0 && (
+            {!projectIsLoading && images.length === 0 && (
               <p className="text-white text-2xl text-center font-semibold absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4">
                 No images yet :(
               </p>
@@ -119,9 +87,9 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
         </div>
 
         {/* Image Selector Tabs */}
-        {!projectIsLoading && images.current.length > 1 && (
+        {!projectIsLoading && images.length > 1 && (
           <div className="flex justify-center mt-4 space-x-3">
-            {images.current.map((image, index) => (
+            {images.map((image: string, index: number) => (
               <button
                 key={index}
                 aria-label={`View image ${index + 1}`}
@@ -151,7 +119,7 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
               </div>
             ) : (
               <p className="dark:text-zinc-100 text-zinc-700 text-lg text-center mt-2 leading-relaxed sm:text-left">
-                {project.description}
+                {project?.description}
               </p>
             )}
 
@@ -159,7 +127,7 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
               Tools:
             </h3>
 
-            {!projectIsLoading ? (
+            {!projectIsLoading && project ? (
               <ul className="list-disc list-inside mt-2 ml-2">
                 {project.tools &&
                   project?.tools.map((tool, index) => {
@@ -185,13 +153,13 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
               Tags:
             </h3>
 
-            {!projectIsLoading ? (
+            {!projectIsLoading && project ? (
               <div className="flex top-0 gap-x-6 mt-4 justify-center flex-wrap gap-y-4 sm:justify-start">
                 {project.tags &&
                   project.tags.map((tag, index) => {
                     return (
                       <button
-                        className="font-base py-1 px-4 border border-zinc-800 text-black 
+                        className="font-base py-1 px-4 border border-zinc-800 text-black
                               dark:text-zinc-100 dark:border-zinc-200 hover:underline hover:bg-zinc-100
                                 dark:hover:bg-zinc-500"
                         key={index}
@@ -212,7 +180,7 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
           <aside className="flex flex-col items-center lg:items-start self-stretch md:sticky md:top-0">
             {/* White card on right side */}
             <DetailSide
-              project={project}
+              project={project ?? {} as any}
               theme={theme}
               loading={projectIsLoading}
             />
@@ -229,7 +197,7 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
           <div className="mt-6 w-full flex flex-wrap items-start justify-center pt-1 pb-3 px-1 gap-10 gap-y-12">
             {/** PROJECTS */}
             {!projectIsLoading &&
-              project.other_projects &&
+              project?.other_projects &&
               project.other_projects.map((project, index) => {
                 return <Project key={index} project={project} />;
               })}
