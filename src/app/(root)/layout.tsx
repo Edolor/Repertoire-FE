@@ -51,12 +51,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Icon
           name="arrow-upward"
           color="#000000"
-          classes={`h-7 -mt-p ${theme !== "light" && "hidden"}`}
+          classes={`h-7 w-7 ${theme !== "light" && "hidden"}`}
         />
         <Icon
           name="arrow-upward"
           color="#ffffff"
-          classes={`h-7 -mt-p ${theme !== "dark" && "hidden"}`}
+          classes={`h-7 w-7 ${theme !== "dark" && "hidden"}`}
         />
         <span className="w-1 h-1 overflow-hidden hidden">Go to top</span>
       </button>
