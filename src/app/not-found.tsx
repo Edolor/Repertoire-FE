@@ -19,7 +19,7 @@ export default function Error() {
             Unfortunately, the page you are looking for does not exist.
           </p>
           <p className="text-lg sm:text-xl text-center dark:text-zinc-100 mt-1">
-            But the are other useful projects.
+            But there are other useful projects.
           </p>
 
           <div className="flex space-x-8 mt-8 gap-y-3 flex-wrap justify-center">

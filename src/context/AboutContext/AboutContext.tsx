@@ -3,6 +3,8 @@ import React, { useContext, createContext } from "react";
 import { baseURL, PATHS } from "../../urls";
 import axios, { AxiosResponse } from "axios";
 
+const client = axios.create({ baseURL: baseURL });
+
 type AboutContextProps = {
   getAbout: () => Promise<AxiosResponse<any, any>>;
 };
@@ -17,7 +19,6 @@ export default function AboutProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const client = axios.create({ baseURL: baseURL });
 
   const getAbout = async () => {
     /** GET ABOOUT DETAILS */

@@ -3,6 +3,8 @@ import { useContext, createContext, useEffect } from "react";
 import { baseURL, PATHS } from "../../urls";
 import axios, { AxiosResponse } from "axios";
 
+const client = axios.create({ baseURL: baseURL });
+
 type ProjectContextProps = {
   getProjects: (size?: number) => Promise<any>;
   getProjectDetails: (projectId: string) => Promise<AxiosResponse<any, any>>;
@@ -20,13 +22,11 @@ export default function ProjectProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const client = axios.create({ baseURL: baseURL });
-
   useEffect(() => {
-    let firstRender = false;
+    let cancelled = false;
 
     const checkHealth = async () => {
-      if (!firstRender) {
+      if (!cancelled) {
         try {
           return await client.get(`${PATHS.health}`);
         } catch (e) {
@@ -38,9 +38,9 @@ export default function ProjectProvider({
     checkHealth(); // Call request
 
     return () => {
-      firstRender = true;
+      cancelled = true;
     };
-  }, [client]);
+  }, []);
 
   const getProjects = async (size = 3) => {
     /** Return 3 projects for the home page */

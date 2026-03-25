@@ -3,6 +3,8 @@ import { createContext, useContext } from "react";
 import axios, { AxiosResponse } from "axios";
 import { baseURL, PATHS } from "../../urls";
 
+const client = axios.create({ baseURL: baseURL });
+
 type ContactContextProps = {
   createMessage: (data: any) => Promise<AxiosResponse<any, any>>;
 };
@@ -18,7 +20,6 @@ export default function ContactProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const client = axios.create({ baseURL: baseURL });
 
   type MessageProp = {
     name: string;
