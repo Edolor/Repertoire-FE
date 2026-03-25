@@ -11,7 +11,7 @@ import awsBadge from "@/assets/img/badges/aws.png";
 import ccBadge from "@/assets/img/badges/cc.png";
 import homeCareFinancialBadge from "@/assets/img/badges/home_care_financial.png";
 import securityPlusBadge from "@/assets/img/badges/SecurityPlus.png";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import homeHealthFinancialBadge from "@/assets/img/badges/home_health_financial.png";
 import hospiceFinancialBadge from "@/assets/img/badges/hospice_financial.png";
 import Project from "@/components/Project/Project";
@@ -35,6 +35,7 @@ const heroStyleDark = {
 };
 
 export default function Home() {
+  const prefersReducedMotion = useReducedMotion();
   const { theme } = useTheme();
   const { data: about, isLoading: loading } = useAboutQuery();
 
@@ -53,14 +54,16 @@ export default function Home() {
   const { data: projectsData, isLoading: projectIsLoading } = useProjectsQuery(3);
   const projects = projectsData?.results ?? [];
 
-  const badgeVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.15, duration: 0.5, ease: "easeOut" },
-    }),
-  };
+  const badgeVariants = prefersReducedMotion
+    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
+    : {
+        hidden: { opacity: 0, y: 20 },
+        visible: (i: number) => ({
+          opacity: 1,
+          y: 0,
+          transition: { delay: i * 0.15, duration: 0.5, ease: "easeOut" },
+        }),
+      };
 
   const blogPosts = [
     {
@@ -77,36 +80,43 @@ export default function Home() {
   ];
 
   // Badge Animation
-  const badgePulse = {
-    animate: {
-      scale: [1, 1.05, 1],
-      rotate: [0, 2, -2, 0],
-      transition: {
-        repeat: Infinity,
-        duration: 2,
-        ease: "easeInOut",
-      },
-    },
-  };
+  const badgePulse = prefersReducedMotion
+    ? { animate: {} }
+    : {
+        animate: {
+          scale: [1, 1.05, 1],
+          rotate: [0, 2, -2, 0],
+          transition: {
+            repeat: Infinity,
+            duration: 2,
+            ease: "easeInOut",
+          },
+        },
+      };
 
   // Container Animation
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
+  const cardVariants = prefersReducedMotion
+    ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
+    : {
+        hidden: { opacity: 0, y: 50 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.8, ease: "easeOut" },
+        },
+      };
 
-  const fadeInUp = (delay = 0) => ({
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, delay },
-    },
-  });
+  const fadeInUp = (delay = 0) =>
+    prefersReducedMotion
+      ? { hidden: { opacity: 1, y: 0 }, visible: { opacity: 1, y: 0 } }
+      : {
+          hidden: { opacity: 0, y: 20 },
+          visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, delay },
+          },
+        };
 
   const badges = [
     { src: securityPlusBadge, alt: "Security Plus Badge" },

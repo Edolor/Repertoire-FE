@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useMemo, use } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import Project from "@/components/Project/Project";
@@ -10,6 +10,7 @@ import { useProjectDetailQuery } from "@/hooks/useQueries";
 
 function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id: projectId } = use(params);
+  const prefersReducedMotion = useReducedMotion();
   const { data: project, isLoading: projectIsLoading } = useProjectDetailQuery(projectId);
   const { theme } = useTheme();
 
@@ -58,10 +59,10 @@ function ProjectDetail({ params }: { params: Promise<{ id: string }> }) {
                     <motion.div
                       key={image}
                       className="absolute inset-0 w-full h-full"
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
                       animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.5 }}
+                      exit={{ opacity: prefersReducedMotion ? 1 : 0 }}
+                      transition={{ duration: prefersReducedMotion ? 0 : 0.5 }}
                     >
                       <Image
                         src={image}

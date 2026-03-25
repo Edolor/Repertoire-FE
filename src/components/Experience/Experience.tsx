@@ -38,7 +38,7 @@ function Experience({ data }: ExperienceProps) {
         </p>
       </div>
 
-      <div className="flex-flex-col space-y-2">
+      <div className="flex flex-col space-y-2">
         <h4 className="text-xl font-bold dark:text-zinc-200 underline capitalize">
           {data.institution}
         </h4>

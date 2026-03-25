@@ -34,7 +34,7 @@ function Input({
           onChange={handleChange}
           id={id}
           disabled={disabled}
-          className={`border px-4 py-4 rounded-md font-lg
+          className={`border px-4 py-4 rounded-md text-lg
                 placeholder-zinc-400 disabled:opacity-50 dark:disabled:opacity-80 focus:outline-none focus:ring-1 w-full invalid:border-red-500
                 invalid:focus:border-red-500 invalid:focus:ring-red-500
                 ${
@@ -52,8 +52,8 @@ function Input({
           id={id}
           onChange={handleChange}
           disabled={disabled}
-          className={`border px-4 py-4 rounded-md font-lg
-                placeholder-zinc-400 disabled:opacity-50 dark:disabled:opacity-80 focus:outline-none focus:ring-1 w-full resize-none invalid:border-red-500 finvalid:ocus:border-red-500 invalid:focus:ring-red-500 ${
+          className={`border px-4 py-4 rounded-md text-lg
+                placeholder-zinc-400 disabled:opacity-50 dark:disabled:opacity-80 focus:outline-none focus:ring-1 w-full resize-none invalid:border-red-500 invalid:focus:border-red-500 invalid:focus:ring-red-500 ${
                   error
                     ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                     : "focus:border-sky-500 focus:ring-sky-500 border-zinc-200"
