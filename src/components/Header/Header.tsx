@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import Icon from "@/components/Icon/Icon";
-import { resumeLink } from "@/urls";
+import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { LINKS } from "./data";
 import { usePathname } from "next/navigation";
 import MobileLink from "./MobileLink";
@@ -34,6 +34,15 @@ export default function Header({ links }: { links: any }) {
 
     window.scrollTo(0, 0);
   }, [location]);
+
+  const { open: openResume } = useResume();
+
+  const handleResume = () => {
+    /* Close the mobile nav (if open) before showing the resume viewer */
+    setOpen(false);
+    document.body.style.cssText = "";
+    openResume();
+  };
 
   const { theme, setTheme } = useTheme();
 
@@ -83,18 +92,16 @@ export default function Header({ links }: { links: any }) {
             />
           </button>
 
-          <a
-            href={resumeLink}
-            download="download"
-            rel="noreferrer"
-            target="_blank"
+          <button
+            type="button"
+            onClick={handleResume}
             className="rounded-md hidden flex-row items-center text-lg font-semibold px-4 pr-5 py-3 bg-primary
                   text-white gap-x-2 drop-shadow-lg outline-offset-2 outline-primary outline-1 focus:outline
                   active:drop-shadow-none hover:underline hover:bg-primaryLight sm:flex"
           >
-            <Icon name="download" color="#ffffff" classes="h-4 w-4" />
+            <Icon name="open-in-new" color="#ffffff" classes="h-4 w-4" />
             <span>Resume</span>
-          </a>
+          </button>
 
           <button
             onClick={handleOpen}
@@ -127,18 +134,16 @@ export default function Header({ links }: { links: any }) {
         })}
 
         <div className="flex items-center mt-5 px-4 w-full">
-          <a
-            href={resumeLink}
-            rel="noreferrer"
-            target="_blank"
-            download="download"
+          <button
+            type="button"
+            onClick={handleResume}
             className="rounded-md flex flex-row items-center text-base font-semibold px-4 pr-5 py-3 bg-primary
                   text-white gap-x-2 drop-shadow-lg outline-offset-2 outline-primary outline-1 focus:outline
                   active:drop-shadow-none hover:underline hover:bg-primaryLight"
           >
-            <Icon name="download" color="#ffffff" classes="h-4 w-4" />
+            <Icon name="open-in-new" color="#ffffff" classes="h-4 w-4" />
             <span>Resume</span>
-          </a>
+          </button>
         </div>
       </div>
     </header>

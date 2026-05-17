@@ -36,6 +36,9 @@ const nextConfig = {
             value: [
               "default-src 'self'",
               scriptSrc,
+              // pdf.js (react-pdf resume viewer) runs in a same-origin Web
+              // Worker copied into /public; blob: covers its bootstrap path.
+              "worker-src 'self' blob:",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://drive.google.com",

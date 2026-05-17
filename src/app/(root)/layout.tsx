@@ -5,6 +5,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import Icon from "@/components/Icon/Icon";
 import Contact from "@/components/Contact/Contact";
+import ResumeProvider from "@/context/ResumeContext/ResumeContext";
 import { LINKS } from "@/components/Header/data";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -32,8 +33,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     });
   };
   return (
-    <div className={`w-full ${theme === "dark" ? "dark" : ""}`}>
-      <Header links={LINKS} />
+    <ResumeProvider>
+      <div className={`w-full ${theme === "dark" ? "dark" : ""}`}>
+        <Header links={LINKS} />
       <main className="pt-20 md:pt-[83px]">
         {children}
         <Contact />
@@ -61,6 +63,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <span className="w-1 h-1 overflow-hidden hidden">Go to top</span>
       </button>
       <Footer />
-    </div>
+      </div>
+    </ResumeProvider>
   );
 }
