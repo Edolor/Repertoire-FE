@@ -47,16 +47,7 @@ export default function Header({ links }: { links: any }) {
       <div className="mx-auto py-4 flex items-center justify-between lg:container">
         <Link href="/">
           <Image
-            src="/logo-black.svg"
-            className={`${theme !== "light" && "hidden"}`}
-            alt="Logo"
-            width={160}
-            height={51}
-            priority
-          />
-          <Image
-            src="/logo-white.svg"
-            className={`${theme !== "dark" && "hidden"}`}
+            src={theme === "light" ? "/logo-black.svg" : "/logo-white.svg"}
             alt="Logo"
             width={160}
             height={51}

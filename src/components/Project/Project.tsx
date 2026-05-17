@@ -23,6 +23,7 @@ function Project({ project }: ProjectProps) {
             fill={true}
             alt="Thumbnail of project"
             loading="lazy"
+            sizes="(max-width: 640px) 100vw, 384px"
             className="h-full w-full color-transparent object-cover indent-[100%] block overflow-hidden whitespace-nowrap"
           />
 
