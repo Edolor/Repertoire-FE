@@ -6,6 +6,16 @@ const nextConfig = {
     ],
   },
   async headers() {
+    // Next.js dev mode (React Refresh / HMR) evaluates modules via eval(),
+    // which requires 'unsafe-eval'. Keep it out of production CSP.
+    const isDev = process.env.NODE_ENV !== "production";
+    const scriptSrc = [
+      "script-src 'self' 'unsafe-inline'",
+      isDev ? "'unsafe-eval'" : "",
+      "https://www.googletagmanager.com",
+    ]
+      .filter(Boolean)
+      .join(" ");
     return [
       {
         source: "/(.*)",
@@ -25,7 +35,7 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+              scriptSrc,
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
               "img-src 'self' data: blob: https://drive.google.com",
