@@ -6,15 +6,28 @@ import {
   useId,
   useRef,
   useState,
+  type PointerEvent as ReactPointerEvent,
 } from "react";
 import { cn } from "@/lib/cn";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { useOsMode } from "./OsModeContext";
 import { Window, MENUBAR_H, TASKBAR_H, type Rect } from "./Window";
+import { OsIcon } from "./OsIcon";
 import { OS_APPS, APP_BY_ID, type AppId, type OsApp } from "./osApps";
 
 const README_KEY = "os-readme-seen";
+const ICONS_KEY = "os-icons";
+
+// Default desktop layout: icons split down the left and right edges. They
+// are free-draggable from there and the arrangement persists.
+const LEFT_COL: AppId[] = ["about", "work", "writing", "research", "agent"];
+const RIGHT_COL: AppId[] = ["shell", "contact", "readme", "trash", "resume", "exit"];
+const ICON_W = 84;
+const ICON_H = 78;
+
+type Pt = { x: number; y: number };
+type IconPos = Partial<Record<AppId, Pt>>;
 
 type WinState = {
   id: AppId;
@@ -24,10 +37,28 @@ type WinState = {
   rect: Rect;
 };
 
+type Ctx = { x: number; y: number; app: OsApp | null };
+
+function clamp(v: number, min: number, max: number) {
+  return Math.min(Math.max(v, min), Math.max(min, max));
+}
+
 /** Fire the cross-fade toast that OsGate renders (it outlives the shell,
  *  so the "switched to website mode" message survives the unmount). */
 function toast(message: string) {
   window.dispatchEvent(new CustomEvent("os-toast", { detail: message }));
+}
+
+function defaultLayout(w: number, h: number): IconPos {
+  const pos: IconPos = {};
+  const usableH = h - MENUBAR_H - TASKBAR_H;
+  const place = (ids: AppId[], x: number) =>
+    ids.forEach((id, i) => {
+      pos[id] = { x, y: clamp(16 + i * (ICON_H + 8), 12, usableH - ICON_H) };
+    });
+  place(LEFT_COL, 16);
+  place(RIGHT_COL, Math.max(120, w - ICON_W - 16));
+  return pos;
 }
 
 function Dropdown({
@@ -66,7 +97,7 @@ function Dropdown({
         aria-controls={open ? id : undefined}
         onClick={() => setOpen((v) => !v)}
         className={cn(
-          "px-2 py-1 font-mono text-xs hover:bg-surface",
+          "rounded-sm px-3 py-2 font-mono text-[13px] leading-none hover:bg-surface",
           open && "bg-surface",
         )}
       >
@@ -76,7 +107,7 @@ function Dropdown({
         <div
           id={id}
           role="menu"
-          className="absolute left-0 top-full z-10 min-w-44 border border-divider bg-bg py-1 shadow-2xl"
+          className="absolute left-0 top-full z-10 mt-0.5 min-w-52 border border-divider bg-bg py-1 shadow-2xl"
         >
           {children(() => setOpen(false))}
         </div>
@@ -97,7 +128,7 @@ function MenuItem({
       type="button"
       role="menuitem"
       onClick={onClick}
-      className="block w-full px-3 py-1.5 text-left font-mono text-xs text-text/80 hover:bg-surface hover:text-text"
+      className="flex w-full items-center gap-2 px-3 py-2 text-left font-mono text-xs text-text/80 hover:bg-surface hover:text-text"
     >
       {children}
     </button>
@@ -109,9 +140,20 @@ export function OsShell() {
   const { theme, toggle } = useTheme();
   const { open: openResume } = useResume();
   const [wins, setWins] = useState<WinState[]>([]);
+  const [iconPos, setIconPos] = useState<IconPos | null>(null);
+  const [ctx, setCtx] = useState<Ctx | null>(null);
   const zTop = useRef(10);
   const launchCount = useRef(0);
   const desktopRef = useRef<HTMLDivElement>(null);
+  const iconDrag = useRef<{
+    id: AppId;
+    sx: number;
+    sy: number;
+    ox: number;
+    oy: number;
+    moved: boolean;
+  } | null>(null);
+  const suppressClick = useRef(false);
 
   const focusedId = wins
     .filter((w) => !w.minimized)
@@ -147,7 +189,7 @@ export function OsShell() {
           window.innerHeight - MENUBAR_H - TASKBAR_H - 24,
         );
         const rect: Rect = {
-          x: Math.min(140 + i * 28, window.innerWidth - w - 24),
+          x: Math.min(160 + i * 28, Math.max(40, window.innerWidth - w - 24)),
           y: MENUBAR_H + 16 + (i % 5) * 26,
           w,
           h,
@@ -163,9 +205,7 @@ export function OsShell() {
 
   const focus = useCallback((id: AppId) => {
     setWins((prev) =>
-      prev.map((w) =>
-        w.id === id ? { ...w, z: ++zTop.current } : w,
-      ),
+      prev.map((w) => (w.id === id ? { ...w, z: ++zTop.current } : w)),
     );
   }, []);
 
@@ -173,14 +213,11 @@ export function OsShell() {
     setWins((prev) => prev.filter((w) => w.id !== id));
   }, []);
 
-  const setFlag = useCallback(
-    (id: AppId, patch: Partial<WinState>) => {
-      setWins((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, ...patch } : w)),
-      );
-    },
-    [],
-  );
+  const setFlag = useCallback((id: AppId, patch: Partial<WinState>) => {
+    setWins((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, ...patch } : w)),
+    );
+  }, []);
 
   const taskbarClick = useCallback(
     (w: WinState) => {
@@ -201,9 +238,63 @@ export function OsShell() {
     [focusedId, focus, setFlag],
   );
 
-  // First run: show the readme once. Deep link: an incoming hash (e.g.
-  // /#contact) opens the matching window so OS mode has content parity
-  // with the normal site's anchors.
+  // Icon layout: restore the persisted arrangement, else lay icons out
+  // down the left and right edges. Clamp into bounds on resize.
+  useEffect(() => {
+    const box = desktopRef.current;
+    const w = box?.clientWidth ?? window.innerWidth;
+    const h = window.innerHeight;
+    let next: IconPos | null = null;
+    try {
+      const raw = localStorage.getItem(ICONS_KEY);
+      if (raw) next = JSON.parse(raw) as IconPos;
+    } catch {
+      /* ignore malformed */
+    }
+    setIconPos(next ?? defaultLayout(w, h));
+
+    const onResize = () => {
+      const bw = desktopRef.current?.clientWidth ?? window.innerWidth;
+      const bh = desktopRef.current?.clientHeight ?? window.innerHeight;
+      setIconPos((p) => {
+        if (!p) return p;
+        const c: IconPos = {};
+        (Object.keys(p) as AppId[]).forEach((id) => {
+          const pt = p[id]!;
+          c[id] = {
+            x: clamp(pt.x, 4, bw - ICON_W),
+            y: clamp(pt.y, 4, bh - ICON_H),
+          };
+        });
+        return c;
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const persistIcons = useCallback((p: IconPos) => {
+    try {
+      localStorage.setItem(ICONS_KEY, JSON.stringify(p));
+    } catch {
+      /* private mode: in-memory only */
+    }
+  }, []);
+
+  const resetIcons = useCallback(() => {
+    const bw = desktopRef.current?.clientWidth ?? window.innerWidth;
+    const layout = defaultLayout(bw, window.innerHeight);
+    setIconPos(layout);
+    try {
+      localStorage.removeItem(ICONS_KEY);
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  // First run shows the readme once. A deep-link hash opens the matching
+  // window; otherwise whoami.sh opens by default so the desktop is never
+  // empty when you switch in.
   useEffect(() => {
     let seen = true;
     try {
@@ -211,10 +302,6 @@ export function OsShell() {
     } catch {
       /* ignore */
     }
-    const hash = window.location.hash;
-    const deep =
-      hash && OS_APPS.find((a) => a.kind === "window" && a.hash === hash);
-    if (deep) openApp(deep);
     if (!seen) {
       openApp(APP_BY_ID.readme);
       try {
@@ -223,11 +310,94 @@ export function OsShell() {
         /* ignore */
       }
     }
-    // Run once on mount only.
+    const hash = window.location.hash;
+    const deep =
+      hash && OS_APPS.find((a) => a.kind === "window" && a.hash === hash);
+    openApp(deep || APP_BY_ID.about);
+    // Mount-only.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Close the context menu on any outside interaction.
+  useEffect(() => {
+    if (!ctx) return;
+    const onDown = () => setCtx(null);
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setCtx(null);
+    };
+    window.addEventListener("mousedown", onDown);
+    window.addEventListener("resize", onDown);
+    window.addEventListener("keydown", onEsc);
+    return () => {
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("resize", onDown);
+      window.removeEventListener("keydown", onEsc);
+    };
+  }, [ctx]);
+
+  const onIconPointerDown = useCallback(
+    (e: ReactPointerEvent, id: AppId) => {
+      if (e.button !== 0 || !iconPos?.[id]) return;
+      const p = iconPos[id]!;
+      iconDrag.current = {
+        id,
+        sx: e.clientX,
+        sy: e.clientY,
+        ox: p.x,
+        oy: p.y,
+        moved: false,
+      };
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    },
+    [iconPos],
+  );
+
+  const onIconPointerMove = useCallback((e: ReactPointerEvent) => {
+    const d = iconDrag.current;
+    if (!d) return;
+    const dx = e.clientX - d.sx;
+    const dy = e.clientY - d.sy;
+    if (!d.moved && Math.hypot(dx, dy) < 5) return;
+    d.moved = true;
+    const box = desktopRef.current;
+    const bw = box?.clientWidth ?? window.innerWidth;
+    const bh = box?.clientHeight ?? window.innerHeight;
+    setIconPos((p) =>
+      p
+        ? {
+            ...p,
+            [d.id]: {
+              x: clamp(d.ox + dx, 0, bw - ICON_W),
+              y: clamp(d.oy + dy, 0, bh - ICON_H),
+            },
+          }
+        : p,
+    );
+  }, []);
+
+  const onIconPointerUp = useCallback(
+    (e: ReactPointerEvent) => {
+      const d = iconDrag.current;
+      try {
+        (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch {
+        /* already released */
+      }
+      if (d?.moved) {
+        suppressClick.current = true;
+        setIconPos((p) => {
+          if (p) persistIcons(p);
+          return p;
+        });
+      }
+      iconDrag.current = null;
+    },
+    [persistIcons],
+  );
+
   const themeNext = theme === "dark" ? "light" : "dark";
+
+  const windowApps = OS_APPS.filter((a) => a.kind === "window");
 
   return (
     <div
@@ -240,12 +410,13 @@ export function OsShell() {
         className="z-20 flex shrink-0 items-center gap-1 border-b border-divider bg-bg/95 px-2 backdrop-blur"
       >
         <span className="px-2 font-mono text-sm font-bold" aria-hidden>
-          aa<span className="ml-0.5 inline-block h-[0.9em] w-[0.45em] bg-accent align-middle" />
+          aa
+          <span className="ml-0.5 inline-block h-[0.9em] w-[0.45em] bg-accent align-middle" />
         </span>
         <Dropdown label="Go">
           {(c) => (
             <>
-              {OS_APPS.filter((a) => a.kind === "window").map((a) => (
+              {windowApps.map((a) => (
                 <MenuItem
                   key={a.id}
                   onClick={() => {
@@ -253,7 +424,8 @@ export function OsShell() {
                     c();
                   }}
                 >
-                  {a.glyph} &nbsp;{a.file}
+                  <OsIcon id={a.id} className="h-4 w-4 text-text/70" />
+                  {a.file}
                 </MenuItem>
               ))}
             </>
@@ -280,6 +452,7 @@ export function OsShell() {
                   c();
                 }}
               >
+                <OsIcon id="readme" className="h-4 w-4 text-text/70" />
                 What is this?
               </MenuItem>
               <MenuItem
@@ -288,6 +461,7 @@ export function OsShell() {
                   c();
                 }}
               >
+                <OsIcon id="exit" className="h-4 w-4 text-text/70" />
                 Back to website mode
               </MenuItem>
             </>
@@ -297,15 +471,16 @@ export function OsShell() {
           <button
             type="button"
             onClick={() => openApp(APP_BY_ID.contact)}
-            className="border border-divider px-3 py-1 font-mono text-xs hover:bg-surface"
+            className="rounded-sm border border-divider px-3 py-1.5 font-mono text-xs hover:bg-surface"
           >
             Work with me
           </button>
           <button
             type="button"
             onClick={exit}
-            className="border border-divider px-3 py-1 font-mono text-xs hover:border-accent hover:bg-accent hover:text-accent-fg"
+            className="flex items-center gap-1.5 rounded-sm border border-divider px-3 py-1.5 font-mono text-xs hover:border-accent hover:bg-accent hover:text-accent-fg"
           >
+            <OsIcon id="exit" className="h-3.5 w-3.5" />
             Website mode
           </button>
         </div>
@@ -316,28 +491,51 @@ export function OsShell() {
         ref={desktopRef}
         className="graph-paper relative min-h-0 flex-1"
         aria-label="Desktop"
+        onContextMenu={(e) => {
+          e.preventDefault();
+          setCtx({ x: e.clientX, y: e.clientY, app: null });
+        }}
       >
-        <div className="absolute left-3 top-3 flex flex-col gap-1">
-          {OS_APPS.map((app) => (
-            <button
-              key={app.id}
-              type="button"
-              onClick={() => openApp(app)}
-              aria-label={`Open ${app.file}`}
-              className="group flex w-24 flex-col items-center gap-1 border border-transparent p-2 text-center hover:border-divider hover:bg-surface/60 focus-visible:border-divider"
-            >
-              <span
-                aria-hidden
-                className="flex h-10 w-10 items-center justify-center border border-divider bg-bg text-lg text-text/80 group-hover:border-accent group-hover:text-accent"
+        {iconPos &&
+          OS_APPS.map((app) => {
+            const p = iconPos[app.id];
+            if (!p) return null;
+            return (
+              <button
+                key={app.id}
+                type="button"
+                onPointerDown={(e) => onIconPointerDown(e, app.id)}
+                onPointerMove={onIconPointerMove}
+                onPointerUp={onIconPointerUp}
+                onPointerCancel={onIconPointerUp}
+                onClick={() => {
+                  if (suppressClick.current) {
+                    suppressClick.current = false;
+                    return;
+                  }
+                  openApp(app);
+                }}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setCtx({ x: e.clientX, y: e.clientY, app });
+                }}
+                aria-label={`Open ${app.file}`}
+                style={{ left: p.x, top: p.y, width: ICON_W }}
+                className="group absolute flex touch-none flex-col items-center gap-1.5 rounded-sm border border-transparent p-2 text-center hover:border-divider hover:bg-surface/60 focus-visible:border-divider"
               >
-                {app.glyph}
-              </span>
-              <span className="break-all font-mono text-[11px] leading-tight text-text/75">
-                {app.file}
-              </span>
-            </button>
-          ))}
-        </div>
+                <span
+                  aria-hidden
+                  className="flex h-11 w-11 items-center justify-center rounded-sm border border-divider bg-bg text-text/80 group-hover:border-accent group-hover:text-accent"
+                >
+                  <OsIcon id={app.id} className="h-6 w-6" />
+                </span>
+                <span className="font-mono text-[11px] leading-tight text-text/75">
+                  {app.file}
+                </span>
+              </button>
+            );
+          })}
 
         {wins
           .filter((w) => !w.minimized)
@@ -383,18 +581,103 @@ export function OsShell() {
               onClick={() => taskbarClick(w)}
               aria-label={`${w.minimized ? "Restore" : "Focus"} ${app.title}`}
               className={cn(
-                "shrink-0 border px-2 py-1 font-mono text-[11px]",
+                "flex shrink-0 items-center gap-1.5 border px-2 py-1 font-mono text-[11px]",
                 w.id === focusedId && !w.minimized
                   ? "border-accent text-text"
                   : "border-divider text-text/60 hover:text-text",
                 w.minimized && "opacity-60",
               )}
             >
-              {app.glyph} {app.file}
+              <OsIcon id={w.id} className="h-3.5 w-3.5" />
+              {app.file}
             </button>
           );
         })}
       </div>
+
+      {/* Right-click context menu */}
+      {ctx && (
+        <div
+          role="menu"
+          aria-label="Desktop actions"
+          onMouseDown={(e) => e.stopPropagation()}
+          style={{
+            left: Math.min(ctx.x, window.innerWidth - 220),
+            top: Math.min(ctx.y, window.innerHeight - 240),
+          }}
+          className="fixed z-[70] min-w-52 border border-divider bg-bg py-1 shadow-2xl"
+        >
+          {ctx.app ? (
+            <>
+              <MenuItem
+                onClick={() => {
+                  openApp(ctx.app!);
+                  setCtx(null);
+                }}
+              >
+                <OsIcon id={ctx.app.id} className="h-4 w-4 text-text/70" />
+                Open {ctx.app.file}
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  resetIcons();
+                  setCtx(null);
+                }}
+              >
+                Reset icon layout
+              </MenuItem>
+            </>
+          ) : (
+            <>
+              <MenuItem
+                onClick={() => {
+                  openApp(APP_BY_ID.about);
+                  setCtx(null);
+                }}
+              >
+                <OsIcon id="about" className="h-4 w-4 text-text/70" />
+                Open whoami.sh
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  openApp(APP_BY_ID.readme);
+                  setCtx(null);
+                }}
+              >
+                <OsIcon id="readme" className="h-4 w-4 text-text/70" />
+                What is this desktop?
+              </MenuItem>
+              <div className="my-1 border-t border-divider" />
+              <MenuItem
+                onClick={() => {
+                  resetIcons();
+                  setCtx(null);
+                }}
+              >
+                Reset icon layout
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  toggle();
+                  setCtx(null);
+                }}
+              >
+                Switch to {themeNext} theme
+              </MenuItem>
+              <div className="my-1 border-t border-divider" />
+              <MenuItem
+                onClick={() => {
+                  exit();
+                  setCtx(null);
+                }}
+              >
+                <OsIcon id="exit" className="h-4 w-4 text-text/70" />
+                Back to website mode
+              </MenuItem>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

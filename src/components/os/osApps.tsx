@@ -32,8 +32,6 @@ export type OsApp = {
   file: string;
   /** Window title (mono, in the title bar). */
   title: string;
-  /** A single glyph for the icon (owned motif, no third-party art). */
-  glyph: string;
   /** Maps a URL hash to this app for deep-link opening. */
   hash?: string;
 } & (
@@ -97,7 +95,7 @@ function ReadmeApp() {
         </p>
         <p>
           Want the normal site back? Open{" "}
-          <span className="text-accent">exit &rarr;</span>, use the
+          <span className="text-accent">exit</span>, use the
           &quot;Go&quot; menu, or the &quot;Website mode&quot; button. Your
           choice is remembered.
         </p>
@@ -134,7 +132,6 @@ export const OS_APPS: OsApp[] = [
     id: "about",
     file: "whoami.sh",
     title: "whoami.sh",
-    glyph: "◉",
     kind: "window",
     w: 760,
     h: 560,
@@ -145,7 +142,6 @@ export const OS_APPS: OsApp[] = [
     id: "work",
     file: "work/",
     title: "work/ · selected work",
-    glyph: "▦",
     kind: "window",
     w: 820,
     h: 560,
@@ -156,7 +152,6 @@ export const OS_APPS: OsApp[] = [
     id: "writing",
     file: "writing.log",
     title: "writing.log",
-    glyph: "≣",
     kind: "window",
     w: 720,
     h: 480,
@@ -167,7 +162,6 @@ export const OS_APPS: OsApp[] = [
     id: "research",
     file: "research.bib",
     title: "research.bib",
-    glyph: "✦",
     kind: "window",
     w: 760,
     h: 520,
@@ -178,7 +172,6 @@ export const OS_APPS: OsApp[] = [
     id: "agent",
     file: "agent.run",
     title: "agent.run",
-    glyph: "▶",
     kind: "window",
     w: 720,
     h: 520,
@@ -189,7 +182,6 @@ export const OS_APPS: OsApp[] = [
     id: "shell",
     file: "shell",
     title: "shell · agent terminal",
-    glyph: "▮",
     kind: "window",
     w: 640,
     h: 440,
@@ -199,7 +191,6 @@ export const OS_APPS: OsApp[] = [
     id: "contact",
     file: "contact.eml",
     title: "contact.eml",
-    glyph: "✉",
     kind: "window",
     w: 800,
     h: 560,
@@ -210,7 +201,6 @@ export const OS_APPS: OsApp[] = [
     id: "readme",
     file: "readme.txt",
     title: "readme.txt",
-    glyph: "?",
     kind: "window",
     w: 520,
     h: 420,
@@ -220,7 +210,6 @@ export const OS_APPS: OsApp[] = [
     id: "trash",
     file: "trash",
     title: "trash · anti-pitch",
-    glyph: "⌫",
     kind: "window",
     w: 520,
     h: 380,
@@ -230,15 +219,13 @@ export const OS_APPS: OsApp[] = [
     id: "resume",
     file: "resume.pdf",
     title: "resume.pdf",
-    glyph: "▤",
     kind: "action",
     action: "resume",
   },
   {
     id: "exit",
-    file: "exit →",
+    file: "exit",
     title: "exit",
-    glyph: "⏏",
     kind: "action",
     action: "exit",
   },

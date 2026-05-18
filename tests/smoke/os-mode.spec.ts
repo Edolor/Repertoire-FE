@@ -44,6 +44,47 @@ test("opening the work app yields a dialog with the real section", async ({
   assertNoErrors(errors, testInfo);
 });
 
+test("whoami.sh opens by default on entry", async ({ page }, testInfo) => {
+  const errors = trackPageErrors(page);
+  await page.goto("/");
+
+  await page
+    .getByRole("button", { name: "Switch to desktop mode" })
+    .click({ timeout: 30_000 });
+
+  // No icon click: the about window is opened for you.
+  await expect(
+    page.getByRole("dialog", { name: /whoami\.sh/ }),
+  ).toBeVisible();
+
+  assertNoErrors(errors, testInfo);
+});
+
+test("right-click opens a desktop context menu", async ({
+  page,
+}, testInfo) => {
+  const errors = trackPageErrors(page);
+  await page.goto("/");
+
+  await page
+    .getByRole("button", { name: "Switch to desktop mode" })
+    .click({ timeout: 30_000 });
+
+  // Bottom-left corner of the desktop: clear of windows and icons.
+  await page
+    .locator('[aria-label="Desktop"]')
+    .click({ button: "right", position: { x: 6, y: 6 } });
+  const menu = page.getByRole("menu", { name: "Desktop actions" });
+  await expect(menu).toBeVisible();
+  await expect(
+    menu.getByRole("menuitem", { name: /Reset icon layout/ }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+
+  assertNoErrors(errors, testInfo);
+});
+
 test("Escape closes the focused window", async ({ page }, testInfo) => {
   const errors = trackPageErrors(page);
   await page.goto("/");

@@ -9,8 +9,8 @@ import {
 } from "react";
 import { cn } from "@/lib/cn";
 
-export const MENUBAR_H = 40;
-export const TASKBAR_H = 36;
+export const MENUBAR_H = 44;
+export const TASKBAR_H = 38;
 
 export type Rect = { x: number; y: number; w: number; h: number };
 
