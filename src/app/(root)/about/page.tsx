@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import portrait from "@/assets/img/personal-selfie.png";
+import portrait from "@/assets/img/mena.jpg";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
 import { AboutDetails } from "@/components/sections/AboutDetails";
 
@@ -18,14 +18,18 @@ export default function AboutPage() {
         <span className="text-accent">&gt;</span> About
       </p>
       <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">
-        <Image
-          src={portrait}
-          alt="Aghoghomena Akasukpe"
-          width={120}
-          height={120}
-          priority
-          className="h-28 w-28 border border-divider object-cover"
-        />
+        <div className="shrink-0 border border-divider bg-surface p-1.5">
+          <Image
+            src={portrait}
+            alt="Aghoghomena Akasukpe"
+            width={160}
+            height={200}
+            priority
+            placeholder="blur"
+            sizes="160px"
+            className="aspect-[4/5] w-32 object-cover object-top sm:w-40"
+          />
+        </div>
         <div>
           <h1 className="text-3xl font-bold sm:text-4xl">{PERSON.name}</h1>
           <p className="mt-1 font-mono text-sm text-accent">{PERSON.role}</p>
