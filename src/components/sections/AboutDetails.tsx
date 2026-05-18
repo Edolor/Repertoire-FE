@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAboutQuery } from "@/hooks/useQueries";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button } from "@/components/ui/Button";
@@ -7,6 +8,26 @@ import type {
   BaseExperienceProps,
   BaseHonourProps,
 } from "@/types/About.types";
+
+// Google Drive banner. Loaded by the browser directly (CSP img-src allows
+// drive.google.com). If Drive returns an interstitial or redirects off
+// the allowed origin, it fails closed: the image is removed and the text
+// card stands on its own. No broken-image glyph, no layout shift.
+function Banner({ src, alt }: { src: string; alt: string }) {
+  const [ok, setOk] = useState(true);
+  if (!src || !ok) return null;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      onError={() => setOk(false)}
+      className="mb-3 max-h-44 w-full border border-divider bg-bg object-contain p-1"
+    />
+  );
+}
 
 function ExperienceList({ items }: { items: BaseExperienceProps[] }) {
   if (items.length === 0)
@@ -39,6 +60,7 @@ function HonourList({ items }: { items: BaseHonourProps[] }) {
           key={`${h.title}-${i}`}
           className="border border-divider bg-surface p-4"
         >
+          <Banner src={h.banner} alt={`${h.title}: ${h.about}`} />
           <p className="font-bold">{h.title}</p>
           {h.sub_about && (
             <p className="font-mono text-xs text-text/55">{h.sub_about}</p>

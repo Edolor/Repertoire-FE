@@ -46,6 +46,33 @@ test("command palette opens with the keyboard and navigates", async ({
   assertNoErrors(errors, testInfo);
 });
 
+// The home About details (large backend-driven section) is behind a
+// popup. Assert the popup mechanism, not backend content (no network dep).
+test("home About details open in a popup", async ({ page }, testInfo) => {
+  const errors = trackPageErrors(page);
+  await page.goto("/#about");
+
+  const trigger = page.getByRole("button", {
+    name: /View experience, education/i,
+  });
+  await expect(trigger).toBeVisible({ timeout: 30_000 });
+  await trigger.click();
+
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await expect(
+    dialog.getByText("Experience, education & certifications"),
+  ).toBeVisible();
+  await expect(
+    dialog.getByRole("link", { name: /open the full About page/i }),
+  ).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+
+  assertNoErrors(errors, testInfo);
+});
+
 // The "watch an agent work" explorable: stepping must not crash.
 test("agent explorable steps without runtime errors", async ({
   page,

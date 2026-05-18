@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import * as Dialog from "@radix-ui/react-dialog";
 import portrait from "@/assets/img/mena.jpg";
 import { Section } from "@/components/primitives/Section";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
@@ -12,6 +14,7 @@ import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
 
 export function AboutTeaser() {
   const { open } = useResume();
+  const [detailsOpen, setDetailsOpen] = useState(false);
   return (
     <Section
       id="about"
@@ -60,10 +63,47 @@ export function AboutTeaser() {
 
       <Testimonials className="mt-12" />
 
-      {/* Full experience, education, awards, certifications from the
-          backend /about (the original portfolio's content), with real
-          loading / error / empty states. */}
-      <AboutDetails showResume={false} />
+      {/* The full backend /about content is large, so on the home page
+          it lives behind a popup. The canonical inline version is /about. */}
+      <Dialog.Root open={detailsOpen} onOpenChange={setDetailsOpen}>
+        <Dialog.Trigger asChild>
+          <Button type="button" variant="outline" className="mt-12">
+            View experience, education &amp; 13 certifications
+          </Button>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 z-[79] bg-black/70 backdrop-blur-sm" />
+          <Dialog.Content
+            aria-describedby={undefined}
+            className="fixed left-1/2 top-1/2 z-[80] flex max-h-[88vh] w-[94vw] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col border border-divider bg-bg shadow-2xl focus:outline-none"
+          >
+            <div className="flex items-center justify-between border-b border-divider px-5 py-3">
+              <Dialog.Title className="font-mono text-sm">
+                <span className="text-accent">&gt;</span> Experience, education
+                &amp; certifications
+              </Dialog.Title>
+              <Dialog.Close
+                aria-label="Close"
+                className="border border-divider px-2 py-1 font-mono text-sm hover:bg-surface"
+              >
+                ✕
+              </Dialog.Close>
+            </div>
+            <div className="overflow-y-auto px-5 py-4">
+              <AboutDetails showResume={false} />
+              <p className="mt-8 font-mono text-xs text-text/55">
+                <Link
+                  href="/about"
+                  className="text-accent-2 hover:underline"
+                  onClick={() => setDetailsOpen(false)}
+                >
+                  &gt; open the full About page
+                </Link>
+              </p>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </Section>
   );
 }
