@@ -6,6 +6,7 @@ import portrait from "@/assets/img/mena.jpg";
 import { Section } from "@/components/primitives/Section";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button, ButtonLink } from "@/components/ui/Button";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
 
 export function AboutTeaser() {
@@ -55,6 +56,8 @@ export function AboutTeaser() {
           </div>
         </div>
       </div>
+
+      <Testimonials className="mt-12" />
     </Section>
   );
 }

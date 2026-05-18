@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { work } from "#content";
 import { Badge } from "@/components/ui/Badge";
-import { TESTIMONIALS } from "@/content/site";
 
 export function generateStaticParams() {
   return work.filter((w) => !w.draft).map((w) => ({ slug: w.slug }));
@@ -33,8 +32,6 @@ export default async function WorkPage({
   const { slug } = await params;
   const w = work.find((x) => x.slug === slug && !x.draft);
   if (!w) notFound();
-  const testimonial = TESTIMONIALS.find((t) => t.nearWork === w.slug);
-
   return (
     <article className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
       <Link
@@ -64,19 +61,6 @@ export default async function WorkPage({
         dangerouslySetInnerHTML={{ __html: w.body }}
       />
 
-      {testimonial && (
-        <figure className="mt-12 border border-dashed border-divider bg-surface p-5">
-          <blockquote className="italic text-text/80">
-            &ldquo;{testimonial.quote}&rdquo;
-          </blockquote>
-          <figcaption className="mt-2 font-mono text-xs text-text/55">
-            {testimonial.name}, {testimonial.title}, {testimonial.company}
-            {testimonial.draft && (
-              <span className="ml-2 text-accent">[DRAFT, paraphrased]</span>
-            )}
-          </figcaption>
-        </figure>
-      )}
 
       <div className="mt-12 border-t border-divider pt-6">
         <Link

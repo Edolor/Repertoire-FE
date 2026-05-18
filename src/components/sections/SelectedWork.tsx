@@ -3,7 +3,6 @@ import { work } from "#content";
 import { Section } from "@/components/primitives/Section";
 import { Reveal } from "@/components/primitives/Reveal";
 import { Badge } from "@/components/ui/Badge";
-import { TESTIMONIALS } from "@/content/site";
 
 export function SelectedWork() {
   const items = work
@@ -18,61 +17,42 @@ export function SelectedWork() {
       intro="Sanitized, NDA-safe writeups. Employers are anonymized; outcomes are ratios, never raw figures. Each one: context, the constraint, the decisions, what I would do differently."
     >
       <div className="grid gap-5 md:grid-cols-2">
-        {items.map((w, idx) => {
-          const testimonial = TESTIMONIALS.find((t) => t.nearWork === w.slug);
-          return (
-            <Reveal key={w.slug} delay={idx * 0.05}>
-              <article className="flex h-full flex-col border border-divider bg-surface">
-                <Link
-                  href={w.permalink}
-                  className="group flex h-full flex-col p-5"
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-text/45">
-                      {w.client}
-                    </span>
-                    {w.locked && (
-                      <span className="font-mono text-[11px] text-accent">
-                        details on a call
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="mt-2 text-lg font-bold leading-snug group-hover:text-accent-2">
-                    {w.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-text/70">{w.summary}</p>
-                  <p className="mt-3 border-l-2 border-accent pl-3 text-sm text-text/80">
-                    {w.outcome}
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {w.tags.map((t) => (
-                      <Badge key={t}>{t}</Badge>
-                    ))}
-                  </div>
-                  <span className="mt-auto pt-4 font-mono text-xs text-accent-2 group-hover:underline">
-                    read the writeup &gt;
+        {items.map((w, idx) => (
+          <Reveal key={w.slug} delay={idx * 0.05}>
+            <article className="flex h-full flex-col border border-divider bg-surface">
+              <Link
+                href={w.permalink}
+                className="group flex h-full flex-col p-5"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-text/45">
+                    {w.client}
                   </span>
-                </Link>
-                {testimonial && (
-                  <figure className="border-t border-dashed border-divider bg-bg p-4">
-                    <blockquote className="text-sm italic text-text/80">
-                      &ldquo;{testimonial.quote}&rdquo;
-                    </blockquote>
-                    <figcaption className="mt-2 font-mono text-xs text-text/55">
-                      {testimonial.name}, {testimonial.title},{" "}
-                      {testimonial.company}
-                      {testimonial.draft && (
-                        <span className="ml-2 text-accent">
-                          [DRAFT, paraphrased]
-                        </span>
-                      )}
-                    </figcaption>
-                  </figure>
-                )}
-              </article>
-            </Reveal>
-          );
-        })}
+                  {w.locked && (
+                    <span className="font-mono text-[11px] text-accent">
+                      details on a call
+                    </span>
+                  )}
+                </div>
+                <h3 className="mt-2 text-lg font-bold leading-snug group-hover:text-accent-2">
+                  {w.title}
+                </h3>
+                <p className="mt-2 text-sm text-text/70">{w.summary}</p>
+                <p className="mt-3 border-l-2 border-accent pl-3 text-sm text-text/80">
+                  {w.outcome}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {w.tags.map((t) => (
+                    <Badge key={t}>{t}</Badge>
+                  ))}
+                </div>
+                <span className="mt-auto pt-4 font-mono text-xs text-accent-2 group-hover:underline">
+                  read the writeup &gt;
+                </span>
+              </Link>
+            </article>
+          </Reveal>
+        ))}
       </div>
     </Section>
   );

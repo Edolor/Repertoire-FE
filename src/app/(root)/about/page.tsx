@@ -3,6 +3,7 @@ import Image from "next/image";
 import portrait from "@/assets/img/mena.jpg";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
 import { AboutDetails } from "@/components/sections/AboutDetails";
+import { Testimonials } from "@/components/sections/Testimonials";
 
 export const metadata: Metadata = {
   title: "About",
@@ -41,6 +42,8 @@ export default function AboutPage() {
           <p key={p.slice(0, 24)}>{p}</p>
         ))}
       </div>
+
+      <Testimonials className="mt-12" />
 
       <AboutDetails />
     </div>

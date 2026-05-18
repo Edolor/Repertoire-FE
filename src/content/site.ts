@@ -85,10 +85,9 @@ export const RESEARCH = [
     title: "Peer-reviewed publication, PST 2025",
     venue: "Privacy, Security and Trust (PST) 2025",
     why: "Peer review at a security venue is external evidence the work survives scrutiny by people paid to find holes in it. That is the bar I hold my own systems to.",
-    // DRAFT: replace with the real paper DOI / proceedings URL when available.
-    href: linkedinUrl,
-    hrefLabel: "Profile (paper link pending)",
-    draft: true,
+    href: "https://ieeexplore.ieee.org/document/11268872",
+    hrefLabel: "Read the paper on IEEE Xplore",
+    draft: false,
   },
   {
     title: "$20,000 MITACS BSI research award",
@@ -100,27 +99,24 @@ export const RESEARCH = [
   },
 ];
 
-// DRAFT: paraphrased from the two named LinkedIn recommendations. Replace
-// quote text with the verbatim recommendations before treating as final.
-// Place contextually next to relevant work, fully attributed, no carousel.
+// Verbatim contiguous excerpts from the two named LinkedIn recommendations.
+// Fully attributed, linked to the originals, no carousel.
 export const TESTIMONIALS = [
   {
     quote:
-      "He treats an agent like a system that has to hold under pressure, not a demo. The boundaries he put in place are the reason we could ship with confidence.",
-    name: "Recommendation 1",
-    title: "Engineering lead",
-    company: "(named on LinkedIn)",
-    nearWork: "agentic-coding-platform-isolation",
-    draft: true,
+      "He consistently demonstrated technical expertise and a strong problem-solving mindset. His ability to dive deep into complex challenges and deliver reliable solutions was truly impressive. In fact, his skills often rivaled those of more senior engineers.",
+    name: "Rajeshree Kathariya",
+    title: "Senior Engineer at Phreesia",
+    relationship: "Worked with Aghoghomena at Cavista",
+    href: linkedinUrl,
   },
   {
     quote:
-      "Rare combination: builds the agent and then genuinely tries to break it. The red-team findings were reproducible and actionable, not theater.",
-    name: "Recommendation 2",
-    title: "Senior engineer",
-    company: "(named on LinkedIn)",
-    nearWork: "agent-red-team-assessment",
-    draft: true,
+      "He actively participates in discussions, guiding the team toward optimal decisions. His dedication to reviewing items thoroughly and asking insightful questions reflects his commitment to fully understanding feature intent.",
+    name: "Brian Harrington",
+    title: "Product Director at Axxess",
+    relationship: "Worked with Aghoghomena on the claims management solution",
+    href: linkedinUrl,
   },
 ];
 
