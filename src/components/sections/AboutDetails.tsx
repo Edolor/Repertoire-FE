@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { formatMonthYear } from "@/lib/date";
 import { useAboutQuery } from "@/hooks/useQueries";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button } from "@/components/ui/Button";
@@ -41,7 +42,8 @@ function ExperienceList({ items }: { items: BaseExperienceProps[] }) {
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <p className="font-bold">{e.institution}</p>
             <p className="font-mono text-xs text-text/50">
-              {e.start_date} to {e.end_date ?? "present"}
+              {formatMonthYear(e.start_date)} to{" "}
+              {e.end_date ? formatMonthYear(e.end_date) : "present"}
             </p>
           </div>
           <p className="font-mono text-xs text-text/55">{e.location}</p>
@@ -69,7 +71,7 @@ function HonourList({ items }: { items: BaseHonourProps[] }) {
           )}
           <p className="mt-2 text-sm text-text/70">{h.about}</p>
           <p className="mt-2 font-mono text-[11px] text-text/45">
-            {h.issue_date}
+            {formatMonthYear(h.issue_date)}
             {h.certification_no && (
               <span> · ID {h.certification_no}</span>
             )}
