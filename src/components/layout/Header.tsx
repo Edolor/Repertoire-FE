@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
+import { useOsMode } from "@/components/os/OsModeContext";
 import { NAV, PERSON } from "@/content/site";
 import { Cursor } from "@/components/primitives/Cursor";
 import { cn } from "@/lib/cn";
@@ -15,6 +16,7 @@ export function openCommandPalette() {
 export function Header() {
   const { open } = useResume();
   const { theme, toggle } = useTheme();
+  const { enable, desktop, mounted } = useOsMode();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -53,6 +55,16 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {mounted && desktop && (
+            <button
+              type="button"
+              onClick={enable}
+              aria-label="Switch to desktop mode"
+              className="hidden border border-divider px-2.5 py-1.5 font-mono text-xs text-text/70 hover:bg-surface hover:text-text lg:flex"
+            >
+              Desktop mode
+            </button>
+          )}
           <button
             type="button"
             onClick={openCommandPalette}

@@ -8,6 +8,7 @@ import { posts } from "#content";
 import { NAV, PERSON } from "@/content/site";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
+import { useOsMode } from "@/components/os/OsModeContext";
 
 type Item = { label: string; run: () => void; group: string };
 
@@ -16,6 +17,7 @@ export function CommandPalette() {
   const router = useRouter();
   const { open: openResume } = useResume();
   const { toggle } = useTheme();
+  const { toggle: toggleOsMode, active: osActive } = useOsMode();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -52,6 +54,14 @@ export function CommandPalette() {
       group: "Actions",
     },
     { label: "Toggle theme", run: () => toggle(), group: "Actions" },
+    {
+      label: osActive ? "Switch to website mode" : "Toggle desktop mode",
+      run: () => {
+        setOpen(false);
+        toggleOsMode();
+      },
+      group: "Actions",
+    },
     {
       label: "Email me",
       run: () => {

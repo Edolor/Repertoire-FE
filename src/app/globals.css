@@ -169,3 +169,60 @@
     }
   }
 }
+
+/*
+ * "Desktop OS" alternate skin. These rules are intentionally UNLAYERED so
+ * they win over Tailwind's `utilities` layer regardless of source order
+ * (an `@layer components` rule would lose to a utility class).
+ *
+ * The `os-mode` class is set on <html> by the anti-FOUC inline script in
+ * the root layout (desktop + persisted only). Hiding the normal chrome
+ * here means the document site never flashes before the React OS shell
+ * mounts; the body stays scroll-locked while the shell owns the viewport.
+ */
+html.os-mode body {
+  overflow: hidden;
+}
+html.os-mode #main,
+html.os-mode header,
+html.os-mode footer {
+  display: none !important;
+}
+/* Pre-mount placeholder so the viewport reads as an empty desktop, not a
+   blank white page, until the shell paints. */
+html.os-mode body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: rgb(var(--bg));
+}
+
+/* Existing section components wrap content in <Section> (large page
+   padding + max-width + centering). Inside a window that reads wrong:
+   neutralize it WITHOUT forking any section. Descendant + unlayered, so it
+   overrides the utility classes the primitive sets. */
+.os-window-body section {
+  max-width: none;
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+}
+.os-window-body section > * {
+  max-width: none;
+}
+
+/* Window open animation. The global prefers-reduced-motion rule above
+   already collapses this transition to ~0ms, so no extra guard needed. */
+@keyframes os-window-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.os-window-anim {
+  animation: os-window-in 0.16s ease-out;
+}

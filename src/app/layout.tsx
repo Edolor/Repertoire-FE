@@ -54,6 +54,14 @@ export const metadata: Metadata = {
 // paper / charcoal background never flashes the wrong color.
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t===null&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
 
+// Anti-FOUC for the opt-in "desktop OS" alternate skin: if the visitor
+// previously chose OS mode AND this is a desktop viewport (>= 1024px),
+// set the `os-mode` class on <html> before first paint so the normal
+// document site never flashes before the OS shell mounts. Touch/small
+// screens never get the class (the OS is pointer-only by design). CSP-safe
+// via the same intentional `'unsafe-inline'` as the theme script above.
+const osModeScript = `(function(){try{if(localStorage.getItem('os-mode')==='os'&&window.innerWidth>=1024){document.documentElement.classList.add('os-mode');}}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: {
@@ -70,6 +78,7 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: osModeScript }} />
       </head>
       <body className="font-sans">
         <ThemeProvider>
