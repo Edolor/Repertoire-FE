@@ -10,6 +10,9 @@ import { defineConfig, devices } from "@playwright/test";
  */
 export default defineConfig({
   testDir: "./tests/smoke",
+  // Sequentially pre-compiles dev routes so the parallel suite measures
+  // behavior, not next-dev first-hit compilation. See the file's comment.
+  globalSetup: "./tests/smoke/global-setup.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: 0,

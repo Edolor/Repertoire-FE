@@ -1,0 +1,45 @@
+---
+title: "Red-teaming an autonomous coding agent"
+slug: agent-red-team-assessment
+order: 3
+client: "An autonomous developer-tooling product"
+summary: "A fixed-scope adversarial assessment of an agent that could read, write, and execute against customer code: what breaks it, and what the fixes cost."
+tags: ["ai-security", "red-teaming", "assessment"]
+outcome: "Delivered a ranked finding set with reproductions; the highest-severity class was a planning-loop hijack, not a prompt injection."
+---
+
+## Context
+
+A time-boxed red-team engagement against a shipping autonomous coding
+agent. Goal: find the failures that matter before an adversary does.
+
+## Problem and constraint
+
+The interesting attacks on agents are not the prompt-injection demos. They
+are the ones that turn the agent's own planning loop against the user. The
+constraint was a fixed scope and a fixed clock: maximize severity-weighted
+coverage, not raw finding count.
+
+## Approach and key decisions
+
+- Modeled the agent as an untrusted distributed system, not a chatbot.
+  Threat surface: tool inputs, tool outputs fed back into context, repo
+  content the agent reads, and the reflection step itself.
+- Prioritized loop-integrity attacks over content attacks. The decision
+  that paid off: spend the budget where a single success compromises a
+  whole session, not where it produces one bad message.
+- Wrote every finding as a deterministic reproduction, not a screenshot.
+  A finding the team cannot replay is a finding they will not fix.
+
+## Outcome (sanitized)
+
+The top finding was a planning-loop hijack: attacker-controlled repo
+content steered the agent's plan across steps without ever appearing as an
+obvious injection. Findings were ranked by severity with reproductions and
+suggested boundaries. Severity distribution shared as a shape, not as
+client-identifying detail.
+
+## What I would do differently
+
+Start from the reflection step and work outward. That is where the highest
+severity lived, and I reached it later than I should have.

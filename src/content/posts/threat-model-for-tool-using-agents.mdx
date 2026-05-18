@@ -1,0 +1,33 @@
+---
+title: "A practical threat model for tool-using agents"
+slug: threat-model-for-tool-using-agents
+date: "2026-05-06"
+tags: ["ai-security", "red-teaming", "agent-systems"]
+description: "Four surfaces, ranked by how much a single success costs you. Prompt injection is on the list. It is not at the top."
+---
+
+When people threat-model an agent they usually draw one box labeled
+"prompt injection" and stop. That is the demo-friendly attack, not the
+expensive one. Here is the model I actually use.
+
+## The four surfaces
+
+1. **Tool inputs.** What the agent passes to tools. Classic injection
+   lives here, and it is the best understood.
+2. **Tool outputs.** What comes back and re-enters context. This is
+   underrated: the agent trusts tool output far more than user text, and
+   that trust is rarely earned.
+3. **Ambient content.** Repo files, web pages, retrieved memory. Content
+   the agent reads as data but acts on as instruction.
+4. **The reflection step.** Where the agent decides what just happened and
+   what to do next. Compromise this and you do not need any other surface.
+
+## Rank by blast radius, not by likelihood
+
+A bad tool input usually produces one bad action. A compromised
+reflection step produces a bad *plan*, and a bad plan compromises an
+entire session. So I spend the budget top-down by cost-of-success:
+reflection, then tool outputs, then ambient content, then inputs.
+
+Most teams do the opposite, because inputs are where the tooling and the
+blog posts are. That is exactly why the expensive bugs survive.

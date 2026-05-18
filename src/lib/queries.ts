@@ -2,26 +2,33 @@ import { apiClient } from "./api";
 import { PATHS } from "@/urls";
 import { AboutProps } from "@/types/About.types";
 import { BaseProjectProps } from "@/types/Project.types";
-import { ServerResponse } from "@/app/(root)/projects/Projects.types";
+import { ServerResponse } from "@/types/Server.types";
+import { sanitizeProject, sanitizeAbout } from "./sanitize";
 
 export const fetchAbout = async (): Promise<AboutProps> => {
   const { data } = await apiClient.get(PATHS.about);
-  return data;
+  return sanitizeAbout(data);
 };
 
 export const fetchProjects = async (size: number): Promise<ServerResponse> => {
-  const { data } = await apiClient.get(`${PATHS.projects}?size=${size}`);
-  return data;
+  const { data } = await apiClient.get<ServerResponse>(
+    `${PATHS.projects}?size=${size}`,
+  );
+  return { ...data, results: (data.results ?? []).map(sanitizeProject) };
 };
 
-export const fetchProjectDetail = async (id: string): Promise<BaseProjectProps> => {
+export const fetchProjectDetail = async (
+  id: string,
+): Promise<BaseProjectProps> => {
   const { data } = await apiClient.get(`${PATHS.projectDetail}${id}/`);
-  return data;
+  return sanitizeProject(data);
 };
 
-export const fetchProjectsPage = async (url: string): Promise<ServerResponse> => {
-  const { data } = await apiClient.get(url);
-  return data;
+export const fetchProjectsPage = async (
+  url: string,
+): Promise<ServerResponse> => {
+  const { data } = await apiClient.get<ServerResponse>(url);
+  return { ...data, results: (data.results ?? []).map(sanitizeProject) };
 };
 
 export type MessagePayload = { name: string; email: string; message: string };

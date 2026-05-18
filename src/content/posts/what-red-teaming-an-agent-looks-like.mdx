@@ -1,0 +1,33 @@
+---
+title: "What red-teaming an agent actually looks like"
+slug: what-red-teaming-an-agent-looks-like
+date: "2026-05-14"
+tags: ["red-teaming", "ai-security", "process"]
+description: "Not a jailbreak leaderboard. A fixed clock, a severity-weighted plan, and findings that ship as deterministic reproductions."
+---
+
+A useful agent red-team is not a contest to find the funniest jailbreak.
+It is an engineering engagement with a clock and a budget, and the output
+is fixes, not screenshots.
+
+## How I run one
+
+**Scope as a system, not a chatbot.** The first hour is spent mapping the
+real surface: tool inputs, tool outputs fed back into context, ambient
+content the agent reads, and the reflection step. If I am only testing the
+chat box, I am testing the least valuable thing.
+
+**Spend the budget by severity, not by count.** Twenty low findings read
+well in a report and change nothing. One reproducible planning-loop hijack
+changes the architecture. I optimize for severity-weighted coverage and
+say so up front.
+
+**Every finding ships as a reproduction.** Deterministic, replayable, with
+a suggested boundary. A finding the team cannot replay is a finding they
+will not fix, and an unfixed finding was not worth finding.
+
+## The honest part
+
+The best findings usually come from the reflection step, and I usually
+reach them later than I would like. Red-teaming agents is still a young
+discipline. I would rather tell you that than sell you a checklist.

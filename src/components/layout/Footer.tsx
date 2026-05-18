@@ -1,0 +1,76 @@
+import Link from "next/link";
+import { PERSON, NAV } from "@/content/site";
+
+export function Footer() {
+  return (
+    <footer className="border-t border-divider">
+      <div className="mx-auto grid max-w-content gap-8 px-5 py-12 sm:grid-cols-2 sm:px-8">
+        <div>
+          <p className="font-mono text-sm text-text/70">
+            <span className="text-accent">&gt;</span> {PERSON.name}
+          </p>
+          <p className="mt-2 max-w-sm text-pretty text-sm text-text/60">
+            {PERSON.role}. Building agent systems and breaking them.
+          </p>
+          {/* Hiring + peer paths: never funneled through the contact form. */}
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm">
+            <a
+              href={`mailto:${PERSON.email}`}
+              className="text-accent-2 hover:underline"
+            >
+              {PERSON.email}
+            </a>
+            <a
+              href={PERSON.github}
+              target="_blank"
+              rel="noreferrer"
+              className="text-text/70 hover:text-text"
+            >
+              GitHub
+            </a>
+            <a
+              href={PERSON.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="text-text/70 hover:text-text"
+            >
+              LinkedIn
+            </a>
+            <a
+              href={PERSON.resume}
+              target="_blank"
+              rel="noreferrer"
+              className="text-text/70 hover:text-text"
+            >
+              Resume
+            </a>
+            <Link href="/feed.xml" className="text-text/70 hover:text-text">
+              RSS
+            </Link>
+          </div>
+        </div>
+        <nav
+          aria-label="Footer"
+          className="flex flex-col gap-2 font-mono text-sm sm:items-end"
+        >
+          {NAV.map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              className="text-text/70 hover:text-text"
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+      <div className="border-t border-divider">
+        <p className="mx-auto max-w-content px-5 py-5 font-mono text-xs text-text/50 sm:px-8">
+          © {new Date().getFullYear()} {PERSON.name}. This site is software you
+          can poke: press{" "}
+          <span className="border border-divider px-1">&#8984;K</span>.
+        </p>
+      </div>
+    </footer>
+  );
+}

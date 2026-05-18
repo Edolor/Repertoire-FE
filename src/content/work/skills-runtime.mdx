@@ -1,0 +1,48 @@
+---
+title: "Designing a skills runtime for an autonomous agent"
+slug: skills-runtime
+order: 2
+client: "A production agentic coding platform"
+summary: "The agent needed to load, version, and run reusable skills at runtime without each skill becoming a way to compromise the host."
+tags: ["agent-systems", "skills-runtime", "architecture"]
+outcome: "Skill authors shipped without runtime review, while the untrusted-by-default boundary held across the full skill catalog."
+---
+
+## Context
+
+A skills runtime lets an agent acquire new capabilities as packaged units
+instead of one monolithic prompt. Described as capability only.
+
+## Problem and constraint
+
+Skills are code. A runtime that loads them is a plugin host, and plugin
+hosts are where trust boundaries quietly disappear. The constraint: let
+many authors ship skills quickly, but keep a skill from being a privilege
+escalation path, and keep one skill's failure from taking down a session.
+
+## Approach and key decisions
+
+- Defined a skill as data plus a declared capability manifest, not as
+  ambient code. A skill gets exactly what it declares and nothing it does
+  not. The default is no capability.
+- Versioned skills as immutable, content-addressed units. A session pins
+  the versions it started with, so a mid-flight skill update cannot change
+  behavior under the agent's feet.
+- Separated discovery from execution. The agent can see a skill exists and
+  reason about whether to use it well before anything runs, which made the
+  planning loop legible and the failure modes inspectable.
+- Trade-off accepted: the manifest is friction for skill authors. I kept
+  it because an implicit-capability model would have erased the boundary
+  the isolation work established.
+
+## Outcome (sanitized)
+
+Authors shipped to the catalog without per-skill runtime security review,
+because the runtime, not the reviewer, enforced the boundary. No skill in
+the tested set obtained a capability outside its manifest. Reported as
+proportions: absolute counts are NDA.
+
+## What I would do differently
+
+Make the manifest generated from observed behavior in a dry run, then
+locked, rather than hand-authored. Same boundary, far less author friction.

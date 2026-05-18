@@ -1,0 +1,73 @@
+import { cn } from "@/lib/cn";
+import { Prompt } from "./Cursor";
+
+type SectionProps = {
+  id: string;
+  eyebrow?: string;
+  title?: React.ReactNode;
+  intro?: React.ReactNode;
+  className?: string;
+  children: React.ReactNode;
+};
+
+/**
+ * Deep-linkable landmark section. The eyebrow uses the `>` prompt motif as
+ * its anchor. Real <section> with an aria-labelledby heading for landmarks.
+ */
+export function Section({
+  id,
+  eyebrow,
+  title,
+  intro,
+  className,
+  children,
+}: SectionProps) {
+  const headingId = `${id}-heading`;
+  return (
+    <section
+      id={id}
+      aria-labelledby={title ? headingId : undefined}
+      className={cn(
+        "mx-auto w-full max-w-content px-5 py-16 sm:px-8 sm:py-24",
+        className,
+      )}
+    >
+      {eyebrow && (
+        <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-text/60">
+          <Prompt className="mr-2" />
+          {eyebrow}
+        </p>
+      )}
+      {title && (
+        <h2
+          id={headingId}
+          className="max-w-3xl text-balance text-3xl font-bold leading-tight sm:text-4xl"
+        >
+          {title}
+        </h2>
+      )}
+      {intro && (
+        <div className="mt-4 max-w-2xl text-pretty text-base text-text/70 sm:text-lg">
+          {intro}
+        </div>
+      )}
+      <div className={cn(title || intro ? "mt-10" : "")}>{children}</div>
+    </section>
+  );
+}
+
+export function DashedDivider({
+  className,
+  vertical = false,
+}: {
+  className?: string;
+  vertical?: boolean;
+}) {
+  return (
+    <div
+      role="separator"
+      aria-hidden="true"
+      className={cn(vertical ? "divider-dashed-y" : "divider-dashed", className)}
+    />
+  );
+}

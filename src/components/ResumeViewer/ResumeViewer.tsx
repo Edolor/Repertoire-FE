@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import Icon from "@/components/Icon/Icon";
 import { resumeLink } from "@/urls";
 
@@ -28,7 +28,7 @@ export default function ResumeViewer({ open, onClose }: ResumeViewerProps) {
   const pageAreaRef = useRef<HTMLDivElement>(null);
 
   // pdf.js options: disable eval so it runs under the strict production CSP
-  // (no 'unsafe-eval'). Memoized — react-pdf reloads the document if the
+  // (no 'unsafe-eval'). Memoized: react-pdf reloads the document if the
   // options object identity changes between renders.
   const documentOptions = useMemo(
     () => ({ isEvalSupported: false }),
@@ -152,7 +152,7 @@ export default function ResumeViewer({ open, onClose }: ResumeViewerProps) {
                 href={resumeLink}
                 download
                 aria-label="Download resume"
-                className="h-9 w-9 rounded-md flex items-center justify-center bg-primary hover:bg-primaryLight"
+                className="h-9 w-9 rounded-md flex items-center justify-center bg-accent hover:bg-accent/90"
               >
                 <Icon name="download" color="#ffffff" classes="h-4 w-4" />
               </a>
@@ -196,7 +196,7 @@ export default function ResumeViewer({ open, onClose }: ResumeViewerProps) {
                   <a
                     href={resumeLink}
                     download
-                    className="rounded-md px-4 py-2 text-sm font-semibold bg-primary text-white hover:bg-primaryLight"
+                    className="rounded-md px-4 py-2 text-sm font-semibold bg-accent text-accent-fg hover:bg-accent/90"
                   >
                     Download
                   </a>

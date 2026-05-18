@@ -1,22 +1,24 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
-import { koho, bungee } from "@/fonts";
+import { koho, mono } from "@/fonts";
 import ThemeProvider from "@/context/ThemeContext/ThemeContext";
 import QueryProvider from "@/providers/QueryProvider";
+import { Analytics } from "@/components/layout/Analytics";
 
 export const viewport: Viewport = {
-  themeColor: "#027373",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#EEEFE9" },
+    { media: "(prefers-color-scheme: dark)", color: "#151515" },
+  ],
 };
 
-const SITE_TITLE =
-  "Aghoghomena Akasukpe | Agentic AI Systems Engineer";
+const SITE_TITLE = "Aghoghomena Akasukpe | Agentic AI Systems Engineer";
 const SITE_DESCRIPTION =
-  "I build production agentic AI systems: Model Context Protocol clients, agent orchestration, skills runtimes, semantic memory, and tool-execution isolation. I also red-team them. Core engineer at Farpoint Technologies and an Agentic-AI Security Researcher at Ontario Tech University, where I'm completing an MSc in Computer Science (AI & Security).";
+  "I build production agent systems: Model Context Protocol clients, agent orchestration, skills runtimes, semantic memory, and tool-execution isolation. Then I red-team them. MSc Computer Science (AI & Security), peer-reviewed PST 2025, $20K MITACS research award.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.aghoghomena.com"),
-  title: SITE_TITLE,
+  title: { default: SITE_TITLE, template: "%s | Aghoghomena Akasukpe" },
   description: SITE_DESCRIPTION,
   authors: [{ name: "Aghoghomena Akasukpe" }],
   keywords: [
@@ -27,12 +29,10 @@ export const metadata: Metadata = {
     "agent orchestration",
     "AI security",
     "AI red teaming",
-    "adversarial machine learning",
     "LLM tool use",
-    "context engineering",
-    "AI systems engineer",
+    "agent systems consulting",
   ],
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/", types: { "application/rss+xml": "/feed.xml" } },
   openGraph: {
     type: "website",
     url: "https://www.aghoghomena.com",
@@ -50,38 +50,26 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
+// Anti-FOUC: set the theme class on <html> before first paint so the warm
+// paper / charcoal background never flashes the wrong color.
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t===null&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <ThemeProvider>
-      <QueryProvider>
-        <html lang="en">
-          <body className={`${koho.variable} ${bungee.variable} font-sans`}>
-            {children}
-            {/* Google Tracking */}
-            {process.env.NEXT_PUBLIC_GA_ID && (
-              <>
-                <Script
-                  async
-                  src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-                ></Script>
-                <Script id="google-script">
-                  {`window.dataLayer = window.dataLayer || [];
-                  function gtag() {
-                    dataLayer.push(arguments);
-                  }
-                  gtag("js", new Date());
-
-                  gtag("config", "${process.env.NEXT_PUBLIC_GA_ID}");`}
-                </Script>
-              </>
-            )}{" "}
-          </body>
-        </html>
-      </QueryProvider>
-    </ThemeProvider>
+    <html lang="en" className={`${koho.variable} ${mono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="font-sans">
+        <ThemeProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </ThemeProvider>
+        <Analytics />
+      </body>
+    </html>
   );
 }

@@ -1,0 +1,76 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { publishedPosts, allTags, formatDate } from "@/lib/content";
+
+export const metadata: Metadata = {
+  title: "Writing",
+  description:
+    "Notes on building and breaking agent systems: reliability, threat models, and what red-teaming an agent actually looks like.",
+  alternates: {
+    canonical: "/writing",
+    types: { "application/rss+xml": "/feed.xml" },
+  },
+};
+
+export default function WritingIndex() {
+  return (
+    <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+      <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/55">
+        <span className="text-accent">&gt;</span> Writing
+      </p>
+      <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
+        Building and breaking agents
+      </h1>
+      <p className="mt-3 text-text/70">
+        <a href="/feed.xml" className="text-accent-2 hover:underline">
+          RSS
+        </a>
+        {" · "}
+        <a href="/feed.json" className="text-accent-2 hover:underline">
+          JSON Feed
+        </a>
+      </p>
+
+      {allTags.length > 0 && (
+        <div className="mt-6 flex flex-wrap gap-2">
+          {allTags.map((t) => (
+            <span
+              key={t}
+              className="border border-divider px-2 py-0.5 font-mono text-xs text-text/55"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <ul className="mt-10 divide-y divide-divider border-y border-divider">
+        {publishedPosts.map((p) => (
+          <li key={p.slug}>
+            <Link href={p.permalink} className="group block py-6">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h2 className="text-xl font-bold group-hover:text-accent-2">
+                  {p.title}
+                </h2>
+                <span className="font-mono text-xs text-text/45">
+                  {formatDate(p.date)} · {p.metadata.readingTime} min read
+                </span>
+              </div>
+              <p className="mt-2 text-text/70">{p.description}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {p.tags.map((t) => (
+                  <span
+                    key={t}
+                    className="font-mono text-[11px] text-text/45"
+                  >
+                    #{t}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

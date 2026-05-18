@@ -1,0 +1,37 @@
+---
+title: "Agent reliability is a systems problem, not a prompt problem"
+slug: agent-reliability-is-a-systems-problem
+date: "2026-04-22"
+tags: ["agent-systems", "reliability", "architecture"]
+description: "Most agent failures I see in production are not bad prompts. They are missing boundaries, missing observability, and a planning loop nobody can inspect."
+---
+
+The first thing teams try when an agent misbehaves is a better prompt. It
+is the cheapest lever and it is almost never the one that was broken.
+
+In production, the failures cluster somewhere else: a tool returns
+something the plan did not anticipate, that output re-enters context, and
+three steps later the agent is confidently doing the wrong thing. No
+prompt change fixes that, because the prompt was never the problem. The
+loop was.
+
+## The three things that actually fail
+
+**Boundaries.** A tool-using agent is a remote code execution surface
+pointed at itself. If the only thing standing between a mis-planned call
+and your filesystem is a sentence in a system prompt, you do not have a
+boundary. You have a suggestion.
+
+**Observability.** If you cannot replay why the agent did what it did,
+step by step, you are not debugging. You are guessing with extra latency.
+
+**Loop integrity.** The reflection step is the highest-leverage and
+least-watched part of most agent systems. It is where attacker-controlled
+content does the most damage and where teams instrument the least.
+
+## What I do instead
+
+I treat the agent as an untrusted distributed system. Enforce at the
+execution boundary, make every refusal a structured event the agent can
+reason about, and instrument the loop before tuning the prose. The prompt
+is the last thing I touch, not the first.

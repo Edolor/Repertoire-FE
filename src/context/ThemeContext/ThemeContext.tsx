@@ -1,53 +1,43 @@
 "use client";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 
 type ThemeContextProps = {
   theme: string;
   setTheme: React.Dispatch<React.SetStateAction<string>>;
+  toggle: () => void;
 };
 const ThemeContext = createContext<ThemeContextProps>({} as ThemeContextProps);
 
-export const useTheme = () => {
-  return useContext(ThemeContext);
-};
+export const useTheme = () => useContext(ThemeContext);
 
 export default function ThemeProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Initialized from the anti-FOUC script's class on <html>.
   const [theme, setTheme] = useState<string>("");
 
-  /** One time check in load */
   useEffect(() => {
+    const isDark = document.documentElement.classList.contains("dark");
     const stored = localStorage.getItem("theme");
-    if (stored === "dark") {
-      setTheme("dark");
-    } else if (
-      stored === null &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
+    setTheme(stored ?? (isDark ? "dark" : "light"));
   }, []);
 
-  /** Constant update of state */
   useEffect(() => {
-    if (theme === "light") {
-      localStorage.setItem("theme", "light");
-    } else if (theme === "dark") {
-      localStorage.setItem("theme", "dark");
-    }
+    if (theme !== "dark" && theme !== "light") return;
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const value = {
-    theme,
-    setTheme,
-  };
+  const toggle = useCallback(
+    () => setTheme((t) => (t === "dark" ? "light" : "dark")),
+    [],
+  );
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, setTheme, toggle }}>
+      {children}
+    </ThemeContext.Provider>
   );
 }

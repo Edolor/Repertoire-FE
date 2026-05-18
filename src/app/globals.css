@@ -1,3 +1,171 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * Design tokens. Light AND dark authored together: dark is a peer theme,
+ * not a toggle bolted on. Stored as space-separated RGB so Tailwind's
+ * `rgb(var(--token) / <alpha-value>)` opacity modifiers work everywhere.
+ */
+@layer base {
+  :root {
+    --bg: 238 239 233; /* #EEEFE9 warm paper, not pure white */
+    --text: 21 21 21; /* #151515 charcoal */
+    --surface: 229 231 224; /* #E5E7E0 raised surface */
+    --divider: 208 209 201; /* #D0D1C9 dashed divider token */
+    --accent: 245 78 0; /* #F54E00 warm primary */
+    --accent-2: 29 74 255; /* #1D4AFF electric, links/CTA */
+    --accent-3: 220 147 0; /* #DC9300 tertiary */
+    --accent-fg: 255 255 255; /* text on accent blocks */
+    --selection: 245 78 0;
+  }
+
+  .dark {
+    --bg: 21 21 21; /* #151515 */
+    --text: 238 239 233; /* #EEEFE9 */
+    --surface: 44 44 44; /* #2C2C2C */
+    --divider: 75 75 75; /* #4B4B4B */
+    --accent: 245 78 0; /* #F54E00 */
+    --accent-2: 29 74 255; /* #1D4AFF */
+    --accent-3: 241 168 44; /* #F1A82C */
+    --accent-fg: 255 255 255;
+    --selection: 245 78 0;
+  }
+
+  * {
+    border-color: rgb(var(--divider));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* fixed header offset for deep links */
+  }
+
+  body {
+    background-color: rgb(var(--bg));
+    /* Text deliberately at 90%, never full black/white. */
+    color: rgb(var(--text) / 0.9);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: rgb(var(--selection));
+    color: rgb(var(--accent-fg));
+  }
+
+  /* Visible, consistent focus ring for every interactive element. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent-2));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* The one tokenized dashed divider primitive (engineering-spec feel). */
+  .divider-dashed {
+    border-top: 1px dashed rgb(var(--divider));
+  }
+  .divider-dashed-y {
+    border-left: 1px dashed rgb(var(--divider));
+  }
+
+  /* Graph-paper backdrop used sparingly behind interactive panels. */
+  .graph-paper {
+    background-image:
+      linear-gradient(rgb(var(--divider) / 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--divider) / 0.4) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  /* Hand-rolled prose (no typography plugin dep) for compiled markdown. */
+  .prose {
+    color: rgb(var(--text) / 0.8);
+    line-height: 1.7;
+  }
+  .prose > * + * {
+    margin-top: 1.1em;
+  }
+  .prose h2 {
+    margin-top: 2em;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: rgb(var(--text) / 0.95);
+  }
+  .prose h3 {
+    margin-top: 1.6em;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: rgb(var(--text) / 0.95);
+  }
+  .prose a {
+    color: rgb(var(--accent-2));
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose strong {
+    color: rgb(var(--text) / 0.95);
+    font-weight: 700;
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 1.25rem;
+  }
+  .prose ul {
+    list-style: none;
+  }
+  .prose ul > li {
+    position: relative;
+  }
+  .prose ul > li::before {
+    content: ">";
+    position: absolute;
+    left: -1.25rem;
+    color: rgb(var(--accent));
+    font-family: var(--font-mono);
+  }
+  .prose ol {
+    list-style: decimal;
+  }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: rgb(var(--surface));
+    padding: 0.1em 0.35em;
+    border: 1px solid rgb(var(--divider));
+  }
+  .prose blockquote {
+    border-left: 2px solid rgb(var(--accent));
+    padding-left: 1rem;
+    color: rgb(var(--text) / 0.7);
+    font-style: italic;
+  }
+
+  .blink {
+    animation: blink 1.05s steps(1) infinite;
+  }
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+}
