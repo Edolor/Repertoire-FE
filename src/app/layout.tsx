@@ -4,6 +4,14 @@ import { koho, mono } from "@/fonts";
 import ThemeProvider from "@/context/ThemeContext/ThemeContext";
 import QueryProvider from "@/providers/QueryProvider";
 import { Analytics } from "@/components/layout/Analytics";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  TWITTER_HANDLE,
+  LOCALE,
+} from "@/lib/seo";
 
 export const viewport: Viewport = {
   themeColor: [
@@ -12,15 +20,17 @@ export const viewport: Viewport = {
   ],
 };
 
-const SITE_TITLE = "Aghoghomena Akasukpe | Agentic AI Systems Engineer";
-const SITE_DESCRIPTION =
-  "I build production agent systems: Model Context Protocol clients, agent orchestration, skills runtimes, semantic memory, and tool-execution isolation. Then I red-team them. MSc Computer Science (AI & Security), peer-reviewed PST 2025, $20K MITACS research award.";
-
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.aghoghomena.com"),
-  title: { default: SITE_TITLE, template: "%s | Aghoghomena Akasukpe" },
+  metadataBase: new URL(SITE_URL),
+  title: { default: SITE_TITLE, template: `%s | ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
-  authors: [{ name: "Aghoghomena Akasukpe" }],
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "technology",
+  referrer: "origin-when-cross-origin",
+  formatDetection: { email: false, address: false, telephone: false },
   keywords: [
     "Aghoghomena Akasukpe",
     "Agentic AI Systems Engineer",
@@ -32,21 +42,43 @@ export const metadata: Metadata = {
     "LLM tool use",
     "agent systems consulting",
   ],
-  alternates: { canonical: "/", types: { "application/rss+xml": "/feed.xml" } },
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": "/feed.xml",
+      "application/feed+json": "/feed.json",
+    },
+  },
+  // Tell Google/AI it may show full-size image previews and untruncated
+  // snippets (the AEO-relevant directives); default file-convention
+  // opengraph-image.tsx / twitter-image.tsx supply the share images.
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
-    url: "https://www.aghoghomena.com",
+    url: SITE_URL,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    siteName: "Aghoghomena Akasukpe",
-    images: [{ url: "/twitter-banner.png", width: 1200, height: 630, alt: "Aghoghomena Akasukpe, Agentic AI Systems Engineer" }],
+    siteName: SITE_NAME,
+    locale: LOCALE,
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/twitter-banner.png"],
+    site: TWITTER_HANDLE,
+    creator: TWITTER_HANDLE,
   },
+  appleWebApp: { capable: true, title: SITE_NAME, statusBarStyle: "default" },
   manifest: "/manifest.json",
 };
 

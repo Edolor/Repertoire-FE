@@ -2,7 +2,8 @@
 const baseURL = "https://api.aghoghomena.com";
 const resumeLink = "/AkasukpeAghoghomena-Resume.pdf";
 
-const twitterUrl = "https://twitter.com/aghoghomena2";
+const twitterHandle = "EdolorHacks";
+const twitterUrl = "https://x.com/EdolorHacks";
 const linkedinUrl = "https://linkedin.com/in/aghoghomena-akasukpe";
 const githubUrl = "https://github.com/edolor";
 
@@ -23,6 +24,7 @@ const PATHS = {
 export {
   baseURL,
   PATHS,
+  twitterHandle,
   twitterUrl,
   linkedinUrl,
   githubUrl,

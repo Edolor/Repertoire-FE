@@ -1,6 +1,5 @@
 import { publishedPosts } from "@/lib/content";
-
-const SITE = "https://www.aghoghomena.com";
+import { SITE_URL as SITE } from "@/lib/seo";
 
 // JSON Feed 1.1 (https://www.jsonfeed.org/version/1.1/).
 export function GET() {

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { work } from "#content";
 import { Badge } from "@/components/ui/Badge";
+import { JsonLd } from "@/components/JsonLd";
+import { graph, articleNode, breadcrumbNode } from "@/lib/seo";
 
 export function generateStaticParams() {
   return work.filter((w) => !w.draft).map((w) => ({ slug: w.slug }));
@@ -19,8 +21,15 @@ export async function generateMetadata({
   return {
     title: w.title,
     description: w.summary,
+    keywords: w.tags,
     alternates: { canonical: w.permalink },
-    openGraph: { title: w.title, description: w.summary, type: "article" },
+    openGraph: {
+      title: w.title,
+      description: w.summary,
+      type: "article",
+      url: w.permalink,
+      tags: w.tags,
+    },
   };
 }
 
@@ -32,8 +41,26 @@ export default async function WorkPage({
   const { slug } = await params;
   const w = work.find((x) => x.slug === slug && !x.draft);
   if (!w) notFound();
+
+  const ld = graph(
+    articleNode({
+      section: "Case study",
+      title: w.title,
+      description: w.summary,
+      abstract: w.outcome,
+      path: w.permalink,
+      keywords: w.tags,
+    }),
+    breadcrumbNode([
+      { name: "Home", path: "/" },
+      { name: "Selected work", path: "/#selected-work" },
+      { name: w.title, path: w.permalink },
+    ]),
+  );
+
   return (
     <article className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+      <JsonLd data={ld} />
       <Link
         href="/#selected-work"
         className="font-mono text-xs text-text/55 hover:text-text"

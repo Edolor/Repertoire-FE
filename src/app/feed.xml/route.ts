@@ -1,6 +1,6 @@
 import { publishedPosts } from "@/lib/content";
+import { SITE_URL as SITE } from "@/lib/seo";
 
-const SITE = "https://www.aghoghomena.com";
 const esc = (s: string) =>
   s
     .replace(/&/g, "&amp;")

@@ -1,20 +1,60 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { publishedPosts, allTags, formatDate } from "@/lib/content";
+import { JsonLd } from "@/components/JsonLd";
+import { graph, abs, breadcrumbNode, SITE_URL } from "@/lib/seo";
+
+const WRITING_DESCRIPTION =
+  "Notes on building and breaking agent systems: reliability, threat models, and what red-teaming an agent actually looks like.";
 
 export const metadata: Metadata = {
   title: "Writing",
-  description:
-    "Notes on building and breaking agent systems: reliability, threat models, and what red-teaming an agent actually looks like.",
+  description: WRITING_DESCRIPTION,
   alternates: {
     canonical: "/writing",
-    types: { "application/rss+xml": "/feed.xml" },
+    types: {
+      "application/rss+xml": "/feed.xml",
+      "application/feed+json": "/feed.json",
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: "/writing",
+    title: "Writing",
+    description: WRITING_DESCRIPTION,
   },
 };
+
+const writingLd = graph(
+  {
+    "@type": "Blog",
+    "@id": `${SITE_URL}/writing#blog`,
+    url: abs("/writing"),
+    name: "Building and breaking agents",
+    description: WRITING_DESCRIPTION,
+    inLanguage: "en",
+    author: { "@id": `${SITE_URL}/#person` },
+    publisher: { "@id": `${SITE_URL}/#person` },
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    blogPost: publishedPosts.map((p) => ({
+      "@type": "BlogPosting",
+      headline: p.title,
+      description: p.description,
+      url: abs(p.permalink),
+      datePublished: p.date,
+      dateModified: p.updated ?? p.date,
+    })),
+  },
+  breadcrumbNode([
+    { name: "Home", path: "/" },
+    { name: "Writing", path: "/writing" },
+  ]),
+);
 
 export default function WritingIndex() {
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+      <JsonLd data={writingLd} />
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/55">
         <span className="text-accent">&gt;</span> Writing
       </p>

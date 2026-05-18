@@ -5,27 +5,18 @@ import { AgentDemo } from "@/components/sections/AgentDemo";
 import { Research } from "@/components/sections/Research";
 import { WritingTeaser } from "@/components/sections/WritingTeaser";
 import { AboutTeaser } from "@/components/sections/AboutTeaser";
+import { FAQ } from "@/components/sections/FAQ";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { DashedDivider } from "@/components/primitives/Section";
-import { PERSON } from "@/content/site";
+import { JsonLd } from "@/components/JsonLd";
+import { graph, personNode, websiteNode, faqNode } from "@/lib/seo";
 
-const personLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: PERSON.name,
-  jobTitle: PERSON.role,
-  url: "https://www.aghoghomena.com",
-  sameAs: [PERSON.github, PERSON.linkedin],
-  description: PERSON.outcome,
-};
+const homeLd = graph(personNode, websiteNode, faqNode());
 
 export default function HomePage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
-      />
+      <JsonLd data={homeLd} />
       <Hero />
       <WorkWithMe />
       <DashedDivider className="mx-auto max-w-content" />
@@ -38,6 +29,8 @@ export default function HomePage() {
       <WritingTeaser />
       <DashedDivider className="mx-auto max-w-content" />
       <AboutTeaser />
+      <DashedDivider className="mx-auto max-w-content" />
+      <FAQ />
       <DashedDivider className="mx-auto max-w-content" />
       <ContactSection />
     </>

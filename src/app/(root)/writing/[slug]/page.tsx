@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { posts } from "#content";
 import { formatDate } from "@/lib/content";
+import { JsonLd } from "@/components/JsonLd";
+import { graph, articleNode, breadcrumbNode } from "@/lib/seo";
 
 export function generateStaticParams() {
   return posts.filter((p) => !p.draft).map((p) => ({ slug: p.slug }));
@@ -19,12 +21,20 @@ export async function generateMetadata({
   return {
     title: p.title,
     description: p.description,
-    alternates: { canonical: p.permalink },
+    keywords: p.tags,
+    alternates: {
+      canonical: p.permalink,
+      types: { "application/rss+xml": "/feed.xml" },
+    },
     openGraph: {
       type: "article",
+      url: p.permalink,
       title: p.title,
       description: p.description,
       publishedTime: p.date,
+      modifiedTime: p.updated ?? p.date,
+      authors: ["Aghoghomena Akasukpe"],
+      tags: p.tags,
     },
   };
 }
@@ -38,24 +48,27 @@ export default async function PostPage({
   const p = posts.find((x) => x.slug === slug && !x.draft);
   if (!p) notFound();
 
-  const articleLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: p.title,
-    description: p.description,
-    datePublished: p.date,
-    dateModified: p.updated ?? p.date,
-    author: { "@type": "Person", name: "Aghoghomena Akasukpe" },
-    keywords: p.tags.join(", "),
-    mainEntityOfPage: `https://www.aghoghomena.com${p.permalink}`,
-  };
+  const ld = graph(
+    articleNode({
+      title: p.title,
+      description: p.description,
+      path: p.permalink,
+      datePublished: p.date,
+      dateModified: p.updated ?? p.date,
+      keywords: p.tags,
+      wordCount: p.metadata.wordCount,
+      section: p.tags[0],
+    }),
+    breadcrumbNode([
+      { name: "Home", path: "/" },
+      { name: "Writing", path: "/writing" },
+      { name: p.title, path: p.permalink },
+    ]),
+  );
 
   return (
     <article className="mx-auto w-full max-w-2xl px-5 py-16 sm:px-8 sm:py-24">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
-      />
+      <JsonLd data={ld} />
       <Link
         href="/writing"
         className="font-mono text-xs text-text/55 hover:text-text"

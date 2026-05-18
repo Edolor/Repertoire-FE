@@ -4,17 +4,42 @@ import portrait from "@/assets/img/mena.jpg";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
 import { AboutDetails } from "@/components/sections/AboutDetails";
 import { Testimonials } from "@/components/sections/Testimonials";
+import { JsonLd } from "@/components/JsonLd";
+import {
+  graph,
+  personNode,
+  profilePageNode,
+  breadcrumbNode,
+} from "@/lib/seo";
+
+const ABOUT_DESCRIPTION =
+  "Aghoghomena Akasukpe, Agentic AI Systems Engineer. Background, experience, education, and honours: MSc Computer Science (AI & Security), PST 2025, $20K MITACS.";
 
 export const metadata: Metadata = {
   title: "About",
-  description:
-    "Aghoghomena Akasukpe, Agentic AI Systems Engineer. Background, experience, education, and honours.",
+  description: ABOUT_DESCRIPTION,
   alternates: { canonical: "/about" },
+  openGraph: {
+    type: "profile",
+    url: "/about",
+    title: `About | ${PERSON.name}`,
+    description: ABOUT_DESCRIPTION,
+  },
 };
+
+const aboutLd = graph(
+  personNode,
+  profilePageNode("/about"),
+  breadcrumbNode([
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+  ]),
+);
 
 export default function AboutPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+      <JsonLd data={aboutLd} />
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/55">
         <span className="text-accent">&gt;</span> About
       </p>
