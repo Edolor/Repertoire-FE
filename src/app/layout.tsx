@@ -60,7 +60,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${koho.variable} ${mono.variable}`}>
+    // The anti-FOUC script toggles the `dark` class on <html> before
+    // hydration, so this element's class legitimately differs from SSR.
+    // Scope the suppression to <html> only.
+    <html
+      lang="en"
+      className={`${koho.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>

@@ -32,8 +32,6 @@ export function Header() {
           className="flex items-center gap-2 font-mono text-base font-bold"
           aria-label="Aghoghomena Akasukpe, home"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="Logo" className="h-6 w-6 dark:invert" />
           <span>
             aa<Cursor className="ml-0.5 h-[0.95em] w-[0.5em]" />
           </span>

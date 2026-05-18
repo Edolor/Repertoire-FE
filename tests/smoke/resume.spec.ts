@@ -4,7 +4,9 @@ import { trackPageErrors, assertNoErrors } from "./helpers";
 test("home page loads with no runtime errors", async ({ page }, testInfo) => {
   const errors = trackPageErrors(page);
   await page.goto("/");
-  await expect(page.getByAltText("Logo").first()).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Aghoghomena Akasukpe, home" }),
+  ).toBeVisible();
   assertNoErrors(errors, testInfo);
 });
 
