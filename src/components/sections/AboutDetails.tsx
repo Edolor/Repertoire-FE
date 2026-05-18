@@ -44,28 +44,31 @@ function HonourList({ items }: { items: BaseHonourProps[] }) {
             <p className="font-mono text-xs text-text/55">{h.sub_about}</p>
           )}
           <p className="mt-2 text-sm text-text/70">{h.about}</p>
-          {h.issue_date && (
-            <p className="mt-2 font-mono text-[11px] text-text/45">
-              {h.issue_date}
-            </p>
-          )}
+          <p className="mt-2 font-mono text-[11px] text-text/45">
+            {h.issue_date}
+            {h.certification_no && (
+              <span> · ID {h.certification_no}</span>
+            )}
+          </p>
         </li>
       ))}
     </ul>
   );
 }
 
-export function AboutDetails() {
+export function AboutDetails({ showResume = true }: { showResume?: boolean }) {
   const { data, isLoading, isError, refetch } = useAboutQuery();
   const { open } = useResume();
 
   return (
     <div className="mt-12">
-      <div className="flex flex-wrap gap-3">
-        <Button type="button" onClick={open} variant="outline">
-          Open resume
-        </Button>
-      </div>
+      {showResume && (
+        <div className="flex flex-wrap gap-3">
+          <Button type="button" onClick={open} variant="outline">
+            Open resume
+          </Button>
+        </div>
+      )}
 
       {isLoading && (
         <p className="mt-10 font-mono text-sm text-text/50" aria-live="polite">

@@ -7,6 +7,7 @@ import { Section } from "@/components/primitives/Section";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Testimonials } from "@/components/sections/Testimonials";
+import { AboutDetails } from "@/components/sections/AboutDetails";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
 
 export function AboutTeaser() {
@@ -58,6 +59,11 @@ export function AboutTeaser() {
       </div>
 
       <Testimonials className="mt-12" />
+
+      {/* Full experience, education, awards, certifications from the
+          backend /about (the original portfolio's content), with real
+          loading / error / empty states. */}
+      <AboutDetails showResume={false} />
     </Section>
   );
 }
