@@ -14,8 +14,9 @@ export default function Contact() {
         </h3>
 
         <p className="text-center text-gray-800 max-w-4xl text-lg dark:text-zinc-100 md:text-xl">
-          Do you have any questions or would like to receive further information
-          about my work? Feel free to contact me.
+          Building something with agents, or stress-testing one? If you&apos;re
+          working on agentic AI, MCP infrastructure, or AI security, I&apos;d
+          like to hear about it.
         </p>
 
         <div className="flex items-center space-x-6 pt-2 sm:pt-2">

@@ -142,4 +142,8 @@
   <symbol xmlns="http://www.w3.org/2000/svg" fill="#00000" viewBox="0 -960 960 960" id="security">
     <path d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q97-30 162-118.5T718-480H480v-315l-240 90v207q0 7 2 18h238v316Z"></path>
   </symbol>
+  <symbol fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17" id="search-normal">
+    <path d="M7.71411 13.9843C11.0278 13.9843 13.7141 11.298 13.7141 7.98425C13.7141 4.67054 11.0278 1.98425 7.71411 1.98425C4.4004 1.98425 1.71411 4.67054 1.71411 7.98425C1.71411 11.298 4.4004 13.9843 7.71411 13.9843Z" stroke="#A8A8A8" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M13.0007 14.4441C13.3541 15.5108 14.1607 15.6175 14.7807 14.6841C15.3474 13.8308 14.9741 13.1308 13.9474 13.1308C13.1874 13.1241 12.7607 13.7175 13.0007 14.4441Z" stroke="#A8A8A8" stroke-linecap="round" stroke-linejoin="round"></path>
+  </symbol>
 </svg>

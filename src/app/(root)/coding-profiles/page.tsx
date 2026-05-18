@@ -76,7 +76,7 @@ function Profiles() {
           </h1>
 
           <p className="text-xl text-center text-white dark:text-zinc-100 sm:text-2xl">
-            Exceeding preconceived limits!!
+            Where I keep the fundamentals sharp.
           </p>
         </div>
       </section>
@@ -92,13 +92,11 @@ function Profiles() {
           </h2>
 
           <p className="mt-4 text-center text-lg max-w-6xl mx-auto leading-relaxed sm:leading-loose sm:text-xl dark:text-zinc-100">
-            Competitive coding, in my opinion, improves my performance in other
-            topics i study and learn. It teaches anyone how to rationally
-            construct a workable program by dissecting a problem into discrete
-            parts and expressing ones self using a language that the machine can
-            understand. By doing tons of exercises, I have cultivated a certain
-            attitude for tackling issues and digesting massive volumes of data,
-            which is essential for mastering any subject matter.
+            Algorithmic practice is how I keep the core skill sharp:
+            decomposing a hard problem into clean, provable parts and
+            expressing it precisely. The same discipline that pays off when
+            you&apos;re reasoning about an agent loop, a retrieval pipeline, or
+            an adversarial edge case under pressure.
           </p>
 
           <div className="mt-6 flex justify-center items-center flex-wrap gap-6">

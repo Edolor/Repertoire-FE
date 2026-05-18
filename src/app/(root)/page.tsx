@@ -7,13 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import background from "@/assets/img/home-background.png";
+import portrait from "@/assets/img/mena.jpg";
 import awsBadge from "@/assets/img/badges/aws.png";
 import ccBadge from "@/assets/img/badges/cc.png";
-import homeCareFinancialBadge from "@/assets/img/badges/home_care_financial.png";
 import securityPlusBadge from "@/assets/img/badges/SecurityPlus.png";
 import { motion } from "framer-motion";
-import homeHealthFinancialBadge from "@/assets/img/badges/home_health_financial.png";
-import hospiceFinancialBadge from "@/assets/img/badges/hospice_financial.png";
 import Project from "@/components/Project/Project";
 import Expertise from "@/components/Expertise/Expertise";
 import { EXPERTISE } from "@/components/Expertise/data";
@@ -41,12 +39,14 @@ export default function Home() {
   const fields = ["Experience", "Awards", "Education", "Certifications"];
 
   const descriptions = {
-    Experience: "An overview of my professional life as a computer scientist.",
+    Experience:
+      "Where I've built things, from production agent systems to high-throughput claims pipelines and full-stack platforms.",
     Awards:
-      "A selection of awards and honors I have received for my work and in life.",
-    Education: "An overview of my academic life as a computer scientist.",
+      "Recognition for the research and engineering work, including the MITACS-funded agentic-AI infrastructure project.",
+    Education:
+      "An MSc in Computer Science (AI & Security) at Ontario Tech, on a Summa cum laude CS foundation.",
     Certifications:
-      "A selection of certifications I have gotten in my professional pursuit for excellence.",
+      "Industry credentials backing the security and machine-learning work: CompTIA Security+, AWS ML Specialty, and more.",
   };
 
   const [selectedField, setSelectedField] = useState(fields[0]);
@@ -62,17 +62,23 @@ export default function Home() {
     }),
   };
 
-  const blogPosts = [
+  const writing = [
+    {
+      title:
+        "A Per-Bag Suspicion-Based Bagging Strategy for Fighting Poisoning Attacks in Classification",
+      url: linkedinUrl,
+      date: "PST 2025 · Peer-reviewed publication",
+    },
     {
       title: "Role-Based Access-Control using Next.js Middlewares",
       url: "https://www.linkedin.com/pulse/role-based-access-control-using-nextjs-middlewares-akasukpe-kkt1f/",
-      date: "May 5, 2024",
+      date: "Article · May 2024",
     },
     {
       title:
-        "Content-Based Filtering Recommendation System using Django, Scikit-learn, and Django Rest Framework",
+        "Content-Based Filtering Recommendation System using Django, Scikit-learn, and DRF",
       url: "https://www.linkedin.com/pulse/content-based-filtering-recommendation-system-using-django-akasukpe-pzpcf/",
-      date: "May 13, 2024",
+      date: "Article · May 2024",
     },
   ];
 
@@ -109,12 +115,9 @@ export default function Home() {
   });
 
   const badges = [
-    { src: securityPlusBadge, alt: "Security Plus Badge" },
-    { src: awsBadge, alt: "AWS Certification Badge" },
-    { src: ccBadge, alt: "CC Badge" },
-    { src: homeCareFinancialBadge, alt: "Home Care Financial Badge" },
-    { src: homeHealthFinancialBadge, alt: "Home Health Financial Badge" },
-    { src: hospiceFinancialBadge, alt: "Hospice Financial Badge" },
+    { src: securityPlusBadge, alt: "CompTIA Security+ Badge" },
+    { src: awsBadge, alt: "AWS Certified Machine Learning – Specialty Badge" },
+    { src: ccBadge, alt: "ISC2 Certified in Cybersecurity Badge" },
   ];
 
   return (
@@ -155,14 +158,14 @@ export default function Home() {
                 className="text-xl text-center dark:text-zinc-100"
                 variants={fadeInUp(0.2)}
               >
-                <u>Who am I?</u> A{" "}
-                <b>Cybersecurity and Machine Learning engineer</b> with over 4
-                years of experience in <b>software development</b> and{" "}
-                <b>system design</b>. My passion for cybersecurity runs deep and
-                it influences the way I build and design systems. I am currently
-                pursuing a <a href="#">Master’s degree in Computer Science</a>{" "}
-                with a specialization in <b>Cybersecurity</b> and{" "}
-                <b>Artificial Intelligence</b>.
+                I&apos;m an <b>Agentic AI Systems Engineer</b>. I build the
+                systems that let LLMs autonomously work against real
+                codebases: <b>MCP clients</b>, <b>agent orchestration</b>,{" "}
+                <b>skills runtimes</b>, and <b>tool-execution isolation</b>,
+                and I <b>red-team them</b>. Core engineer at{" "}
+                <b>Farpoint Technologies</b> and an Agentic-AI Security
+                Researcher at <b>Ontario Tech University</b>, where I&apos;m
+                finishing an <b>MSc in Computer Science (AI &amp; Security)</b>.
               </motion.p>
 
               <motion.p
@@ -251,7 +254,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Recent Certifications→
+                Certifications →
               </motion.h2>
 
               {badges.map((badge, i) => (
@@ -279,10 +282,10 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                Latest Blog Posts
+                Research &amp; Writing
               </motion.h2>
               <div className="space-y-4">
-                {blogPosts.map((post, i) => (
+                {writing.map((post, i) => (
                   <motion.a
                     key={post.title}
                     href={post.url}
@@ -327,7 +330,7 @@ export default function Home() {
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.4, ease: "easeIn", delay: 0.1 }}
           >
-            Projects cover a wide spectrum of technologies and frameworks
+            Agent infrastructure, security research, and production systems
           </motion.p>
 
           <motion.div
@@ -399,6 +402,21 @@ export default function Home() {
             >
               About Me
             </h2>
+
+            <div className="container max-w-5xl flex flex-col sm:flex-row items-center gap-6 sm:gap-10 px-6 mx-auto pb-10">
+              <Image
+                src={portrait}
+                alt="Aghoghomena Akasukpe"
+                placeholder="blur"
+                className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover object-top shadow-lg shrink-0"
+              />
+              <p className="text-lg sm:text-xl text-center sm:text-left dark:text-zinc-100">
+                I&apos;m a software engineer who moved from shipping production
+                backends into building and securing the systems that let AI
+                agents act autonomously. The timeline below is the path that got
+                me here.
+              </p>
+            </div>
 
             <div className="container max-w-5xl pb-10 border-b-[1.5px] border-b-zinc-400 px-6 mx-auto">
               {loading || !about ? (

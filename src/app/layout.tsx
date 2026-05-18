@@ -9,17 +9,43 @@ export const viewport: Viewport = {
   themeColor: "#027373",
 };
 
+const SITE_TITLE =
+  "Aghoghomena Akasukpe | Agentic AI Systems Engineer";
+const SITE_DESCRIPTION =
+  "I build production agentic AI systems: Model Context Protocol clients, agent orchestration, skills runtimes, semantic memory, and tool-execution isolation. I also red-team them. Core engineer at Farpoint Technologies and an Agentic-AI Security Researcher at Ontario Tech University, where I'm completing an MSc in Computer Science (AI & Security).";
+
 export const metadata: Metadata = {
-  title: "Home - Edolor",
-  description:
-    "Explore Edolor's digital universe—a Software Developer, Designer, DevOps Pro, and Computer Scientist. Dive into a portfolio merging innovation and skill, showcasing seamless solutions, elegant designs, and efficient DevOps practices. Witness the convergence of art and code, reflecting a commitment to pushing the boundaries of technology.",
+  metadataBase: new URL("https://www.aghoghomena.com"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  authors: [{ name: "Aghoghomena Akasukpe" }],
+  keywords: [
+    "Aghoghomena Akasukpe",
+    "Agentic AI Systems Engineer",
+    "Model Context Protocol",
+    "MCP",
+    "agent orchestration",
+    "AI security",
+    "AI red teaming",
+    "adversarial machine learning",
+    "LLM tool use",
+    "context engineering",
+    "AI systems engineer",
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "https://www.aghoghomena.com",
-    title: "Home - Edolor",
-    description:
-      "Explore Edolor's digital universe—a Software Developer, Designer, DevOps Pro, and Computer Scientist. Dive into a portfolio merging innovation and skill, showcasing seamless solutions, elegant designs, and efficient DevOps practices. Witness the convergence of art and code, reflecting a commitment to pushing the boundaries of technology.",
-    siteName: "Edolor Portfolio",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    siteName: "Aghoghomena Akasukpe",
+    images: [{ url: "/twitter-banner.png", width: 1200, height: 630, alt: "Aghoghomena Akasukpe, Agentic AI Systems Engineer" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/twitter-banner.png"],
   },
   manifest: "/manifest.json",
 };
@@ -58,28 +84,4 @@ export default function RootLayout({
       </QueryProvider>
     </ThemeProvider>
   );
-}
-
-{
-  /*
-<meta name="description"
-content="Explore Aghoghomena Akasukpes' portfolio website, a skilled full-stack developer showcasing a range of projects and skills. Discover his expertise in web development, software engineering, and more" />
-<meta name="keywords"
-content="portfolio, full-stack developer, designer, developer, tech, cybersecurity, aghoghomena, computer scientist, Aghoghomena, Akasukpe" />
-<meta name="author" content="aghoghomena" />
-<meta property="og:title" content="Edolor portfolio website | Full stack developer | Cybersecurity enthusiast" />
-<meta property="og:type" content="website" />
-<meta property="og:image" content="%PUBLIC_URL%/favicon-144.png" />
-<meta property="og:url" content="https://www.aghoghomena.com/" />
-<meta property="og:description"
-content="Explore Aghoghomena Akasukpes' portfolio website, a skilled full-stack developer showcasing a range of projects and skills. Discover his expertise in web development, software engineering, and more" />
-<meta property="og:site_name" content="aghoghomena" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:site" content="@hackfinals" />
-<meta name="twitter:creator" content="@hackfinals" />
-<meta property="twitter:image" content="%PUBLIC_URL%/favicon-144.png" />
-<meta name="twitter:title" content="Edolor portfolio website | Full stack developer | Cybersecurity enthusiast" />
-<meta name="twitter:description"
-content="Explore Aghoghomena Akasukpes' portfolio website, a skilled full-stack developer showcasing a range of projects and skills. Discover his expertise in web development, software engineering, and more" />
-*/
 }
