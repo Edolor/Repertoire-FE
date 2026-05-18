@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useAboutQuery } from "@/hooks/useQueries";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button } from "@/components/ui/Button";
@@ -9,21 +10,22 @@ import type {
   BaseHonourProps,
 } from "@/types/About.types";
 
-// Google Drive banner. Loaded by the browser directly (CSP img-src allows
-// drive.google.com). If Drive returns an interstitial or redirects off
-// the allowed origin, it fails closed: the image is removed and the text
-// card stands on its own. No broken-image glyph, no layout shift.
+// Google Drive banner, served through Next's image optimizer: Next fetches
+// it server-side (following Drive's redirect) and re-serves it same-origin,
+// so it is immune to client CSP / cross-origin redirect issues. Still fails
+// closed: a fetch failure drops the image and the text card stands alone.
 function Banner({ src, alt }: { src: string; alt: string }) {
   const [ok, setOk] = useState(true);
   if (!src || !ok) return null;
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={src}
       alt={alt}
+      width={640}
+      height={420}
       loading="lazy"
-      referrerPolicy="no-referrer"
       onError={() => setOk(false)}
+      sizes="(max-width: 640px) 90vw, 320px"
       className="mb-3 max-h-44 w-full border border-divider bg-bg object-contain p-1"
     />
   );
@@ -78,12 +80,20 @@ function HonourList({ items }: { items: BaseHonourProps[] }) {
   );
 }
 
-export function AboutDetails({ showResume = true }: { showResume?: boolean }) {
+export function AboutDetails({
+  showResume = true,
+  flush = false,
+}: {
+  showResume?: boolean;
+  // flush: drop the top margin (used inside the popup, which has its own
+  // header and padding).
+  flush?: boolean;
+}) {
   const { data, isLoading, isError, refetch } = useAboutQuery();
   const { open } = useResume();
 
   return (
-    <div className="mt-12">
+    <div className={flush ? "" : "mt-12"}>
       {showResume && (
         <div className="flex flex-wrap gap-3">
           <Button type="button" onClick={open} variant="outline">
