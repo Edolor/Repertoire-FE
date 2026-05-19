@@ -15,6 +15,7 @@ export type Post = {
   updated?: string;
   tags: string[];
   description: string;
+  cover?: string;
   draft: boolean;
   body: string;
   metadata: { readingTime: number; wordCount: number };

@@ -154,6 +154,83 @@
     color: rgb(var(--text) / 0.7);
     font-style: italic;
   }
+  /* Cloned long-form posts: image-and-code heavy. */
+  .prose figure {
+    margin: 1.6em 0;
+  }
+  .prose figure img {
+    width: 100%;
+    height: auto;
+    border: 1px solid rgb(var(--divider));
+    background: rgb(var(--surface));
+    display: block;
+  }
+  .prose figcaption {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: rgb(var(--text) / 0.55);
+    text-align: center;
+  }
+  .prose pre {
+    margin: 1.4em 0;
+    padding: 1rem 1.1rem;
+    background: rgb(var(--surface));
+    border: 1px solid rgb(var(--divider));
+    border-left: 2px solid rgb(var(--accent));
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+  .prose pre code {
+    font-family: var(--font-mono);
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+    color: rgb(var(--text) / 0.9);
+    white-space: pre;
+  }
+  /* Image zoom affordance (enhanced by ArticleBody). */
+  .prose figure img.zoomable {
+    cursor: zoom-in;
+    transition: opacity 0.15s ease;
+  }
+  .prose figure img.zoomable:hover {
+    opacity: 0.92;
+  }
+  .code-copy {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.5rem;
+    color: rgb(var(--text) / 0.55);
+    background: rgb(var(--bg));
+    border: 1px solid rgb(var(--divider));
+    cursor: pointer;
+  }
+  .code-copy:hover {
+    color: rgb(var(--accent));
+    border-color: rgb(var(--accent));
+  }
+  .code-copy.is-copied {
+    color: rgb(var(--accent-fg));
+    background: rgb(var(--accent));
+    border-color: rgb(var(--accent));
+  }
+  .code-copy.is-error {
+    color: rgb(var(--accent-fg));
+    background: rgb(var(--accent-2));
+    border-color: rgb(var(--accent-2));
+  }
+  .code-wrap {
+    position: relative;
+  }
 
   .blink {
     animation: blink 1.05s steps(1) infinite;

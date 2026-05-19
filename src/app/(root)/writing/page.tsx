@@ -53,7 +53,7 @@ const writingLd = graph(
 
 export default function WritingIndex() {
   return (
-    <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+    <div className="mx-auto w-full max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={writingLd} />
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/55">
         <span className="text-accent">&gt;</span> Writing
@@ -87,25 +87,42 @@ export default function WritingIndex() {
       <ul className="mt-10 divide-y divide-divider border-y border-divider">
         {publishedPosts.map((p) => (
           <li key={p.slug}>
-            <Link href={p.permalink} className="group block py-6">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h2 className="text-xl font-bold group-hover:text-accent-2">
-                  {p.title}
-                </h2>
-                <span className="font-mono text-xs text-text/45">
-                  {formatDate(p.date)} · {p.metadata.readingTime} min read
-                </span>
-              </div>
-              <p className="mt-2 text-text/70">{p.description}</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {p.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="font-mono text-[11px] text-text/45"
-                  >
-                    #{t}
+            <Link
+              href={p.permalink}
+              className="group flex flex-col gap-5 py-6 sm:flex-row sm:items-start"
+            >
+              {p.cover && (
+                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden border border-divider bg-surface sm:w-56">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.cover}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                  />
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                  <h2 className="text-xl font-bold group-hover:text-accent-2">
+                    {p.title}
+                  </h2>
+                  <span className="font-mono text-xs text-text/45">
+                    {formatDate(p.date)} · {p.metadata.readingTime} min read
                   </span>
-                ))}
+                </div>
+                <p className="mt-2 text-text/70">{p.description}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {p.tags.map((t) => (
+                    <span
+                      key={t}
+                      className="font-mono text-[11px] text-text/45"
+                    >
+                      #{t}
+                    </span>
+                  ))}
+                </div>
               </div>
             </Link>
           </li>

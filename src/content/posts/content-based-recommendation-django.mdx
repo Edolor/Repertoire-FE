@@ -1,0 +1,164 @@
+---
+title: "Content-based recommendation system with Django and scikit-learn"
+slug: content-based-recommendation-django
+date: "2024-04-30"
+tags: ["django", "machine-learning", "python"]
+description: "Building a content-based recommendation API with Django, Django REST Framework, TF-IDF vectorization, and cosine similarity, with the trained model cached via pickle on app startup."
+cover: /blog/content-based-recommendation-django/cover.png
+---
+
+In this article we will explore how we can utilize Django, Django Rest framework TF-IDF Vectorization, Scikit-learn and Cosine Similarity, to build a fully functional Recommendation system.
+
+**Propsed Recommendation model:**
+
+<figure>
+  <img src="/blog/content-based-recommendation-django/img-2.jpg" alt="Proposed Recommendation model" />
+  <figcaption>Proposed Recommendation model</figcaption>
+</figure>
+
+**Tools to be used:**
+
+- Django
+- Scikit-Learn
+- Pandas / Numpy
+- Django Rest Framework
+- Pickle (For storing the cached model)
+
+**Side Note 1:** Link to Github for the completed project - [Here](https://github.com/Edolor/E-commerce-Recommendation-System)
+
+**Side Note 2:** Link to research paper - [Here](https://docs.google.com/document/d/1t3HunS2GO3dCXLV9JKwN15is8W_XhSkV5-DCn9hT4U0/edit)
+
+## Prerequisites:
+
+You should have the following setup:
+
+1. **>= Python3.10** [Learn more](https://www.python.org/downloads/)
+2. Docker ([Optional](https://www.docker.com/get-started/))
+3. Pipenv ([Installation and Learning Resource](https://realpython.com/pipenv-guide/))
+
+## First Steps:
+
+Firstly we setup our Virtual environment using
+
+<figure>
+  <img src="/blog/content-based-recommendation-django/img-3.png" alt="Setting up virtual environment and installng Requirements." />
+  <figcaption>Setting up virtual environment and installng Requirements.</figcaption>
+</figure>
+
+Below is the requirements.txt
+
+```text
+asgiref==3.6.0
+cachetools==4.2.4
+certifi==2022.12.7
+charset-normalizer==3.1.0
+dj-database-url==1.2.0
+Django==4.1.7
+django-cors-headers==3.14.0
+django-filter==22.1
+django-googledrive-storage==1.6.0
+django-pandas==0.6.6
+djangorestframework==3.14.0
+google-api-core==2.10.2
+google-api-python-client==2.86.0
+google-auth==1.35.0
+google-auth-httplib2==0.1.0
+googleapis-common-protos==1.59.0
+gunicorn==20.1.0
+httplib2==0.22.0
+idna==3.4
+itsdangerous==2.1.2
+joblib==1.2.0
+numpy==1.24.2
+pandas==1.5.3
+Pillow==9.4.0
+protobuf==4.22.4
+psycopg2-binary==2.9.5
+pyasn1==0.5.0
+pyasn1-modules==0.3.0
+pyparsing==3.0.9
+python-dateutil==2.8.2
+python-dotenv==1.0.0
+pytz==2022.7.1
+requests==2.30.0
+rsa==4.9
+scikit-learn==1.2.1
+scipy==1.10.1
+six==1.16.0
+sqlparse==0.4.3
+threadpoolctl==3.1.0
+tzdata==2023.3
+uritemplate==4.1.1
+urllib3==2.0.2
+whitenoise==6.4.0
+```
+
+After that we setup Django using:
+
+```bash
+django-admin startproject ecommerce
+```
+
+Next we create a new app using:
+
+```bash
+django-admin startapp recommender
+```
+
+Next we setup the app in our **ecommerce/**`settings.py`
+
+<figure>
+  <img src="/blog/content-based-recommendation-django/img-4.png" alt="settings.py" />
+  <figcaption>settings.py</figcaption>
+</figure>
+
+Lets create a **recommender/**`models.py` file and include the below content ([File Here](https://github.com/Edolor/E-commerce-Recommendation-System/blob/master/recommender/models.py)):
+
+<figure>
+  <img src="/blog/content-based-recommendation-django/img-5.png" alt="models.py" />
+  <figcaption>models.py</figcaption>
+</figure>
+
+We then register the file in **recommender/admin.py**
+
+```python
+from django.contrib import admin
+from .models import SimilarityModel
+
+admin.site.register(SimilarityModel)
+```
+
+Now in **recommender/`views.py`** we'll have **([File Here](https://github.com/Edolor/E-commerce-Recommendation-System/blob/master/recommender/views.py))**
+
+<figure>
+  <img src="/blog/content-based-recommendation-django/img-6.png" alt="recommender/views.py" />
+  <figcaption>recommender/views.py</figcaption>
+</figure>
+
+Finally for the recommender, we setup **recommender/`apps.py`** to ensure we train our models immediately our server is spawned on production ([Learn more about ready() and Django Signals](https://docs.djangoproject.com/en/5.0/topics/signals/)).
+
+```python
+from django.apps import AppConfig
+
+class RecommenderConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'recommender'
+
+    def ready(self):
+        from .views import train_model_init
+        train_model_init() # Handle initial setup of model
+```
+
+The end.🔚
+
+## Conclusion
+
+This article primarily **touched the fundamentals** of building a full-scale content-based recommendation systems with Django. View the [Completed Project](https://www.geeksforgeeks.org/ml-content-based-recommender-system/) to understand more how the various apps within the Django project communicate and interact.
+
+## Extra Resources
+
+1. Learn more about [TF-IDF Vectorizer](https://www.geeksforgeeks.org/understanding-tf-idf-term-frequency-inverse-document-frequency/)
+2. Learn more about [Cosine Similarity](https://medium.com/@arjunprakash027/understanding-cosine-similarity-a-key-concept-in-data-science-72a0fcc57599)
+3. Learn more about [Content Based Recommendation Systems - Practical](https://medium.com/@prateekgaurav/step-by-step-content-based-recommendation-system-823bbfd0541c)
+4. View the Github Repository [Here](https://github.com/Edolor/E-commerce-Recommendation-System)
+5. Learn more about [Content Based Recommendation Systems - Theory](https://www.geeksforgeeks.org/ml-content-based-recommender-system/)

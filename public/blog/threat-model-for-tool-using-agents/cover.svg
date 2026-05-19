@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="A practical threat model for tool-using agents">
+  <rect width="1200" height="750" fill="#EEEFE9"/>
+  <rect x="12" y="12" width="1176" height="726" fill="none" stroke="#151515" stroke-opacity="0.18"/>
+  <text x="80" y="120" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="30" fill="#F54E00">&gt; aghoghomena.com / writing</text>
+  <text font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="85" font-weight="700" fill="#151515"><tspan x="80" y="246">A practical threat</tspan><tspan x="80" y="345">model for tool-using</tspan><tspan x="80" y="444">agents</tspan></text>
+  <text x="80" y="664" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="26" fill="#5b5b57">#ai-security  #red-teaming  #agent-systems</text>
+  <rect x="80" y="686" width="220" height="6" fill="#F54E00"/>
+  <rect x="1050" y="600" width="34" height="70" fill="#F54E00"/>
+</svg>

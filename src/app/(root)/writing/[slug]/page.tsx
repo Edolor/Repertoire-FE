@@ -4,6 +4,7 @@ import Link from "next/link";
 import { posts } from "#content";
 import { formatDate } from "@/lib/content";
 import { JsonLd } from "@/components/JsonLd";
+import { ArticleBody } from "@/components/interactive/ArticleBody";
 import { graph, articleNode, breadcrumbNode } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -67,7 +68,7 @@ export default async function PostPage({
   );
 
   return (
-    <article className="mx-auto w-full max-w-2xl px-5 py-16 sm:px-8 sm:py-24">
+    <article className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={ld} />
       <Link
         href="/writing"
@@ -82,10 +83,18 @@ export default async function PostPage({
         {formatDate(p.date)} · {p.metadata.readingTime} min read ·{" "}
         {p.tags.map((t) => `#${t}`).join(" ")}
       </p>
-      <div
-        className="prose mt-10"
-        dangerouslySetInnerHTML={{ __html: p.body }}
-      />
+      {p.cover && (
+        <div className="mt-8 overflow-hidden border border-divider bg-surface">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={p.cover}
+            alt=""
+            decoding="async"
+            className="w-full"
+          />
+        </div>
+      )}
+      <ArticleBody html={p.body} />
       <div className="mt-12 border-t border-divider pt-6">
         <Link
           href="/#contact"

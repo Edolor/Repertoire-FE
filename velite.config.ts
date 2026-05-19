@@ -20,6 +20,9 @@ const posts = defineCollection({
       // Disciplined tag vocabulary, capped (see velite build assertion).
       tags: s.array(s.string()).default([]),
       description: s.string().max(200),
+      // Same-origin thumbnail/lead image (CSP: img-src 'self'). Photo for
+      // cloned posts, generated brand SVG for the originals.
+      cover: s.string().optional(),
       draft: s.boolean().default(false),
       // markdown -> precompiled HTML string. Deliberately NOT s.mdx():
       // velite's MDX runtime executes code via new Function(), which the
