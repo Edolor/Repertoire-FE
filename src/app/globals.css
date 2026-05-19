@@ -226,3 +226,23 @@ html.os-mode body::before {
 .os-window-anim {
   animation: os-window-in 0.16s ease-out;
 }
+
+/* Generative avatar idle motion. Reduced-motion is handled globally above. */
+@keyframes avatar-bob {
+  from {
+    transform: translateY(0.6px) rotate(-1.2deg);
+  }
+  to {
+    transform: translateY(-0.6px) rotate(1.2deg);
+  }
+}
+@keyframes avatar-blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}

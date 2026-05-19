@@ -1,4 +1,5 @@
 import { TESTIMONIALS } from "@/content/site";
+import { Avatar } from "@/components/primitives/Avatar";
 
 // Fully attributed, no carousel. Excerpts link to the originals.
 export function Testimonials({ className }: { className?: string }) {
@@ -17,19 +18,30 @@ export function Testimonials({ className }: { className?: string }) {
             <blockquote className="text-sm italic text-text/80">
               &ldquo;{t.quote}&rdquo;
             </blockquote>
-            <figcaption className="mt-4 font-mono text-xs text-text/60">
-              <span className="text-text/85">{t.name}</span>, {t.title}
-              <br />
-              <span className="text-text/45">{t.relationship}</span>
-              <br />
-              <a
-                href={t.href}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-1 inline-block text-accent-2 hover:underline"
-              >
-                full recommendation on LinkedIn &gt;
-              </a>
+            <figcaption className="mt-4 flex items-start gap-3 font-mono">
+              <Avatar
+                seed={t.name}
+                look={"look" in t ? t.look : undefined}
+                size={40}
+                className="shrink-0 border border-divider"
+              />
+              <div className="min-w-0">
+                <p className="text-sm font-semibold leading-tight text-text/90">
+                  {t.name}
+                </p>
+                <p className="text-xs text-text/55">{t.title}</p>
+                <p className="mt-0.5 text-[11px] tracking-wide text-text/40">
+                  {t.relationship}
+                </p>
+                <a
+                  href={t.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1.5 inline-block text-xs text-accent-2 hover:underline"
+                >
+                  full recommendation on LinkedIn &gt;
+                </a>
+              </div>
             </figcaption>
           </figure>
         ))}

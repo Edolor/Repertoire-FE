@@ -140,16 +140,36 @@ export const TESTIMONIALS = [
       "He consistently demonstrated technical expertise and a strong problem-solving mindset. His ability to dive deep into complex challenges and deliver reliable solutions was truly impressive. In fact, his skills often rivaled those of more senior engineers.",
     name: "Rajeshree Kathariya",
     title: "Senior Engineer at Phreesia",
-    relationship: "Worked with Aghoghomena at Cavista",
+    relationship: "Worked with Aghoghomena at Cavista Technologies",
     href: linkedinUrl,
+    // Middle-aged woman, professional attire. Stylized, respectful.
+    look: {
+      // Race-agnostic: a neutral non-skin tone, identical for everyone.
+      skin: "#AEB4BD",
+      hairColor: "#2B2620",
+      hairStyle: "bob" as const,
+      cloth: "#34406B",
+      attire: "blazer" as const,
+    },
   },
   {
     quote:
       "He actively participates in discussions, guiding the team toward optimal decisions. His dedication to reviewing items thoroughly and asking insightful questions reflects his commitment to fully understanding feature intent.",
     name: "Brian Harrington",
     title: "Product Director at Axxess",
-    relationship: "Worked with Aghoghomena on the claims management solution",
+    relationship: "Worked with Aghoghomena at Cavista Technologies",
     href: linkedinUrl,
+    // Older male, professional attire. Stylized, respectful.
+    look: {
+      // Race-agnostic: same neutral tone as everyone else; age reads from
+      // the grey hair + glasses, not skin.
+      skin: "#AEB4BD",
+      hairColor: "#8A8A8A",
+      hairStyle: "shortGrey" as const,
+      cloth: "#3A4250",
+      attire: "suit" as const,
+      glasses: true,
+    },
   },
 ];
 
