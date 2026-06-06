@@ -84,7 +84,7 @@ export function Header() {
           <button
             type="button"
             onClick={open}
-            className="border border-divider px-3 py-2 font-mono text-sm hover:bg-surface"
+            className="border border-divider min-h-10 px-3 py-2 font-mono text-sm hover:bg-surface"
           >
             Resume
           </button>
@@ -92,7 +92,7 @@ export function Header() {
             type="button"
             onClick={toggle}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            className="border border-divider px-3 py-2 font-mono text-sm hover:bg-surface"
+            className="border border-divider min-h-10 px-3 py-2 font-mono text-sm hover:bg-surface"
           >
             {theme === "dark" ? "☼" : "☾"}
           </button>
@@ -101,7 +101,7 @@ export function Header() {
             aria-label="Open menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
-            className="border border-divider px-3 py-2 font-mono text-sm md:hidden"
+            className="min-h-10 border border-divider px-3 py-2 font-mono text-sm md:hidden"
           >
             {menuOpen ? "✕" : "≡"}
           </button>

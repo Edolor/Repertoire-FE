@@ -55,7 +55,7 @@ export default function WritingIndex() {
   return (
     <div className="mx-auto w-full max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={writingLd} />
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/55">
+      <p className="font-mono text-xs uppercase tracking-[0.125em] text-text/65">
         <span className="text-accent">&gt;</span> Writing
       </p>
       <h1 className="mt-3 text-3xl font-bold sm:text-4xl">

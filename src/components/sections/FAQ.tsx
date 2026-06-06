@@ -21,7 +21,7 @@ export function FAQ() {
                 <span className="select-none text-accent">&gt;</span>
                 {item.q}
               </dt>
-              <dd className="mt-1.5 text-pretty leading-[1.6] text-text/75">{item.a}</dd>
+              <dd className="mt-1.5 text-pretty leading-relaxed text-text/75">{item.a}</dd>
             </div>
           </Reveal>
         ))}

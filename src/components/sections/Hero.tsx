@@ -12,7 +12,7 @@ export function Hero() {
     >
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/70">
+          <p className="font-mono text-xs uppercase tracking-[0.125em] text-text/70">
             <span className="text-accent">&gt;</span> {PERSON.role}
           </p>
           <h1
@@ -21,7 +21,7 @@ export function Hero() {
           >
             {PERSON.outcome}
           </h1>
-          <p className="mt-5 max-w-xl text-pretty text-lg text-text/70">
+          <p className="mt-5 max-w-xl text-pretty text-base text-text/70 sm:text-lg">
             {PERSON.signature}
           </p>
           <p className="mt-4 font-mono text-xs text-text/60">

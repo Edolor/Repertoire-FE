@@ -32,7 +32,7 @@ export function AboutTeaser() {
     >
       <div className="grid gap-8 sm:grid-cols-[200px_1fr] sm:gap-10">
         <figure className="max-w-[200px]">
-          <div className="border border-divider bg-surface p-1.5">
+          <div className="border border-divider bg-surface p-1.5 transition-colors hover:border-accent-2">
             <Image
               src={portrait}
               alt="Aghoghomena Akasukpe"

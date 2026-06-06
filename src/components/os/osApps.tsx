@@ -56,7 +56,7 @@ function Pane({
 }) {
   return (
     <div className="p-5">
-      <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-text/60">
+      <p className="mb-4 font-mono text-xs uppercase tracking-[0.125em] text-text/60">
         <span className="mr-2 text-accent">&gt;</span>
         {heading}
       </p>

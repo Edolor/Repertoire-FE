@@ -40,7 +40,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={aboutLd} />
-      <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/55">
+      <p className="font-mono text-xs uppercase tracking-[0.125em] text-text/65">
         <span className="text-accent">&gt;</span> About
       </p>
       <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">
