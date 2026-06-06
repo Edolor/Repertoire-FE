@@ -473,7 +473,7 @@ export function OsShell() {
             onClick={() => openApp(APP_BY_ID.contact)}
             className="rounded-sm border border-divider px-3 py-1.5 font-mono text-xs hover:bg-surface"
           >
-            Work with me
+            Get in touch
           </button>
           <button
             type="button"

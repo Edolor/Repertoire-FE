@@ -18,8 +18,8 @@ loop was.
 
 ## The three things that actually fail
 
-**Boundaries.** A tool-using agent is a remote code execution surface
-pointed at itself. If the only thing standing between a mis-planned call
+**Boundaries.** A tool-using agent runs real actions against real state:
+files, APIs, code. If the only thing standing between a mis-planned call
 and your filesystem is a sentence in a system prompt, you do not have a
 boundary. You have a suggestion.
 
@@ -27,12 +27,12 @@ boundary. You have a suggestion.
 step by step, you are not debugging. You are guessing with extra latency.
 
 **Loop integrity.** The reflection step is the highest-leverage and
-least-watched part of most agent systems. It is where attacker-controlled
-content does the most damage and where teams instrument the least.
+least-watched part of most agent systems. It is where a bad tool result
+does the most damage and where teams instrument the least.
 
 ## What I do instead
 
-I treat the agent as an untrusted distributed system. Enforce at the
-execution boundary, make every refusal a structured event the agent can
-reason about, and instrument the loop before tuning the prose. The prompt
-is the last thing I touch, not the first.
+I treat the agent as a distributed system whose inputs I don't trust
+blindly. Validate at the execution boundary, make every refusal a
+structured event the agent can reason about, and instrument the loop before
+tuning the prose. The prompt is the last thing I touch, not the first.

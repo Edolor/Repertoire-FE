@@ -34,19 +34,19 @@ function Banner({ src, alt }: { src: string; alt: string }) {
 
 function ExperienceList({ items }: { items: BaseExperienceProps[] }) {
   if (items.length === 0)
-    return <p className="text-sm text-text/50">Nothing here yet.</p>;
+    return <p className="text-sm text-text/65">Nothing here yet.</p>;
   return (
     <ul className="divide-y divide-divider border-y border-divider">
       {items.map((e, i) => (
         <li key={`${e.institution}-${i}`} className="py-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <p className="font-bold">{e.institution}</p>
-            <p className="font-mono text-xs text-text/50">
+            <p className="font-mono text-xs text-text/65">
               {formatMonthYear(e.start_date)} to{" "}
               {e.end_date ? formatMonthYear(e.end_date) : "present"}
             </p>
           </div>
-          <p className="font-mono text-xs text-text/55">{e.location}</p>
+          <p className="font-mono text-xs text-text/70">{e.location}</p>
           <p className="mt-2 text-sm text-text/75">{e.about}</p>
         </li>
       ))}
@@ -56,7 +56,7 @@ function ExperienceList({ items }: { items: BaseExperienceProps[] }) {
 
 function HonourList({ items }: { items: BaseHonourProps[] }) {
   if (items.length === 0)
-    return <p className="text-sm text-text/50">Nothing here yet.</p>;
+    return <p className="text-sm text-text/65">Nothing here yet.</p>;
   return (
     <ul className="grid gap-3 sm:grid-cols-2">
       {items.map((h, i) => (
@@ -67,10 +67,10 @@ function HonourList({ items }: { items: BaseHonourProps[] }) {
           <Banner src={h.banner} alt={`${h.title}: ${h.about}`} />
           <p className="font-bold">{h.title}</p>
           {h.sub_about && (
-            <p className="font-mono text-xs text-text/55">{h.sub_about}</p>
+            <p className="font-mono text-xs text-text/70">{h.sub_about}</p>
           )}
           <p className="mt-2 text-sm text-text/70">{h.about}</p>
-          <p className="mt-2 font-mono text-[11px] text-text/45">
+          <p className="mt-2 font-mono text-[11px] text-text/65">
             {formatMonthYear(h.issue_date)}
             {h.certification_no && (
               <span> · ID {h.certification_no}</span>
@@ -105,7 +105,7 @@ export function AboutDetails({
       )}
 
       {isLoading && (
-        <p className="mt-10 font-mono text-sm text-text/50" aria-live="polite">
+        <p className="mt-10 font-mono text-sm text-text/65" aria-live="polite">
           &gt; loading experience &amp; honours…
         </p>
       )}

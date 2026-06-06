@@ -5,9 +5,9 @@ export function AgentDemo() {
   return (
     <Section
       id="agent-demo"
-      eyebrow="Watch an agent work"
-      title="How I think about the loop"
-      intro="A canned, steppable run over a fake repo: plan, tool call, result, reflect. Not a live model. It shows where I put the boundaries and why the reflect step is the one I watch."
+      eyebrow="How an agent loop works"
+      title="How I structure the loop, and how I build it"
+      intro="A steppable plan / tool / result / reflect run over a sample repo (canned, not a live model). It shows how I structure orchestration, route tool calls, and use the reflect step to keep the system observable and recoverable, the same patterns behind the agentic-coding work."
     >
       <AgentExplorable />
     </Section>

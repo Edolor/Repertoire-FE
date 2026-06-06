@@ -13,7 +13,7 @@ const BOOT: Line[] = [
   { kind: "in", text: "whoami" },
   {
     kind: "out",
-    text: "Aghoghomena Akasukpe, Agentic AI Systems Engineer. I build production agent systems, then red-team them.",
+    text: "Aghoghomena Akasukpe, systems & full-stack engineer. I build the infrastructure under AI agents and ship full-stack product end to end.",
   },
 ];
 
@@ -47,7 +47,7 @@ export function Terminal() {
           echo,
           {
             kind: "out",
-            text: "Aghoghomena Akasukpe. MSc CS (AI & Security). PST 2025, $20K MITACS. Builds and breaks agents.",
+            text: "Aghoghomena Akasukpe. Systems & full-stack engineer. Best Graduating Student (First Class, 4.88/5.0). MSc CS @ Ontario Tech. Builds agent infra at Farpoint; open to roles.",
           },
         ]);
         break;
@@ -58,7 +58,7 @@ export function Terminal() {
           echo,
           {
             kind: "out",
-            text: "isolation/  skills-runtime/  red-team/  semantic-memory/  (opening selected work…)",
+            text: "mcp-client/  refactor-engine/  full-stack/  data-pipeline/  (opening selected work…)",
           },
         ]);
         setTimeout(() => router.push("/#selected-work"), 350);

@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { graph, abs, breadcrumbNode, SITE_URL } from "@/lib/seo";
 
 const WRITING_DESCRIPTION =
-  "Notes on building and breaking agent systems: reliability, threat models, and what red-teaming an agent actually looks like.";
+  "Notes on building systems and shipping product: agent infrastructure, reliability, full-stack engineering, and lessons from real builds.";
 
 export const metadata: Metadata = {
   title: "Writing",
@@ -30,7 +30,7 @@ const writingLd = graph(
     "@type": "Blog",
     "@id": `${SITE_URL}/writing#blog`,
     url: abs("/writing"),
-    name: "Building and breaking agents",
+    name: "Building reliable systems",
     description: WRITING_DESCRIPTION,
     inLanguage: "en",
     author: { "@id": `${SITE_URL}/#person` },
@@ -59,7 +59,7 @@ export default function WritingIndex() {
         <span className="text-accent">&gt;</span> Writing
       </p>
       <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
-        Building and breaking agents
+        Building reliable systems
       </h1>
       <p className="mt-3 text-text/70">
         <a href="/feed.xml" className="text-accent-2 hover:underline">

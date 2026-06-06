@@ -12,14 +12,14 @@ type Step = {
 };
 
 const STEPS: Step[] = [
-  { phase: "plan", text: "Goal: add rate limiting to the contact endpoint. Plan: locate the handler, check for existing middleware, add a bounded limiter, prove it." },
-  { phase: "tool", text: "grep -r 'create-message' src/  →  reading contact handler" },
-  { phase: "result", text: "Found 1 handler. No limiter present. Untrusted input reaches it directly." },
-  { phase: "reflect", text: "Result is trusted as data, not instruction. Note: the handler is the boundary. Proceed, but add the limiter at the boundary, not in the form." },
-  { phase: "plan", text: "Add a per-IP token bucket at the route, return 429 with retry-after, keep the happy path unchanged." },
-  { phase: "tool", text: "write src/limiter.ts  ·  patch route handler  ·  add test" },
-  { phase: "result", text: "Test: 11th request within window → 429. Legit request → 200. Latency delta negligible." },
-  { phase: "reflect", text: "Boundary enforced and observable. Done. What I'd watch: shared IPs behind NAT (log, don't block harder)." },
+  { phase: "plan", text: "Goal: extract the auth logic out of the request handler into a typed service. Plan: locate the handler, map its call sites, refactor in safe passes, and prove it with tests." },
+  { phase: "tool", text: "grep -r 'login' src/  →  reading the handler and its imports" },
+  { phase: "result", text: "Found 1 handler, 3 call sites, and an existing test file. The handler mixes parsing, auth, and the response." },
+  { phase: "reflect", text: "The seam is the auth step. Plan holds, but do it in two passes: extract the service first, then move the call sites, so each step stays green." },
+  { phase: "plan", text: "Extract AuthService behind a typed interface; keep the handler delegating to it; change nothing observable to callers." },
+  { phase: "tool", text: "write src/auth-service.ts  ·  patch handler + 3 call sites  ·  run tests" },
+  { phase: "result", text: "Tests: 24 passed, 0 failed. Behaviour identical; the handler is 40% smaller and the auth logic is unit-tested in isolation." },
+  { phase: "reflect", text: "Done. The loop stayed observable: each tool result fed the next decision. What I'd watch: one call site has a subtle default worth a regression test." },
 ];
 
 const COLOR: Record<Step["phase"], string> = {

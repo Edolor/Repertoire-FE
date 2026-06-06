@@ -1,7 +1,7 @@
 /**
- * Hardcoded site copy. Items marked DRAFT are placeholder text written from
- * CLAUDE.md + the brief and must be swapped for verified content before this
- * is treated as final (testimonials, the PST paper URL, exact figures).
+ * Hardcoded site copy. All content here is verified against the owner's
+ * résumé/CV, the MITACS project, and public Farpoint/Fabric material.
+ * Farpoint work is described at the public capability level only (NDA).
  * Layout reads from here so copy can change without touching components.
  */
 import {
@@ -14,11 +14,14 @@ import {
 
 export const PERSON = {
   name: "Aghoghomena Akasukpe",
-  role: "Agentic AI Systems Engineer",
-  // Outcome positioning, not a job title.
+  role: "Systems & Full-Stack Engineer",
+  // Outcome positioning: what I build, not a job title.
   outcome:
-    "I build production agent systems that can be trusted to run, then I break them so they hold up when it counts.",
-  signature: "Hi, I build agents. And then I break them.",
+    "I build the systems under AI agents (orchestration, tool execution, MCP, runtimes, memory) and ship full-stack product end to end.",
+  signature: "I build the platform layer under AI agents, and the product on top of it.",
+  // Availability line rendered near the hero CTAs.
+  availability:
+    "Open to full-time systems / platform and full-stack roles. Available for contract on a limited basis.",
   email: emailUrl,
   github: githubUrl,
   linkedin: linkedinUrl,
@@ -27,108 +30,93 @@ export const PERSON = {
 };
 
 // Answer-first FAQ: each answer leads with a direct, self-contained
-// statement (the unit answer engines lift). NDA-safe, on-brand, drafted
-// for review. Rendered visibly on the home page AND emitted as FAQPage
-// JSON-LD so ChatGPT/Perplexity/Google AI can cite it verbatim.
+// statement (the unit answer engines lift). Employer-facing, drafted from
+// the verified résumé. Rendered visibly AND emitted as FAQPage JSON-LD so
+// ChatGPT/Perplexity/Google AI can cite it verbatim.
 export const FAQ = [
   {
-    q: "What does an Agentic AI Systems Engineer do?",
-    a: "An Agentic AI Systems Engineer builds the production systems that let language models plan, call tools, and act on real code: Model Context Protocol clients, agent orchestration loops, skills runtimes, semantic memory, and tool-execution isolation. Aghoghomena Akasukpe builds these systems and then red-teams them.",
+    q: "What roles is Aghoghomena Akasukpe open to?",
+    a: "Full-time systems / platform engineering and full-stack product engineering roles. He builds the infrastructure under AI agents (orchestration, tool execution, MCP clients, runtimes, memory) and ships full-stack product end to end. He is also available for contract on a limited basis.",
   },
   {
-    q: "How can I work with Aghoghomena Akasukpe?",
-    a: "There are three engagement models: an advisory retainer (monthly, fixed hours, architecture and threat-model reviews), a fixed-scope build (a bounded capability built and handed over in two to six weeks), and an agent red-team assessment (adversarial testing with severity-ranked findings in one to three weeks).",
+    q: "What is his strongest engineering work?",
+    a: "Architecting the agent infrastructure behind Fabric, Farpoint's agentic coding IDE: MCP layers for structured tool invocation and multi-step orchestration, tool-execution and memory pipelines, and distributed pipelines that analyze and transform large, multi-file codebases. Earlier, as a software engineer at Cavista in healthcare, he built C#/.NET claims-parsing, optimized SQL, and shipped tested, reliable releases.",
   },
   {
-    q: "What is agent red-teaming?",
-    a: "Agent red-teaming is adversarial assessment of an AI agent as a system, not a chatbot. It targets the tool-execution surface, isolation boundaries, and failure modes that let a single successful attack cause real damage. The output is severity-ranked findings with deterministic reproductions and suggested boundaries.",
+    q: "What is his full-stack experience?",
+    a: "He ships end to end in TypeScript, from a cross-platform Electron + React desktop IDE (Fabric, at Farpoint) to the web. On the web: React/Next.js front ends, typed APIs, and the data layer with React Query, Zod, and Playwright (this site runs on that stack). His backend history spans C#/.NET at Cavista and Laravel/PHP APIs at Azul, plus a school-management platform for 100,000+ users on Next.js, Node, Docker, and AWS.",
   },
   {
-    q: "Is prompt injection the main risk for tool-using agents?",
-    a: "Prompt injection is on the list of risks for tool-using agents, but it is not at the top. The risks that matter most are ranked by how much a single success costs you: an unbounded tool-execution surface and weak isolation boundaries usually outrank prompt-level attacks.",
+    q: "What are his credentials?",
+    a: "Best Graduating Student of the School of Computing & Engineering Sciences at Babcock University (First Class, 4.88/5.0, top 1%), an MSc in Computer Science at Ontario Tech University on a Dean's Graduate Scholarship, a peer-reviewed publication at PST 2025 (IEEE Xplore), a $20,000 MITACS research award, and AWS Machine Learning Specialty certification.",
   },
   {
-    q: "What are Aghoghomena Akasukpe's credentials?",
-    a: "An MSc in Computer Science (AI and Security), a peer-reviewed publication at PST 2025, and a $20,000 MITACS BSI research award. The applied track is core engineering on a production agentic coding platform, with two named LinkedIn recommendations from prior engineering roles.",
+    q: "What systems does he build under AI agents?",
+    a: "The infrastructure that lets language models plan and act on real code: agent orchestration loops, tool-execution layers, Model Context Protocol (MCP) clients, runtimes, and memory, designed for structured, multi-file work on real repositories rather than one-shot prompting.",
   },
   {
-    q: "Who is the right fit for these engagements?",
-    a: "Engineering teams shipping an agent who want the plan pressure-tested rather than approved. The fit is wrong if you want a prompt tweaked and the reliability problem declared solved, or if the agent cannot be discussed as a system with boundaries and failure modes.",
+    q: "What do colleagues say about working with him?",
+    a: "Two named LinkedIn recommendations from his Cavista team. A Senior Engineer noted his skills 'often rivaled those of more senior engineers'; a Product Director noted he 'actively participates in discussions, guiding the team toward optimal decisions' and reviews work thoroughly to fully understand intent.",
   },
 ];
 
 export const PROOF = [
-  { label: "Peer-reviewed", value: "PST 2025 publication" },
-  { label: "Research award", value: "$20K MITACS BSI" },
-  { label: "Industry", value: "Core engineer, agentic coding platform" },
-  { label: "Endorsed", value: "2 named recommendations" },
+  { label: "Currently", value: "Agentic AI Systems Engineer, Farpoint (Fabric)" },
+  { label: "Shipped", value: "Software Engineer, Cavista (healthcare)" },
+  { label: "Foundation", value: "Best Graduating Student · First Class 4.88/5.0" },
+  { label: "Research", value: "MSc CS · PST 2025 (IEEE) · $20K MITACS" },
 ];
 
-export const ENGAGEMENTS = [
+// "How I build": three engineering pillars, each grounded in real work.
+export const PILLARS = [
   {
-    id: "advisory",
-    name: "Advisory retainer",
-    tagline: "A senior agent-systems engineer on call.",
-    forWho: "Teams shipping an agent who want decisions reviewed before they ship, not after.",
-    youGet: [
-      "Recurring architecture and threat-model reviews",
-      "Async design feedback on the agent loop, tools, and boundaries",
-      "A standing line for the hard calls",
-    ],
-    shape: "Monthly, fixed hours, cancel anytime.",
+    id: "platform",
+    name: "Systems & platform",
+    tagline: "The infrastructure under AI agents.",
+    body: "The runtime that lets agents plan, call tools, and act on real code. At Farpoint I architect the agent infrastructure behind Fabric, an agentic coding IDE: MCP for structured tool invocation and multi-step orchestration, tool-abstraction and execution layers, context-lifecycle and memory pipelines, and distributed pipelines for large-scale codebase analysis and autonomous code improvement.",
+    stack: ["MCP", "Orchestration", "Tool execution", "Memory pipelines", "Distributed", "TypeScript"],
   },
   {
-    id: "build",
-    name: "Fixed-scope build",
-    tagline: "A bounded piece of the agent system, built and handed over.",
-    forWho: "Teams who need a specific capability (isolation layer, skills runtime, memory) built right once.",
-    youGet: [
-      "A scoped statement of work with a definition of done",
-      "Production code, tests, and the trade-off writeup",
-      "A handover so your team owns it after",
-    ],
-    shape: "Fixed price, fixed scope, 2 to 6 weeks typical.",
+    id: "fullstack",
+    name: "Full-stack product",
+    tagline: "Shipped end to end, desktop to web.",
+    body: "Fabric, Farpoint's agentic coding IDE, is a cross-platform Electron + React + TypeScript desktop app: a Monaco editor, Tree-sitter parsing across a dozen languages, embedded terminals (xterm + node-pty), database awareness, and multi-provider LLM adapters, tested with Vitest and Playwright. On the web I've shipped a school-management platform for 100,000+ users (Next.js, Node, Docker, AWS), this site (Next.js 15, React Query, Zod, Playwright), and apps in Laravel and Django.",
+    stack: ["Electron", "React", "TypeScript", "Monaco", "Next.js", "Node"],
   },
   {
-    id: "redteam",
-    name: "Agent red-team assessment",
-    tagline: "Find the failures that matter before an adversary does.",
-    forWho: "Teams with a shipping agent who want it adversarially tested as a system, not a chatbot.",
-    youGet: [
-      "Severity-ranked findings with deterministic reproductions",
-      "Suggested boundaries, not just problems",
-      "A readout your engineers can act on",
-    ],
-    shape: "Fixed-scope, time-boxed, report in 1 to 3 weeks.",
+    id: "backend",
+    name: "Backend & data",
+    tagline: "Made it fast and correct.",
+    body: "At Cavista I built healthcare-claims parsing in C#/.NET, optimized SQL with EF/LINQ, and handled race conditions for an 80% process improvement, with unit and integration tests and production log analysis. Solid CS fundamentals, kept sharp with competitive coding.",
+    stack: ["C#/.NET", "SQL Server", "EF/LINQ", "Postgres", "Docker", "AWS"],
   },
 ];
 
-// The honest anti-pitch.
-export const ANTI_PITCH = {
-  title: "You will not enjoy working with me if",
+// How I work: collaboration-positive, paraphrased from the two named
+// recommendations. Replaces the old adversarial "anti-pitch".
+export const HOW_I_WORK = {
+  title: "How I work",
   points: [
-    "you want a prompt tweaked and the reliability problem declared solved",
-    "the agent cannot be discussed as a system with boundaries and failure modes",
-    "you need a vendor who agrees with the plan rather than pressure-tests it",
+    "I dig into the hard problem and ship reliable solutions; colleagues have said my work “often rivaled more senior engineers.”",
+    "I review thoroughly and ask the questions that surface intent before building, not after.",
+    "I document and communicate so the whole team moves faster, and I own the outcome.",
   ],
 };
 
 export const RESEARCH = [
   {
     title: "Peer-reviewed publication, PST 2025",
-    venue: "Privacy, Security and Trust (PST) 2025",
-    why: "Peer review at a security venue is external evidence the work survives scrutiny by people paid to find holes in it. That is the bar I hold my own systems to.",
+    venue: "Privacy, Security and Trust (PST) 2025 · IEEE Xplore",
+    why: "Peer review at an established venue is external evidence the work holds up under scrutiny by people paid to find holes in it. That is the bar I hold my engineering to.",
     href: "https://ieeexplore.ieee.org/document/11268872",
     hrefLabel: "Read the paper on IEEE Xplore",
-    draft: false,
   },
   {
-    title: "$20,000 MITACS BSI research award",
-    venue: "MITACS, Business Strategy Internship",
-    why: "A funded award means an external committee staked money on the research direction before it produced anything. It is forward-looking credibility, not a retrospective pat.",
+    title: "$20,000 MITACS research award",
+    venue: "MITACS · agentic coding infrastructure (MCP)",
+    why: "A competitive, funded award means an external committee staked money on the research direction before it produced results. It funds the agentic-coding-infrastructure work directly.",
     href: linkedinUrl,
     hrefLabel: "About the award",
-    draft: false,
   },
 ];
 
@@ -173,26 +161,48 @@ export const TESTIMONIALS = [
   },
 ];
 
+// Surfaced work history (was buried in a popup). Concise, employer-facing.
+export const EXPERIENCE = [
+  {
+    role: "Agentic AI Systems Engineer (Contract)",
+    org: "Farpoint Technologies (Fabric)",
+    period: "2026 to present",
+    note: "Architecting the agent infrastructure behind Fabric, an agentic AI coding IDE: MCP for structured tool invocation and multi-step orchestration, tool-execution and memory pipelines, and distributed pipelines for large-scale codebase analysis and autonomous code improvement.",
+  },
+  {
+    role: "Software Engineer (Healthcare)",
+    org: "Cavista Technologies",
+    period: "2023 to 2024",
+    note: "C#/.NET healthcare-claims parsing, SQL optimization, race-condition handling (80% process improvement), unit/integration testing.",
+  },
+  {
+    role: "Full-Stack Engineer",
+    org: "Azul",
+    period: "2021 to 2023",
+    note: "Laravel/PHP REST APIs, MySQL optimization and indexing, JWT auth, and TypeScript/Next.js/React front ends.",
+  },
+];
+
 export const ABOUT_NARRATIVE = [
-  "I am an Agentic AI Systems Engineer. I build the production systems that let language models plan, call tools, and act against real code: Model Context Protocol clients, agent orchestration, skills runtimes, tool-execution isolation, and semantic memory.",
-  "The differentiating part is the second half. I red-team what I build. An MSc in Computer Science (AI and Security), a peer-reviewed PST 2025 publication, and a $20K MITACS BSI research award are the formal version of one habit: assume the system will be attacked, and design as if it already has been.",
-  "I work best engineer-to-engineer, with teams who want the plan pressure-tested rather than approved.",
+  "I'm a systems and full-stack engineer. I build the infrastructure that lets AI agents plan, call tools, and act on real code (agent orchestration, tool execution, MCP clients, runtimes, memory), and I ship full-stack product end to end. Right now I'm the agent-infrastructure engineer behind Fabric, Farpoint's agentic coding IDE: MCP for tool invocation and orchestration, tool-execution and memory pipelines, and distributed pipelines for large-scale codebase analysis and autonomous code improvement.",
+  "I ship across the stack. This site runs on Next.js 15, React, TypeScript, Tailwind, React Query, Zod, and Playwright. Before grad school I was a software engineer at Cavista in healthcare (C#/.NET claims parsing, SQL optimization, and tests) and a full-stack engineer building APIs and product in Laravel and Django. The foundation is solid CS: Best Graduating Student of my school at Babcock University (First Class, 4.88/5.0, top 1%) and an MSc in Computer Science at Ontario Tech University on a Dean's scholarship.",
+  "My research adds rigor: a peer-reviewed PST 2025 publication (IEEE Xplore) and a $20K MITACS award. I work best engineer-to-engineer, inside a team that ships: reviewing thoroughly, asking the questions that surface intent, and owning the outcome.",
 ];
 
 export const EXPERTISE = [
-  { k: "Agent orchestration", v: "Planning loops, tool routing, reflection that is inspectable" },
-  { k: "Tool-execution isolation", v: "Enforced boundaries, not prompt-level suggestions" },
-  { k: "MCP clients", v: "Model Context Protocol integration and capability surfaces" },
-  { k: "Skills runtimes", v: "Versioned, capability-scoped, untrusted-by-default" },
-  { k: "Semantic memory", v: "Retrieval-backed memory for long-horizon sessions" },
-  { k: "AI red-teaming", v: "Adversarial assessment of agents as systems" },
+  { k: "Systems & platform", v: "Agent orchestration, tool routing, MCP clients, runtimes, memory" },
+  { k: "Agentic coding infra", v: "MCP, tool execution, memory pipelines, distributed codebase analysis (Fabric)" },
+  { k: "Full-stack product", v: "Electron desktop + Next.js / React / TypeScript web, typed end to end" },
+  { k: "Backend & APIs", v: "C#/.NET, Laravel, Django; REST APIs; SQL optimization" },
+  { k: "Cloud & data", v: "AWS, Docker, Terraform; Postgres, MySQL, Redis; vector stores" },
+  { k: "Quality & testing", v: "xUnit, Playwright, React Query, Zod; typed and tested end to end" },
 ];
 
 export const NAV = [
-  { href: "/#work-with-me", label: "Work with me" },
-  { href: "/#selected-work", label: "Selected work" },
+  { href: "/#selected-work", label: "Work" },
+  { href: "/#how-i-build", label: "How I build" },
+  { href: "/#about", label: "Experience" },
   { href: "/#research", label: "Research" },
   { href: "/writing", label: "Writing" },
-  { href: "/about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];

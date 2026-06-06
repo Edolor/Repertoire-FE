@@ -1,0 +1,50 @@
+---
+title: "Agent infrastructure for Fabric, an agentic coding IDE"
+slug: agentic-coding-platform
+order: 1
+client: "Farpoint Technologies (Fabric)"
+summary: "Fabric is an agentic AI coding IDE that plans first and codes second. I architect the infrastructure underneath: how agents invoke tools, hold context, and act on large, multi-file codebases."
+tags: ["agent-systems", "mcp", "platform"]
+outcome: "Agents work on real repositories through structured tool calls, persistent context, and distributed analysis, not brittle one-file text edits. Metrics under NDA."
+locked: true
+---
+
+## Context
+
+Current work at Farpoint on **Fabric** (codewithfabric.com): a sovereign,
+agentic AI coding IDE that plans first and codes second. My focus is the
+agent infrastructure, the layer that lets the model invoke tools, hold
+context across steps, and act reliably on large codebases.
+
+## Problem and constraint
+
+Text-only agents edit code the way a person pastes into a single file: no
+real model of the project, no durable context, no coordination across files.
+That breaks down on large, multi-file work and on SQL that has to stay
+correct. The job was to give the agent structured, observable access to the
+codebase and tools without every call becoming an unbounded side effect.
+
+## Approach and key decisions
+
+- Architected **Model Context Protocol (MCP)** infrastructure for structured
+  tool invocation and multi-step agent orchestration, so capabilities are
+  explicit, typed tool calls rather than free-form text.
+- Built **tool-abstraction and execution layers** for secure LLM-to-system
+  interactions, with the boundary observable: a call that cannot proceed
+  becomes a structured signal the agent can reason about.
+- Implemented **context-lifecycle and memory pipelines** for long-running
+  autonomous workflows, so the working context stays relevant over many steps.
+- Designed **distributed processing pipelines** for large-scale codebase
+  analysis and transformation, plus iterative reasoning loops for autonomous
+  code improvement beyond traditional code completion.
+
+## Outcome (sanitized)
+
+Agents operate on real repositories through structured tool calls, persistent
+context, and distributed analysis instead of one-file text patches. Concrete
+metrics are under NDA; happy to walk through specifics in an interview.
+
+## What I'd do differently
+
+Invest in the observability stream even earlier. The decisions that mattered
+most only became obvious once each step of the loop was inspectable.

@@ -13,8 +13,8 @@ export function SelectedWork() {
     <Section
       id="selected-work"
       eyebrow="Selected work"
-      title="What I have actually built and broken"
-      intro="Sanitized, NDA-safe writeups. Employers are anonymized; outcomes are ratios, never raw figures. Each one: context, the constraint, the decisions, what I would do differently."
+      title="What I've built"
+      intro="Engineering writeups, sanitized where under NDA. Each one: the context, the constraint, the decisions, and what I would do differently."
     >
       <div className="grid gap-5 md:grid-cols-2">
         {items.map((w, idx) => (
@@ -25,12 +25,12 @@ export function SelectedWork() {
                 className="group flex h-full flex-col p-5"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-text/45">
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-text/65">
                     {w.client}
                   </span>
                   {w.locked && (
                     <span className="font-mono text-[11px] text-accent">
-                      details on a call
+                      details under NDA
                     </span>
                   )}
                 </div>

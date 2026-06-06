@@ -1,0 +1,39 @@
+---
+title: "A school-management platform built for 100,000+ users"
+slug: chestnut-school-platform
+order: 3
+client: "Chestnut (school management platform)"
+summary: "A full-stack platform for students, staff, results, and promotions, designed to scale to a large user base on a modern TypeScript stack."
+tags: ["full-stack", "nextjs", "product"]
+outcome: "Shipped a production platform (chestnutschool.com) on Next.js, Node/Express, and Docker on AWS, architected to support 100,000+ students and faculty."
+---
+
+## Context
+
+A full-stack school-management platform (students, staff, results, and
+promotions) built end to end and deployed for real use at
+chestnutschool.com.
+
+## Problem and constraint
+
+The system had to model a whole school's workflows and scale to a large
+user base without falling over, while staying maintainable for a small team.
+
+## Approach and key decisions
+
+- Built the front end in Next.js / React with React Query for data fetching
+  and caching, and Tailwind for a consistent UI.
+- Backed it with Node/Express services and a typed data layer; containerized
+  with Docker for reproducible deploys on AWS.
+- Modeled the data around the real entities (students, staff, results,
+  promotions) so features compose instead of special-casing.
+
+## Outcome
+
+A production platform serving its school, architected to support 100,000+
+students and faculty across classes.
+
+## What I'd do differently
+
+Introduce end-to-end tests (Playwright) earlier: the same discipline I now
+build in from the start.

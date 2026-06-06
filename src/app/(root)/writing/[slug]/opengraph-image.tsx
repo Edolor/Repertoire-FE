@@ -19,6 +19,6 @@ export default async function Image({
   return terminalImage({
     kicker: "aghoghomena.com / writing",
     title: p?.title ?? "Writing",
-    footer: "Aghoghomena Akasukpe · Agentic AI Systems Engineer",
+    footer: "Aghoghomena Akasukpe · Systems & Full-Stack Engineer",
   });
 }

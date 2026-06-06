@@ -14,9 +14,9 @@ import { twitterHandle } from "@/urls";
 export const SITE_URL = "https://www.aghoghomena.com";
 export const SITE_NAME = "Aghoghomena Akasukpe";
 export const SITE_TITLE =
-  "Aghoghomena Akasukpe | Agentic AI Systems Engineer";
+  "Aghoghomena Akasukpe | Systems & Full-Stack Engineer";
 export const SITE_DESCRIPTION =
-  "I build production agent systems: Model Context Protocol clients, agent orchestration, skills runtimes, semantic memory, and tool-execution isolation. Then I red-team them. MSc Computer Science (AI & Security), peer-reviewed PST 2025, $20K MITACS research award.";
+  "Systems and full-stack engineer. I build the infrastructure under AI agents (agent orchestration, tool execution, MCP clients, runtimes, memory) and ship full-stack product end to end in Next.js, React, and TypeScript. Currently the agent-infrastructure engineer behind Fabric, Farpoint's agentic coding IDE (MCP, tool execution, memory pipelines, distributed codebase analysis). Best Graduating Student (First Class, 4.88/5.0), MSc Computer Science, peer-reviewed PST 2025 (IEEE), $20K MITACS. Open to full-time roles.";
 export const TWITTER_HANDLE = `@${twitterHandle}`;
 export const LOCALE = "en_US";
 
@@ -46,19 +46,27 @@ export const personNode = {
     ...EXPERTISE.map((e) => e.k),
     "Model Context Protocol",
     "LLM tool use",
-    "AI security",
-    "AI red teaming",
-    "Agentic AI systems",
+    "Agent orchestration",
+    "Full-stack development",
+    "Distributed systems",
+    "Next.js",
+    "TypeScript",
   ],
   award: [
-    "$20,000 MITACS BSI research award",
+    "Best Graduating Student, School of Computing & Engineering Sciences, Babcock University",
+    "$20,000 MITACS research award",
     "Peer-reviewed publication, PST 2025",
   ],
   hasCredential: [
     {
       "@type": "EducationalOccupationalCredential",
       credentialCategory: "degree",
-      name: "MSc Computer Science (AI and Security)",
+      name: "MSc Computer Science, Ontario Tech University",
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "degree",
+      name: "BSc Computer Science, Babcock University (First Class, 4.88/5.0)",
     },
   ],
 };

@@ -15,7 +15,7 @@ export function Research() {
           <Reveal key={r.title} delay={idx * 0.05}>
             <article className="flex h-full flex-col border border-divider bg-surface p-5">
               <h3 className="text-lg font-bold">{r.title}</h3>
-              <p className="mt-1 font-mono text-xs text-text/55">{r.venue}</p>
+              <p className="mt-1 font-mono text-xs text-text/70">{r.venue}</p>
               <p className="mt-3 text-sm text-text/75">{r.why}</p>
               <a
                 href={r.href}
@@ -24,9 +24,6 @@ export function Research() {
                 className="mt-auto pt-4 font-mono text-xs text-accent-2 hover:underline"
               >
                 {r.hrefLabel} &gt;
-                {r.draft && (
-                  <span className="ml-2 text-accent">[DRAFT link]</span>
-                )}
               </a>
             </article>
           </Reveal>

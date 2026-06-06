@@ -11,7 +11,7 @@ import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { AboutDetails } from "@/components/sections/AboutDetails";
-import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
+import { ABOUT_NARRATIVE, EXPERIENCE, PERSON } from "@/content/site";
 
 export function AboutTeaser() {
   const { open } = useResume();
@@ -43,7 +43,7 @@ export function AboutTeaser() {
               className="aspect-[4/5] w-full object-cover grayscale transition-[filter] duration-300 hover:grayscale-0"
             />
           </div>
-          <figcaption className="mt-2 font-mono text-xs text-text/50">
+          <figcaption className="mt-2 font-mono text-xs text-text/65">
             <span className="text-accent">&gt;</span> {PERSON.name}
           </figcaption>
         </figure>
@@ -63,6 +63,29 @@ export function AboutTeaser() {
             </ButtonLink>
           </div>
         </div>
+      </div>
+
+      <div className="mt-12">
+        <p className="font-mono text-xs uppercase tracking-widest text-text/65">
+          <span className="text-accent">&gt;</span> experience
+        </p>
+        <ul className="mt-4 divide-y divide-divider border-y border-divider">
+          {EXPERIENCE.map((e) => (
+            <li
+              key={e.org}
+              className="flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"
+            >
+              <div className="max-w-2xl">
+                <p className="font-bold">{e.role}</p>
+                <p className="font-mono text-xs text-text/65">{e.org}</p>
+                <p className="mt-1 text-sm text-text/75">{e.note}</p>
+              </div>
+              <span className="shrink-0 font-mono text-xs text-text/65 sm:pl-6">
+                {e.period}
+              </span>
+            </li>
+          ))}
+        </ul>
       </div>
 
       <Testimonials className="mt-12" />
@@ -95,7 +118,7 @@ export function AboutTeaser() {
             </div>
             <div className="overflow-y-auto px-5 pb-6 pt-3">
               <AboutDetails showResume={false} flush />
-              <p className="mt-8 font-mono text-xs text-text/55">
+              <p className="mt-8 font-mono text-xs text-text/70">
                 <Link
                   href="/about"
                   className="text-accent-2 hover:underline"

@@ -1,0 +1,45 @@
+---
+title: "Healthcare claims parsing and SQL optimization at Cavista"
+slug: cavista-healthcare-backend
+order: 2
+client: "Cavista Technologies (healthcare)"
+summary: "A C#/.NET claims pipeline had to parse diverse Health Care Claim (837) data correctly and fast, with reliable releases across environments."
+tags: ["backend", "dotnet", "sql"]
+outcome: "Race-condition handling improved a key process by ~80%; SQL optimization and a thorough test suite kept releases reliable across dev, staging, and production."
+---
+
+## Context
+
+As a software engineer at Cavista (healthcare), I worked on the systems that
+parse and process electronic Health Care Claim (837) data, translating
+Companion Guides into parser code and handling diverse claim segments
+through EdiWeave and custom models.
+
+## Problem and constraint
+
+Claims data is messy and high-stakes: parse it wrong and downstream
+submission fails. The work had to expand support for more claim segments,
+keep queries fast under load, and stay reliable across environments, all
+without regressing existing behavior.
+
+## Approach and key decisions
+
+- Optimized SQL written through Entity Framework / LINQ, adding
+  `AsNoTracking` on read paths and analyzing queries with LINQPad to remove
+  inefficiencies.
+- Handled race conditions with techniques like lazy caching and
+  pseudo-random key generation, improving a key process by roughly 80%.
+- Built confidence with thorough unit and integration tests (xUnit,
+  NSubstitute, Fluent Assertions) so changes shipped without surprises.
+- Closed the loop in production: analyzed logs in Kibana across dev,
+  staging, and production to verify behavior after each release.
+
+## Outcome
+
+Broader claim-segment support, faster queries, and reliable releases, with
+two senior colleagues later vouching for the work by name on LinkedIn.
+
+## What I'd do differently
+
+Push more of the race-condition handling into the data model itself rather
+than application-level guards, so the invariants are harder to bypass.

@@ -7,7 +7,14 @@ import { AgentDemo } from "@/components/sections/AgentDemo";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { AboutDetails } from "@/components/sections/AboutDetails";
 import { Terminal } from "@/components/interactive/Terminal";
-import { ABOUT_NARRATIVE, ANTI_PITCH } from "@/content/site";
+import { ABOUT_NARRATIVE } from "@/content/site";
+
+// Playful "trash" easter egg: positioning noise this site deliberately let go.
+const DEPRECATED = [
+  "job titles that describe a box instead of the work",
+  "positioning that buries the build under the buzzword",
+  "walls of jargon where a plain sentence would do",
+];
 
 // Every app reuses the EXISTING section component as its window body (no
 // forked copy). The .os-window-body CSS neutralizes the <Section> page
@@ -99,7 +106,7 @@ function ReadmeApp() {
           &quot;Go&quot; menu, or the &quot;Website mode&quot; button. Your
           choice is remembered.
         </p>
-        <p className="text-text/55">
+        <p className="text-text/70">
           Nothing here is a real OS. No files, no tracking, no sound.
         </p>
       </div>
@@ -109,9 +116,9 @@ function ReadmeApp() {
 
 function TrashApp() {
   return (
-    <Pane heading={ANTI_PITCH.title}>
+    <Pane heading="deprecated.txt">
       <ul className="space-y-3 text-sm text-text/75">
-        {ANTI_PITCH.points.map((pt) => (
+        {DEPRECATED.map((pt) => (
           <li key={pt} className="flex gap-2">
             <span className="text-accent" aria-hidden>
               &gt;
@@ -120,8 +127,8 @@ function TrashApp() {
           </li>
         ))}
       </ul>
-      <p className="mt-6 font-mono text-xs text-text/50">
-        Filed under trash on purpose. Still true.
+      <p className="mt-6 font-mono text-xs text-text/65">
+        Filed under trash on purpose. Out with the noise.
       </p>
     </Pane>
   );
@@ -209,7 +216,7 @@ export const OS_APPS: OsApp[] = [
   {
     id: "trash",
     file: "trash",
-    title: "trash · anti-pitch",
+    title: "trash · deprecated",
     kind: "window",
     w: 520,
     h: 380,

@@ -13,7 +13,7 @@ import {
 } from "@/lib/seo";
 
 const ABOUT_DESCRIPTION =
-  "Aghoghomena Akasukpe, Agentic AI Systems Engineer. Background, experience, education, and honours: MSc Computer Science (AI & Security), PST 2025, $20K MITACS.";
+  "Aghoghomena Akasukpe, Systems & Full-Stack Engineer. Background, experience, education, and honours: agentic-coding infrastructure at Farpoint, Software Engineer at Cavista, Best Graduating Student (First Class), MSc Computer Science at Ontario Tech, PST 2025, $20K MITACS.";
 
 export const metadata: Metadata = {
   title: "About",

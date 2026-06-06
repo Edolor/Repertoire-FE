@@ -8,7 +8,7 @@ export function WritingTeaser() {
     <Section
       id="writing"
       eyebrow="Writing"
-      title="Notes on building and breaking agents"
+      title="Notes on building systems and shipping product"
       intro={
         <Link href="/writing" className="text-accent-2 hover:underline">
           Full index &amp; RSS &gt;
@@ -28,7 +28,7 @@ export function WritingTeaser() {
                 </h3>
                 <p className="mt-1 text-sm text-text/65">{p.description}</p>
               </div>
-              <span className="shrink-0 font-mono text-xs text-text/45 sm:pl-6">
+              <span className="shrink-0 font-mono text-xs text-text/65 sm:pl-6">
                 {formatDate(p.date)} · {p.metadata.readingTime} min
               </span>
             </Link>

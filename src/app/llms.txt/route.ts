@@ -1,5 +1,5 @@
 import { publishedPosts, publishedWork } from "@/lib/content";
-import { PERSON, EXPERTISE, ENGAGEMENTS, FAQ } from "@/content/site";
+import { PERSON, EXPERTISE, EXPERIENCE, FAQ } from "@/content/site";
 import { SITE_URL } from "@/lib/seo";
 
 // /llms.txt (https://llmstxt.org): a clean, link-rich digest for answer
@@ -12,7 +12,7 @@ export function GET() {
 
 > ${PERSON.role}. ${PERSON.outcome}
 
-Aghoghomena Akasukpe builds production agent systems (Model Context Protocol clients, agent orchestration, skills runtimes, semantic memory, tool-execution isolation) and then red-teams them. MSc Computer Science (AI and Security), peer-reviewed at PST 2025, $20,000 MITACS BSI research award.
+Aghoghomena Akasukpe is a systems and full-stack engineer. He builds the infrastructure under AI agents (agent orchestration, tool execution, Model Context Protocol clients, runtimes, and memory) and ships full-stack product end to end in Next.js, React, and TypeScript. He is currently the agent-infrastructure engineer behind Fabric, Farpoint's agentic coding IDE (MCP tool invocation and orchestration, tool-execution and memory pipelines, and distributed pipelines for large-scale codebase analysis and autonomous code improvement). Best Graduating Student (First Class, 4.88/5.0), MSc Computer Science at Ontario Tech, peer-reviewed at PST 2025 (IEEE), $20,000 MITACS award. Open to full-time roles; available for contract.
 
 ## Key facts
 
@@ -20,15 +20,15 @@ Aghoghomena Akasukpe builds production agent systems (Model Context Protocol cli
 - Role: ${PERSON.role}
 - Site: ${SITE_URL}
 - Contact: ${PERSON.email}
-- Credentials: MSc Computer Science (AI and Security); peer-reviewed PST 2025 publication; $20,000 MITACS BSI research award; core engineer on a production agentic coding platform.
+- Credentials: Best Graduating Student, School of Computing & Engineering Sciences, Babcock University (First Class, 4.88/5.0, top 1%); MSc Computer Science, Ontario Tech University (Dean's Graduate Scholarship); peer-reviewed PST 2025 publication (IEEE Xplore); $20,000 MITACS research award; AWS Machine Learning Specialty.
 
 ## Expertise
 
 ${EXPERTISE.map((e) => `- ${e.k}: ${e.v}`).join("\n")}
 
-## Engagements
+## Experience
 
-${ENGAGEMENTS.map((e) => `- ${e.name}: ${e.tagline} ${e.shape}`).join("\n")}
+${EXPERIENCE.map((e) => `- ${e.role}, ${e.org} (${e.period}): ${e.note}`).join("\n")}
 
 ## FAQ
 
@@ -38,7 +38,7 @@ ${FAQ.map((f) => `### ${f.q}\n${f.a}`).join("\n\n")}
 
 - [Home](${SITE_URL}): positioning, work, research, contact
 - [About](${abs("/about")}): background, experience, education, honours
-- [Writing](${abs("/writing")}): notes on building and breaking agents
+- [Writing](${abs("/writing")}): notes on building systems and shipping product
 
 ## Selected work
 

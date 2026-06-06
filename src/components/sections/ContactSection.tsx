@@ -7,13 +7,13 @@ export function ContactSection() {
     <Section
       id="contact"
       eyebrow="Contact"
-      title="Tell me the problem in one line"
-      intro="The form qualifies a consulting conversation. Hiring or just want to talk shop? The direct email and GitHub below are never funneled through anything."
+      title="Let's talk"
+      intro="Open to full-time systems / platform and full-stack roles, and available for contract. Hiring, or just want to talk shop? Use the form, or reach me directly below."
     >
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
         <ContactForm />
         <div className="font-mono text-sm">
-          <p className="text-text/55">Hiring / peer path, no form:</p>
+          <p className="text-text/70">Hiring / peer path, no form:</p>
           <ul className="mt-3 space-y-2">
             <li>
               <a

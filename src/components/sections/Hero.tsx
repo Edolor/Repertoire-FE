@@ -12,23 +12,24 @@ export function Hero() {
     >
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
         <div>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/55">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-text/70">
             <span className="text-accent">&gt;</span> {PERSON.role}
           </p>
           <h1
             id="hero-heading"
-            className="mt-4 text-balance text-4xl font-bold leading-[1.05] sm:text-5xl lg:text-6xl"
+            className="mt-4 text-balance text-3xl font-bold leading-[1.1] sm:text-4xl lg:text-5xl"
           >
             {PERSON.outcome}
           </h1>
           <p className="mt-5 max-w-xl text-pretty text-lg text-text/70">
-            <span className="font-mono text-accent">&quot;</span>
             {PERSON.signature}
-            <span className="font-mono text-accent">&quot;</span>
+          </p>
+          <p className="mt-4 font-mono text-xs text-text/60">
+            <span className="text-accent">&gt;</span> {PERSON.availability}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <ButtonLink href="/#work-with-me" variant="primary" size="lg">
-              Work with me
+            <ButtonLink href="/#contact" variant="primary" size="lg">
+              Get in touch
             </ButtonLink>
             <ButtonLink
               href={PERSON.resume}
@@ -58,7 +59,7 @@ export function Hero() {
       <ul className="grid grid-cols-2 gap-x-6 gap-y-4 py-6 sm:grid-cols-4">
         {PROOF.map((p) => (
           <li key={p.label}>
-            <p className="font-mono text-[11px] uppercase tracking-widest text-text/45">
+            <p className="font-mono text-[11px] uppercase tracking-widest text-text/65">
               {p.label}
             </p>
             <p className="mt-1 text-sm font-medium text-text/85">{p.value}</p>

@@ -5,7 +5,7 @@ import { Avatar } from "@/components/primitives/Avatar";
 export function Testimonials({ className }: { className?: string }) {
   return (
     <div className={className}>
-      <p className="font-mono text-xs uppercase tracking-widest text-text/45">
+      <p className="font-mono text-xs uppercase tracking-widest text-text/65">
         <span className="text-accent">&gt;</span> what people who worked with me
         say
       </p>
@@ -29,8 +29,8 @@ export function Testimonials({ className }: { className?: string }) {
                 <p className="text-sm font-semibold leading-tight text-text/90">
                   {t.name}
                 </p>
-                <p className="text-xs text-text/55">{t.title}</p>
-                <p className="mt-0.5 text-[11px] tracking-wide text-text/40">
+                <p className="text-xs text-text/70">{t.title}</p>
+                <p className="mt-0.5 text-[11px] tracking-wide text-text/60">
                   {t.relationship}
                 </p>
                 <a

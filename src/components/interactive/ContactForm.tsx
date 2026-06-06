@@ -111,7 +111,7 @@ export function ContactForm() {
           rows={3}
           {...register("message")}
           aria-invalid={!!errors.message}
-          placeholder="e.g. shipping an autonomous coding agent, need the tool boundary red-teamed"
+          placeholder="e.g. building an agent platform and need someone who can own the orchestration + tooling layer"
         />
         {errors.message && (
           <p className="mt-1 font-mono text-xs text-accent">

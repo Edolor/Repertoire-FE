@@ -2,31 +2,40 @@
 title: "Semantic memory for long-horizon agent sessions"
 slug: semantic-memory
 order: 4
-client: "A production agentic platform"
-summary: "Long sessions degraded as context filled. The fix was a memory layer the agent could query, not a bigger window."
+client: "Independent exploration"
+summary: "A prototype exploring how an agent can keep its working context small over long sessions by querying a memory layer, instead of relying on an ever-bigger window."
 tags: ["agent-systems", "semantic-memory", "context-engineering"]
-outcome: "Long-horizon task completion held steady past the point where the flat-context baseline fell off. Details on a call."
-locked: true
+outcome: "A design where memory is a tool the agent calls deliberately (query, write, forget), keeping retrieval from derailing the plan. A personal exploration, not a delivered product."
 ---
 
 ## Context
 
-This engagement is under a tighter NDA than the others. It is shown as a
-category, not a writeup: semantic memory for long-horizon agent sessions.
+A personal exploration of a familiar agent problem: quality decays as a
+session grows because relevant facts get buried, not lost. This is my own
+prototype and thinking, not delivered client work.
 
-## What can be said
+## Problem and constraint
 
-The problem was the familiar one: agent quality decays as a session grows
-because relevant facts get buried, not lost. The work was a retrieval-
-backed memory the agent queries deliberately as a tool, with explicit
-write and forget steps, rather than an ever-growing flat context.
+A bigger context window just delays the cliff and costs more. The goal was a
+memory the agent treats as a tool it can query, write to, and forget from,
+so the working context stays small and relevant over long, multi-step tasks.
 
-The trade-offs (what to remember, when to forget, how to keep retrieval
-from poisoning the plan) are the substance, and they are the part I can
-only discuss on a call.
+## Approach and key decisions
 
-## Outcome (sanitized)
+- Made memory a retrieval-backed tool the agent calls deliberately, with
+  explicit write and forget steps, rather than an ever-growing flat context.
+- Kept retrieval from derailing the plan: memory returns are data the agent
+  weighs, not instructions it follows.
+- Treated what to remember and when to forget as the real design surface;
+  that, not the embedding store, is where the behavior lives.
 
-Long-horizon completion rates held past the point where a flat-context
-baseline degraded. Specifics, including the metric definition, are
-available in a scoped conversation under NDA.
+## What I explored
+
+Where a deliberate remember/forget policy holds up better than a flat,
+ever-growing context on long, multi-step tasks, and where it doesn't. The
+interesting part is the policy, not the vector store.
+
+## What I'd do differently
+
+Instrument memory hit/miss against task outcomes from the start, so the
+remember/forget policy is tuned on evidence rather than intuition.
