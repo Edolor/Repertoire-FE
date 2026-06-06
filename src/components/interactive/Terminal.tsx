@@ -136,17 +136,19 @@ export function Terminal() {
           autoComplete="off"
           spellCheck={false}
           placeholder="type a command, e.g. ls work/"
-          className="w-full bg-transparent outline-none placeholder:text-text/35"
+          className="w-full bg-transparent outline-none placeholder:text-text/40"
         />
         <Cursor className="hidden sm:inline-block" />
       </form>
-      <div className="flex flex-wrap gap-2 border-t border-divider p-2">
+      <div className="flex flex-wrap gap-1.5 border-t border-divider p-2 sm:gap-2">
         {["whoami", "ls work/", "run demo", "research", "contact"].map((c) => (
           <button
             key={c}
             type="button"
             onClick={() => run(c)}
-            className="border border-divider px-2 py-1 text-xs text-text/70 hover:bg-bg hover:text-text"
+            className={`border border-divider px-2 py-1 text-xs text-text/70 transition-colors hover:bg-bg hover:text-text focus-visible:border-accent-2 focus-visible:outline-none${
+              c === "research" || c === "contact" ? " hidden sm:inline-flex" : ""
+            }`}
           >
             {c}
           </button>

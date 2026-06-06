@@ -65,7 +65,7 @@ export function AboutTeaser() {
         </div>
       </div>
 
-      <div className="mt-12">
+      <div className="mt-10">
         <p className="font-mono text-xs uppercase tracking-widest text-text/65">
           <span className="text-accent">&gt;</span> experience
         </p>
@@ -88,13 +88,13 @@ export function AboutTeaser() {
         </ul>
       </div>
 
-      <Testimonials className="mt-12" />
+      <Testimonials className="mt-10" />
 
       {/* The full backend /about content is large, so on the home page
           it lives behind a popup. The canonical inline version is /about. */}
       <Dialog.Root open={detailsOpen} onOpenChange={setDetailsOpen}>
         <Dialog.Trigger asChild>
-          <Button type="button" variant="outline" className="mt-12">
+          <Button type="button" variant="outline" className="mt-10">
             View experience, education &amp; 13 certifications
           </Button>
         </Dialog.Trigger>

@@ -78,7 +78,7 @@ export function ContactForm() {
         </>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2">
         <div>
           <Label htmlFor="name">Name</Label>
           <Input id="name" {...register("name")} aria-invalid={!!errors.name} />

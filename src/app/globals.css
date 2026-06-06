@@ -83,6 +83,13 @@
   .divider-dashed-y {
     border-left: 1px dashed rgb(var(--divider));
   }
+  /* Charcoal needs a lighter dashed line than the neutral divider token. */
+  .dark .divider-dashed {
+    border-top-color: rgb(var(--text) / 0.14);
+  }
+  .dark .divider-dashed-y {
+    border-left-color: rgb(var(--text) / 0.14);
+  }
 
   /* Graph-paper backdrop used sparingly behind interactive panels. */
   .graph-paper {
@@ -104,12 +111,14 @@
     margin-top: 2em;
     font-size: 1.4rem;
     font-weight: 700;
+    line-height: 1.3;
     color: rgb(var(--text) / 0.95);
   }
   .prose h3 {
     margin-top: 1.6em;
     font-size: 1.15rem;
     font-weight: 600;
+    line-height: 1.35;
     color: rgb(var(--text) / 0.95);
   }
   .prose a {

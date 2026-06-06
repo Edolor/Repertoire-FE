@@ -8,7 +8,7 @@ export function Hero() {
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="mx-auto w-full max-w-content px-5 pb-8 pt-14 sm:px-8 sm:pt-20"
+      className="mx-auto w-full max-w-content px-5 py-16 sm:px-8 sm:py-24"
     >
       <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
         <div>
@@ -17,7 +17,7 @@ export function Hero() {
           </p>
           <h1
             id="hero-heading"
-            className="mt-4 text-balance text-3xl font-bold leading-[1.1] sm:text-4xl lg:text-5xl"
+            className="mt-4 text-balance text-3xl font-bold leading-[1.15] sm:text-4xl lg:text-5xl"
           >
             {PERSON.outcome}
           </h1>
@@ -27,7 +27,7 @@ export function Hero() {
           <p className="mt-4 font-mono text-xs text-text/60">
             <span className="text-accent">&gt;</span> {PERSON.availability}
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <ButtonLink href="/#contact" variant="primary" size="lg">
               Get in touch
             </ButtonLink>
@@ -56,10 +56,10 @@ export function Hero() {
 
       <DashedDivider className="mt-12" />
       {/* Proof bar, above the fold edge. */}
-      <ul className="grid grid-cols-2 gap-x-6 gap-y-4 py-6 sm:grid-cols-4">
+      <ul className="grid grid-cols-2 gap-x-4 gap-y-6 py-8 sm:grid-cols-4 sm:gap-x-8 sm:py-10">
         {PROOF.map((p) => (
           <li key={p.label}>
-            <p className="font-mono text-[11px] uppercase tracking-widest text-text/65">
+            <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-text/65">
               {p.label}
             </p>
             <p className="mt-1 text-sm font-medium text-text/85">{p.value}</p>

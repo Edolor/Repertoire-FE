@@ -60,7 +60,7 @@ export function Header() {
               type="button"
               onClick={enable}
               aria-label="Switch to desktop mode"
-              className="hidden border border-divider px-2.5 py-1.5 font-mono text-xs text-text/70 hover:bg-surface hover:text-text lg:flex"
+              className="hidden border border-divider px-3 py-2 font-mono text-xs text-text/70 hover:bg-surface hover:text-text lg:flex"
             >
               Desktop mode
             </button>
@@ -69,7 +69,7 @@ export function Header() {
             type="button"
             onClick={openCommandPalette}
             aria-label="Open command palette"
-            className="hidden items-center gap-2 border border-divider px-2.5 py-1.5 font-mono text-xs text-text/60 hover:text-text sm:flex"
+            className="hidden items-center gap-2 border border-divider px-3 py-2 font-mono text-xs text-text/60 hover:text-text sm:flex"
           >
             <span aria-hidden>&#8984;K</span>
           </button>
@@ -77,14 +77,14 @@ export function Header() {
             href={PERSON.github}
             target="_blank"
             rel="noreferrer"
-            className="px-2 py-1 font-mono text-sm text-text/70 hover:text-text"
+            className="hidden px-3 py-2 font-mono text-sm text-text/70 hover:text-text sm:inline-flex"
           >
             GitHub
           </a>
           <button
             type="button"
             onClick={open}
-            className="border border-divider px-3 py-1.5 font-mono text-sm hover:bg-surface"
+            className="border border-divider px-3 py-2 font-mono text-sm hover:bg-surface"
           >
             Resume
           </button>
@@ -92,7 +92,7 @@ export function Header() {
             type="button"
             onClick={toggle}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            className="border border-divider px-2.5 py-1.5 font-mono text-sm hover:bg-surface"
+            className="border border-divider px-3 py-2 font-mono text-sm hover:bg-surface"
           >
             {theme === "dark" ? "☼" : "☾"}
           </button>
@@ -101,7 +101,7 @@ export function Header() {
             aria-label="Open menu"
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen((v) => !v)}
-            className="border border-divider px-3 py-1.5 font-mono text-sm md:hidden"
+            className="border border-divider px-3 py-2 font-mono text-sm md:hidden"
           >
             {menuOpen ? "✕" : "≡"}
           </button>
@@ -123,6 +123,15 @@ export function Header() {
                 <span className="text-accent">&gt;</span> {n.label}
               </Link>
             ))}
+            <a
+              href={PERSON.github}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="border-b border-divider py-3 text-text/80 last:border-0"
+            >
+              <span className="text-accent">&gt;</span> GitHub
+            </a>
           </nav>
         </div>
       )}

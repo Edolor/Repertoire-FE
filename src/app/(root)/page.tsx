@@ -21,15 +21,12 @@ export default function HomePage() {
       <WorkWithMe />
       <DashedDivider className="mx-auto max-w-content" />
       <SelectedWork />
-      <DashedDivider className="mx-auto max-w-content" />
       <AgentDemo />
       <DashedDivider className="mx-auto max-w-content" />
       <Research />
-      <DashedDivider className="mx-auto max-w-content" />
       <WritingTeaser />
       <DashedDivider className="mx-auto max-w-content" />
       <AboutTeaser />
-      <DashedDivider className="mx-auto max-w-content" />
       <FAQ />
       <DashedDivider className="mx-auto max-w-content" />
       <ContactSection />

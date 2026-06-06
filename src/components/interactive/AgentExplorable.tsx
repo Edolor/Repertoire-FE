@@ -76,12 +76,12 @@ export function AgentExplorable() {
       >
         now: <span className={COLOR[step.phase]}>{step.phase}</span>
       </div>
-      <div className="flex flex-wrap gap-2 border-t border-divider p-2">
+      <div className="flex flex-wrap gap-1.5 border-t border-divider p-2 sm:gap-2">
         <button
           type="button"
           onClick={() => setI((v) => Math.max(0, v - 1))}
           disabled={i === 0}
-          className="border border-divider px-2 py-1 text-xs hover:bg-bg disabled:opacity-40"
+          className="border border-divider px-2 py-1 text-xs text-text/70 transition-colors hover:bg-bg hover:text-text focus-visible:border-accent-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:text-text/30 disabled:opacity-40"
         >
           ← prev
         </button>
@@ -89,7 +89,7 @@ export function AgentExplorable() {
           type="button"
           onClick={() => setI((v) => Math.min(STEPS.length - 1, v + 1))}
           disabled={i === STEPS.length - 1}
-          className="border border-divider px-2 py-1 text-xs hover:bg-bg disabled:opacity-40"
+          className="border border-divider px-2 py-1 text-xs text-text/70 transition-colors hover:bg-bg hover:text-text focus-visible:border-accent-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:text-text/30 disabled:opacity-40"
         >
           next →
         </button>
@@ -97,7 +97,7 @@ export function AgentExplorable() {
           <button
             type="button"
             onClick={() => setPlaying((p) => !p)}
-            className="border border-divider px-2 py-1 text-xs hover:bg-bg"
+            className="border border-divider px-2 py-1 text-xs text-text/70 transition-colors hover:bg-bg hover:text-text focus-visible:border-accent-2 focus-visible:outline-none"
           >
             {playing ? "pause" : "play"}
           </button>

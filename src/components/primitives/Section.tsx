@@ -33,7 +33,7 @@ export function Section({
       )}
     >
       {eyebrow && (
-        <p className="mb-3 font-mono text-xs uppercase tracking-[0.2em] text-text/60">
+        <p className="mb-4 font-mono text-xs uppercase tracking-[0.125em] text-text/60">
           <Prompt className="mr-2" />
           {eyebrow}
         </p>
@@ -41,17 +41,17 @@ export function Section({
       {title && (
         <h2
           id={headingId}
-          className="max-w-3xl text-balance text-3xl font-bold leading-tight sm:text-4xl"
+          className="max-w-3xl text-balance text-3xl font-bold leading-[1.3] sm:text-4xl sm:leading-[1.25]"
         >
           {title}
         </h2>
       )}
       {intro && (
-        <div className="mt-4 max-w-2xl text-pretty text-base text-text/70 sm:text-lg">
+        <div className="mt-5 max-w-2xl text-pretty text-base text-text/70 sm:mt-6 sm:text-lg">
           {intro}
         </div>
       )}
-      <div className={cn(title || intro ? "mt-10" : "")}>{children}</div>
+      <div className={cn(title || intro ? "mt-8 sm:mt-10 lg:mt-12" : "")}>{children}</div>
     </section>
   );
 }

@@ -16,12 +16,12 @@ export function FAQ() {
       <dl className="divide-y divide-divider border-y border-divider">
         {ITEMS.map((item, idx) => (
           <Reveal key={item.q} delay={idx * 0.04}>
-            <div className="py-6">
-              <dt className="flex gap-2 text-lg font-bold">
+            <div className="py-5">
+              <dt className="flex gap-2 text-lg font-bold leading-snug">
                 <span className="select-none text-accent">&gt;</span>
                 {item.q}
               </dt>
-              <dd className="mt-2 text-pretty text-text/75">{item.a}</dd>
+              <dd className="mt-1.5 text-pretty leading-[1.6] text-text/75">{item.a}</dd>
             </div>
           </Reveal>
         ))}
