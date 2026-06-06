@@ -28,7 +28,7 @@ export function Section({
       id={id}
       aria-labelledby={title ? headingId : undefined}
       className={cn(
-        "mx-auto w-full max-w-content px-5 py-16 sm:px-8 sm:py-24",
+        "mx-auto w-full max-w-content px-5 py-12 sm:px-8 sm:py-16",
         className,
       )}
     >
