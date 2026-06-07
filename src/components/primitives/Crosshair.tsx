@@ -4,16 +4,15 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Additive engineering crosshair: faint full-viewport guide lines that track
- * the pointer, with a live x/y readout — it augments, never replaces, the native
- * cursor. Mounted only on a fine pointer and never under reduced-motion or
- * reduced-data. rAF-throttled; no React re-render per move.
+ * the pointer — it augments, never replaces, the native cursor. Mounted only on
+ * a fine pointer and never under reduced-motion or reduced-data. rAF-throttled;
+ * no React re-render per move.
  */
 export function Crosshair() {
   const [enabled, setEnabled] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const vert = useRef<HTMLDivElement>(null);
   const horz = useRef<HTMLDivElement>(null);
-  const label = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
@@ -29,10 +28,6 @@ export function Crosshair() {
       raf = 0;
       if (vert.current) vert.current.style.transform = `translate3d(${x}px,0,0)`;
       if (horz.current) horz.current.style.transform = `translate3d(0,${y}px,0)`;
-      if (label.current) {
-        label.current.style.transform = `translate3d(${x + 12}px,${y + 14}px,0)`;
-        label.current.textContent = `x:${x} y:${y}`;
-      }
     };
     const onMove = (e: PointerEvent) => {
       x = e.clientX;
@@ -67,10 +62,6 @@ export function Crosshair() {
       <div
         ref={horz}
         className="absolute inset-x-0 top-0 h-px bg-accent/15 will-change-transform"
-      />
-      <div
-        ref={label}
-        className="absolute left-0 top-0 font-mono text-[10px] tabular-nums text-accent/55 will-change-transform"
       />
     </div>
   );
