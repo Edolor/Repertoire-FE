@@ -5,6 +5,7 @@ import { Spotlight } from "@/components/primitives/Spotlight";
 import { SmoothScroll } from "@/components/primitives/SmoothScroll";
 import { SectionRail } from "@/components/primitives/SectionRail";
 import { ScrollToTop } from "@/components/primitives/ScrollToTop";
+import { ChunkRecover } from "@/components/primitives/ChunkRecover";
 import { PageTransition } from "@/components/primitives/PageTransition";
 import { Toaster } from "@/components/primitives/Toaster";
 import { KonamiEgg } from "@/components/primitives/KonamiEgg";
@@ -30,6 +31,7 @@ export default function RootGroupLayout({
           >
             Skip to content
           </a>
+          <ChunkRecover />
           <CommandPalette />
           <SmoothScroll />
           <Spotlight />
