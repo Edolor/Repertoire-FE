@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import portrait from "@/assets/img/mena.jpg";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
+import { fetchAbout } from "@/lib/queries";
+import type { AboutProps } from "@/types/About.types";
 import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { AboutDetails } from "@/components/sections/AboutDetails";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -38,7 +40,21 @@ const aboutLd = graph(
   ]),
 );
 
-export default function AboutPage() {
+// Re-fetch the (slow-moving) about data at most hourly. Fetching on the server
+// puts the experience/education/honours in the SSR HTML for crawlers and AEO,
+// instead of behind a client spinner.
+export const revalidate = 3600;
+
+export default async function AboutPage() {
+  // Fail-soft: if the API is unreachable at build/revalidate, fall back to the
+  // client fetch inside AboutDetails (its existing loading/error UI).
+  let initialAbout: AboutProps | undefined;
+  try {
+    initialAbout = await fetchAbout();
+  } catch {
+    initialAbout = undefined;
+  }
+
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={aboutLd} />
@@ -82,7 +98,7 @@ export default function AboutPage() {
 
       <Testimonials className="mt-12" />
 
-      <AboutDetails />
+      <AboutDetails initialData={initialAbout} />
     </div>
   );
 }

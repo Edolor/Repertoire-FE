@@ -7,6 +7,7 @@ import { useAboutQuery } from "@/hooks/useQueries";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button } from "@/components/ui/Button";
 import type {
+  AboutProps,
   BaseExperienceProps,
   BaseHonourProps,
 } from "@/types/About.types";
@@ -85,13 +86,17 @@ function HonourList({ items }: { items: BaseHonourProps[] }) {
 export function AboutDetails({
   showResume = true,
   flush = false,
+  initialData,
 }: {
   showResume?: boolean;
   // flush: drop the top margin (used inside the popup, which has its own
   // header and padding).
   flush?: boolean;
+  // Server-fetched data to seed React Query (the /about page passes this so
+  // the credentials are in the SSR HTML; the OS popup omits it).
+  initialData?: AboutProps;
 }) {
-  const { data, isLoading, isError, refetch } = useAboutQuery();
+  const { data, isLoading, isError, refetch } = useAboutQuery(initialData);
   const { open } = useResume();
 
   return (
