@@ -1,6 +1,7 @@
 import { Terminal } from "@/components/interactive/Terminal";
 import { AgentGraph } from "@/components/interactive/AgentGraph";
 import { ButtonLink } from "@/components/ui/Button";
+import { Magnetic } from "@/components/primitives/Magnetic";
 import { PERSON, PROOF } from "@/content/site";
 import { DashedDivider } from "@/components/primitives/Section";
 
@@ -68,9 +69,11 @@ export function Hero() {
             className="hero-rise mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center"
             style={{ animationDelay: "0.66s" }}
           >
-            <ButtonLink href="/#contact" variant="primary" size="lg">
-              Get in touch
-            </ButtonLink>
+            <Magnetic>
+              <ButtonLink href="/#contact" variant="primary" size="lg">
+                Get in touch
+              </ButtonLink>
+            </Magnetic>
             <ButtonLink
               href={PERSON.resume}
               target="_blank"
