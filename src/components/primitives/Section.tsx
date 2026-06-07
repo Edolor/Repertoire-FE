@@ -51,7 +51,7 @@ export function Section({
       {title && (
         <h2
           id={headingId}
-          className="max-w-3xl text-balance text-3xl font-bold leading-[1.3] sm:text-4xl sm:leading-[1.25]"
+          className="t-h2 max-w-3xl text-balance font-bold"
         >
           {title}
         </h2>

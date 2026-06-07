@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useActiveSection } from "@/hooks/useActiveSection";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { useOsMode } from "@/components/os/OsModeContext";
@@ -13,11 +15,64 @@ export function openCommandPalette() {
   window.dispatchEvent(new CustomEvent("open-command-palette"));
 }
 
+// Sun↔moon that morphs: a mask circle slides in to carve the crescent while the
+// rays fade and rotate out. Geometry/opacity transitions are CSS so the global
+// reduced-motion rule collapses them automatically.
+function ThemeIcon({ dark }: { dark: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden focusable="false">
+      <mask id="theme-moon">
+        <rect x="0" y="0" width="24" height="24" fill="white" />
+        <circle
+          cx={dark ? 17 : 30}
+          cy="7"
+          r="8"
+          fill="black"
+          style={{ transition: "cx 0.45s ease" }}
+        />
+      </mask>
+      <circle
+        cx="12"
+        cy="12"
+        r={dark ? 7 : 5.5}
+        fill="currentColor"
+        mask="url(#theme-moon)"
+        style={{ transition: "r 0.45s ease" }}
+      />
+      <g
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        style={{
+          transition: "opacity 0.4s ease, transform 0.45s ease",
+          transformOrigin: "center",
+          opacity: dark ? 0 : 1,
+          transform: dark ? "rotate(40deg) scale(0.5)" : "rotate(0) scale(1)",
+        }}
+      >
+        {Array.from({ length: 8 }).map((_, i) => {
+          const a = (i * Math.PI) / 4;
+          const x = 12 + Math.cos(a) * 9;
+          const y = 12 + Math.sin(a) * 9;
+          const x2 = 12 + Math.cos(a) * 11;
+          const y2 = 12 + Math.sin(a) * 11;
+          return <line key={i} x1={x} y1={y} x2={x2} y2={y2} />;
+        })}
+      </g>
+    </svg>
+  );
+}
+
 export function Header() {
   const { open } = useResume();
   const { theme, toggle } = useTheme();
   const { enable, desktop, mounted } = useOsMode();
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const sectionIds = NAV.filter((n) => n.href.startsWith("/#")).map((n) =>
+    n.href.slice(2),
+  );
+  const activeId = useActiveSection(sectionIds);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -43,15 +98,25 @@ export function Header() {
           aria-label="Primary"
           className="hidden items-center gap-1 font-mono text-sm md:flex"
         >
-          {NAV.map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              className="px-2 py-1 text-text/70 transition-colors hover:text-text"
-            >
-              {n.label}
-            </Link>
-          ))}
+          {NAV.map((n) => {
+            const isActive =
+              pathname === "/" &&
+              n.href.startsWith("/#") &&
+              n.href.slice(2) === activeId;
+            return (
+              <Link
+                key={n.href}
+                href={n.href}
+                aria-current={isActive ? "true" : undefined}
+                className={cn(
+                  "link-underline px-2 py-1 transition-colors hover:text-text",
+                  isActive ? "text-accent" : "text-text/70",
+                )}
+              >
+                {n.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -92,9 +157,9 @@ export function Header() {
             type="button"
             onClick={toggle}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-            className="border border-divider min-h-10 px-3 py-2 font-mono text-sm hover:bg-surface"
+            className="flex min-h-10 items-center justify-center border border-divider px-3 py-2 text-text/80 hover:bg-surface hover:text-text"
           >
-            {theme === "dark" ? "☼" : "☾"}
+            <ThemeIcon dark={theme === "dark"} />
           </button>
           <button
             type="button"

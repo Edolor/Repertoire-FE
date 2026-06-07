@@ -2,14 +2,19 @@ import { Terminal } from "@/components/interactive/Terminal";
 import { AgentGraph } from "@/components/interactive/AgentGraph";
 import { ButtonLink } from "@/components/ui/Button";
 import { Magnetic } from "@/components/primitives/Magnetic";
+import { Tilt } from "@/components/primitives/Tilt";
+import { RevealGroup, RevealItem } from "@/components/primitives/Reveal";
 import { PERSON, PROOF } from "@/content/site";
 import { DashedDivider } from "@/components/primitives/Section";
 
-// Decorative ambient depth behind the hero. Pure CSS, theme-aware, and fully
-// disabled under prefers-reduced-motion (the keyframes are gated in globals).
+// Decorative ambient depth behind the hero: theme-aware glows, a receding
+// "systems" horizon grid, and faint film grain. All decorative layers are
+// tagged so prefers-reduced-data removes them; the glow animation is gated in
+// globals under reduced-motion.
 function HeroBackdrop() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      <div className="horizon decor-heavy" />
       <div
         className="hero-glow absolute -left-[10%] -top-[30%] h-[60%] w-[55%] rounded-full blur-3xl"
         style={{ background: "radial-gradient(closest-side, rgb(var(--accent) / 0.16), transparent)" }}
@@ -18,12 +23,13 @@ function HeroBackdrop() {
         className="hero-glow absolute right-[-5%] top-[5%] h-[55%] w-[45%] rounded-full blur-3xl"
         style={{ animationDelay: "-7s", background: "radial-gradient(closest-side, rgb(var(--accent-2) / 0.12), transparent)" }}
       />
+      <div className="grain decor-heavy" />
     </div>
   );
 }
 
 export function Hero() {
-  // CSS-driven word cascade: real text in the markup (SSR + no-JS safe),
+  // CSS-driven per-word mask reveal: real text in the markup (SSR + no-JS safe),
   // reduced-motion turns the animation off in globals.
   const words = PERSON.outcome.split(" ");
 
@@ -41,15 +47,11 @@ export function Hero() {
           </p>
           <h1
             id="hero-heading"
-            className="mt-4 text-balance text-3xl font-bold leading-[1.15] sm:text-4xl lg:text-5xl"
+            className="t-display mt-4 text-balance font-bold"
           >
             {words.map((w, i) => (
-              <span
-                key={i}
-                className="hero-word"
-                style={{ animationDelay: `${0.12 + i * 0.028}s` }}
-              >
-                {w}
+              <span key={i} className="hero-word">
+                <span style={{ animationDelay: `${0.12 + i * 0.028}s` }}>{w}</span>
               </span>
             ))}
           </h1>
@@ -97,22 +99,24 @@ export function Hero() {
           style={{ animationDelay: "0.34s" }}
         >
           <AgentGraph />
-          <Terminal />
+          <Tilt max={5} className="group relative">
+            <Terminal />
+          </Tilt>
         </div>
       </div>
 
       <DashedDivider className="mt-12" />
-      {/* Proof bar, above the fold edge. */}
-      <ul className="grid grid-cols-2 gap-x-4 gap-y-6 py-8 sm:grid-cols-4 sm:gap-x-8 sm:py-10">
+      {/* Proof bar, above the fold edge: staggered reveal + one-time shimmer. */}
+      <RevealGroup className="grid grid-cols-2 gap-x-4 gap-y-6 py-8 sm:grid-cols-4 sm:gap-x-8 sm:py-10">
         {PROOF.map((p) => (
-          <li key={p.label}>
+          <RevealItem key={p.label} className="shimmer">
             <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-text/65">
               {p.label}
             </p>
             <p className="mt-1 text-sm font-medium text-text/85">{p.value}</p>
-          </li>
+          </RevealItem>
         ))}
-      </ul>
+      </RevealGroup>
       <DashedDivider />
     </section>
   );

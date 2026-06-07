@@ -1,5 +1,9 @@
 import ResumeProvider from "@/context/ResumeContext/ResumeContext";
 import { ScrollProgress } from "@/components/primitives/ScrollProgress";
+import { Crosshair } from "@/components/primitives/Crosshair";
+import { SmoothScroll } from "@/components/primitives/SmoothScroll";
+import { SectionRail } from "@/components/primitives/SectionRail";
+import { PageTransition } from "@/components/primitives/PageTransition";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CommandPalette } from "@/components/command/CommandPalette";
@@ -22,10 +26,13 @@ export default function RootGroupLayout({
             Skip to content
           </a>
           <CommandPalette />
+          <SmoothScroll />
           <ScrollProgress />
+          <Crosshair />
+          <SectionRail />
           <Header />
           <main id="main" className="pt-16">
-            {children}
+            <PageTransition>{children}</PageTransition>
           </main>
           <Footer />
         </OsGate>

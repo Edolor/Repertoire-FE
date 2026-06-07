@@ -30,10 +30,16 @@ export default function ThemeProvider({
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggle = useCallback(
-    () => setTheme((t) => (t === "dark" ? "light" : "dark")),
-    [],
-  );
+  const toggle = useCallback(() => {
+    // Enable a brief whole-page color crossfade for this switch only.
+    const el = document.documentElement;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced) {
+      el.classList.add("theme-anim");
+      window.setTimeout(() => el.classList.remove("theme-anim"), 460);
+    }
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggle }}>

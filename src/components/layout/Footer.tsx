@@ -16,7 +16,7 @@ export function Footer() {
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm">
             <a
               href={`mailto:${PERSON.email}`}
-              className="text-accent-2 hover:underline"
+              className="link-underline text-accent-2"
             >
               {PERSON.email}
             </a>
@@ -24,7 +24,7 @@ export function Footer() {
               href={PERSON.github}
               target="_blank"
               rel="noreferrer"
-              className="text-text/70 hover:text-text"
+              className="link-underline text-text/70 hover:text-text"
             >
               GitHub
             </a>
@@ -32,7 +32,7 @@ export function Footer() {
               href={PERSON.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="text-text/70 hover:text-text"
+              className="link-underline text-text/70 hover:text-text"
             >
               LinkedIn
             </a>
@@ -40,11 +40,11 @@ export function Footer() {
               href={PERSON.resume}
               target="_blank"
               rel="noreferrer"
-              className="text-text/70 hover:text-text"
+              className="link-underline text-text/70 hover:text-text"
             >
               Resume
             </a>
-            <Link href="/feed.xml" className="text-text/70 hover:text-text">
+            <Link href="/feed.xml" className="link-underline text-text/70 hover:text-text">
               RSS
             </Link>
           </div>
@@ -57,7 +57,7 @@ export function Footer() {
             <Link
               key={n.href}
               href={n.href}
-              className="text-text/70 hover:text-text"
+              className="link-underline text-text/70 transition-[font-weight] hover:font-semibold hover:text-text"
             >
               {n.label}
             </Link>
