@@ -105,6 +105,7 @@ export function AboutTeaser() {
           <Dialog.Overlay className="fixed inset-0 z-[79] bg-black/70 backdrop-blur-sm" />
           <Dialog.Content
             aria-describedby={undefined}
+            data-lenis-prevent
             className="fixed left-1/2 top-1/2 z-[80] flex max-h-[88vh] w-[94vw] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col border border-divider bg-bg shadow-2xl focus:outline-none"
           >
             <div className="flex items-center justify-between border-b border-divider px-5 py-3">

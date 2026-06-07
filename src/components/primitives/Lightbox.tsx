@@ -40,6 +40,7 @@ export function Lightbox({
       role="dialog"
       aria-modal="true"
       aria-label={alt || "Image preview"}
+      data-lenis-prevent
       className="fixed inset-0 z-[100] flex items-center justify-center bg-bg/90 p-4 sm:p-8"
       onClick={onClose}
       initial={reduced ? false : { opacity: 0 }}

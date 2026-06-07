@@ -104,6 +104,7 @@ export default function ResumeViewer({ open, onClose }: ResumeViewerProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Resume preview"
+          data-lenis-prevent
           onClick={onClose}
         >
           {/* Toolbar */}

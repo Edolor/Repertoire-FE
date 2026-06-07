@@ -82,6 +82,7 @@ export function CommandPalette() {
         <Dialog.Overlay className="fixed inset-0 z-[79] bg-black/60 backdrop-blur-sm" />
         <Dialog.Content
           aria-describedby={undefined}
+          data-lenis-prevent
           className="fixed left-1/2 top-24 z-[80] w-[92vw] max-w-lg -translate-x-1/2 border border-divider bg-bg shadow-2xl focus:outline-none"
         >
           <Dialog.Title className="sr-only">Command palette</Dialog.Title>
@@ -96,7 +97,7 @@ export function CommandPalette() {
                 className="w-full bg-transparent py-3 font-mono text-sm outline-none placeholder:text-text/40"
               />
             </div>
-            <Command.List className="max-h-72 overflow-auto p-2">
+            <Command.List className="thin-scroll max-h-72 overflow-auto p-2">
               <Command.Empty className="px-2 py-6 text-center font-mono text-sm text-text/50">
                 No matches.
               </Command.Empty>

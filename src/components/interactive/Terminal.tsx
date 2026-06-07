@@ -393,6 +393,7 @@ export function Terminal() {
           role="dialog"
           aria-modal="true"
           aria-label="Agent shell (maximized)"
+          data-lenis-prevent
           className="relative z-10 w-full max-w-3xl"
         >
           {shell(true)}
