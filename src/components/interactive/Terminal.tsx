@@ -295,7 +295,7 @@ export function Terminal() {
         <>
           <div
             ref={scrollRef}
-            className={cn("overflow-auto p-3 graph-paper", maximized ? "min-h-0 flex-1" : "h-40")}
+            className={cn("thin-scroll overflow-auto p-3 graph-paper", maximized ? "min-h-0 flex-1" : "h-40")}
             aria-live="polite"
           >
             {lines.map((l, i) => (
