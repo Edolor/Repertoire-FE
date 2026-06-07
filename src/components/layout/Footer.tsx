@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { PERSON, NAV } from "@/content/site";
+import { CopyButton } from "@/components/primitives/CopyButton";
+import { SoundToggle } from "@/components/primitives/SoundToggle";
 
 export function Footer() {
   return (
@@ -14,12 +16,15 @@ export function Footer() {
           </p>
           {/* Hiring + peer paths: never funneled through the contact form. */}
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm">
-            <a
-              href={`mailto:${PERSON.email}`}
-              className="link-underline text-accent-2"
-            >
-              {PERSON.email}
-            </a>
+            <span className="inline-flex items-center gap-1.5">
+              <a
+                href={`mailto:${PERSON.email}`}
+                className="link-underline text-accent-2"
+              >
+                {PERSON.email}
+              </a>
+              <CopyButton value={PERSON.email} label="email" />
+            </span>
             <a
               href={PERSON.github}
               target="_blank"
@@ -65,11 +70,14 @@ export function Footer() {
         </nav>
       </div>
       <div className="border-t border-divider">
-        <p className="mx-auto max-w-content px-5 py-5 font-mono text-xs text-text/50 sm:px-8">
-          © {new Date().getFullYear()} {PERSON.name}. This site is software you
-          can poke: press{" "}
-          <span className="border border-divider px-1">&#8984;K</span>.
-        </p>
+        <div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-3 px-5 py-5 font-mono text-xs text-text/50 sm:px-8">
+          <p>
+            © {new Date().getFullYear()} {PERSON.name}. This site is software you
+            can poke: press{" "}
+            <span className="border border-divider px-1">&#8984;K</span>.
+          </p>
+          <SoundToggle />
+        </div>
       </div>
     </footer>
   );

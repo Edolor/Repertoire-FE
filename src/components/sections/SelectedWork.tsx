@@ -3,6 +3,7 @@ import { work } from "#content";
 import { Section } from "@/components/primitives/Section";
 import { RevealGroup, RevealItem } from "@/components/primitives/Reveal";
 import { CornerBrackets } from "@/components/primitives/CornerBrackets";
+import { Tilt } from "@/components/primitives/Tilt";
 import { Badge } from "@/components/ui/Badge";
 
 export function SelectedWork() {
@@ -21,7 +22,8 @@ export function SelectedWork() {
       <RevealGroup className="grid gap-5 sm:gap-6 md:grid-cols-2">
         {items.map((w) => (
           <RevealItem key={w.slug} className="h-full">
-            <article className="panel group relative flex h-full flex-col border border-divider bg-surface transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_22px_50px_-26px_rgb(var(--accent)/0.5)] motion-reduce:transition-none motion-reduce:hover:transform-none">
+            <Tilt max={6} sheen className="group relative h-full">
+            <article className="panel relative flex h-full flex-col border border-divider bg-surface transition-[border-color,box-shadow] duration-200 ease-out hover:border-accent/40 hover:shadow-[0_22px_50px_-26px_rgb(var(--accent)/0.5)] motion-reduce:transition-none">
               <CornerBrackets />
               <Link
                 href={w.permalink}
@@ -42,7 +44,7 @@ export function SelectedWork() {
                     {w.title}
                   </h3>
                   <p className="text-sm text-text/70">{w.summary}</p>
-                  <p className="border-l-2 border-accent pl-3 text-sm text-text/80">
+                  <p className="border-l-2 border-accent pl-3 text-sm text-text/80 transition-colors duration-200 group-hover:bg-accent/5 group-hover:text-text/95">
                     {w.outcome}
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -62,6 +64,7 @@ export function SelectedWork() {
                 </span>
               </Link>
             </article>
+            </Tilt>
           </RevealItem>
         ))}
       </RevealGroup>

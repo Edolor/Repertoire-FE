@@ -31,8 +31,30 @@ export function ContactForm() {
 
   if (mutation.isSuccess) {
     return (
-      <div className="border border-divider bg-surface p-6 font-mono text-sm">
-        <p className="text-accent">&gt; message sent.</p>
+      <div className="panel border border-divider bg-surface p-6 font-mono text-sm">
+        <p className="flex items-center gap-2 text-accent">
+          <svg viewBox="0 0 24 24" className="h-5 w-5 shrink-0" aria-hidden>
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              opacity="0.4"
+            />
+            <path
+              d="M7 12.5l3.2 3.2L17 8.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="check-draw"
+            />
+          </svg>
+          message sent.
+        </p>
         <p className="mt-2 text-text/75">
           I read these myself and reply from {PERSON.email}.
         </p>

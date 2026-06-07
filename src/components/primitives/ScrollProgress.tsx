@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, useSpring, useReducedMotion } from "motion/react";
 
 const SECTION_IDS = [
   "how-i-build",
@@ -16,20 +15,35 @@ const SECTION_IDS = [
 ];
 
 /**
- * Thin top "spec ruler" that fills with reading progress, with faint tick marks
- * at each section boundary. Tied to scroll (not autonomous motion), so it stays
- * meaningful under reduced-motion — only the spring smoothing is dropped.
+ * Thin top "spec ruler" that fills with reading progress, with faint section
+ * ticks. Plain scroll listener + rAF (no animation-library dep). Tied to scroll
+ * so it stays meaningful under reduced-motion.
  */
 export function ScrollProgress() {
-  const reduced = useReducedMotion();
   const pathname = usePathname();
-  const { scrollYProgress } = useScroll();
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-    mass: 0.4,
-  });
+  const bar = useRef<HTMLDivElement>(null);
   const [ticks, setTicks] = useState<number[]>([]);
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      const p = docH > 0 ? Math.min(1, window.scrollY / docH) : 0;
+      if (bar.current) bar.current.style.transform = `scaleX(${p})`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -39,16 +53,16 @@ export function ScrollProgress() {
     const measure = () => {
       const docH = document.documentElement.scrollHeight - window.innerHeight;
       if (docH <= 0) return;
-      const next = SECTION_IDS.map((id) => {
-        const el = document.getElementById(id);
-        if (!el) return null;
-        return Math.min(1, Math.max(0, (el.offsetTop - 64) / docH));
-      }).filter((v): v is number => v !== null);
-      setTicks(next);
+      setTicks(
+        SECTION_IDS.map((id) => {
+          const el = document.getElementById(id);
+          return el ? Math.min(1, Math.max(0, (el.offsetTop - 64) / docH)) : null;
+        }).filter((v): v is number => v !== null),
+      );
     };
     measure();
     window.addEventListener("resize", measure);
-    const t = setTimeout(measure, 800); // after fonts/content settle
+    const t = setTimeout(measure, 800);
     return () => {
       window.removeEventListener("resize", measure);
       clearTimeout(t);
@@ -57,9 +71,10 @@ export function ScrollProgress() {
 
   return (
     <div aria-hidden className="fixed inset-x-0 top-0 z-50 h-[2px]">
-      <motion.div
+      <div
+        ref={bar}
         className="h-full origin-left bg-accent"
-        style={{ scaleX: reduced ? scrollYProgress : smooth }}
+        style={{ transform: "scaleX(0)" }}
       />
       {ticks.map((t, i) => (
         <span

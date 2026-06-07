@@ -1,5 +1,6 @@
 import { Section } from "@/components/primitives/Section";
 import { ContactForm } from "@/components/interactive/ContactForm";
+import { CopyButton } from "@/components/primitives/CopyButton";
 import { PERSON } from "@/content/site";
 
 export function ContactSection() {
@@ -16,13 +17,14 @@ export function ContactSection() {
         <div className="font-mono text-sm">
           <p className="text-text/70">Hiring / peer path, no form:</p>
           <ul className="mt-3 space-y-2">
-            <li>
+            <li className="flex items-center gap-2">
               <a
                 href={`mailto:${PERSON.email}`}
-                className="text-accent-2 hover:underline"
+                className="link-underline text-accent-2"
               >
                 &gt; {PERSON.email}
               </a>
+              <CopyButton value={PERSON.email} label="email" />
             </li>
             <li>
               <a

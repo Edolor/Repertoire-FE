@@ -30,15 +30,24 @@ export function Section({
       id={id}
       aria-labelledby={title ? headingId : undefined}
       className={cn(
-        "mx-auto w-full max-w-content px-5 py-12 sm:px-8 sm:py-16",
+        "relative mx-auto w-full max-w-content px-5 py-12 sm:px-8 sm:py-16",
         className,
       )}
     >
+      {/* Editorial asymmetry: an oversized, faint index watermark. */}
+      {index && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute right-4 top-4 hidden select-none font-mono text-[8rem] font-bold leading-none text-text/[0.045] sm:block lg:text-[11rem]"
+        >
+          {index}
+        </span>
+      )}
       {eyebrow && (
-        <p className="mb-4 flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.125em] text-text/60">
+        <p className="relative mb-4 flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.125em] text-text/60">
           {index && (
             <>
-              <span className="tabular-nums text-accent/80">{index}</span>
+              <span className="bloom-accent tabular-nums text-accent/80">{index}</span>
               <span aria-hidden className="h-3 w-px bg-divider" />
             </>
           )}
@@ -46,15 +55,30 @@ export function Section({
             <Prompt className="mr-2" />
             {eyebrow}
           </span>
+          {/* Spec coordinate label. */}
+          <span className="ml-auto hidden font-mono text-[10px] normal-case tracking-normal text-text/25 sm:inline">
+            {`// ${id}`}
+          </span>
         </p>
       )}
       {title && (
         <h2
           id={headingId}
-          className="t-h2 max-w-3xl text-balance font-bold"
+          className="t-h2 relative max-w-3xl text-balance font-bold"
         >
           {title}
         </h2>
+      )}
+      {/* Spec dimension line under the title. */}
+      {title && (
+        <div
+          aria-hidden
+          className="mt-4 flex items-center gap-1.5 text-text/20"
+        >
+          <span className="h-2 w-px bg-current" />
+          <span className="h-px w-full max-w-[7rem] bg-current" />
+          <span className="h-2 w-px bg-current" />
+        </div>
       )}
       {intro && (
         <div className="mt-5 max-w-2xl text-pretty text-base text-text/70 sm:mt-6 sm:text-lg">

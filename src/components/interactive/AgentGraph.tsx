@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useAnimationFrame, useInView, useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 /**
  * Hero centerpiece: a blueprint of the system primitives the owner builds, with
@@ -39,17 +39,44 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 export function AgentGraph() {
   const reduced = useReducedMotion();
   const ref = useRef<SVGSVGElement>(null);
-  const inView = useInView(ref, { margin: "0px 0px -10% 0px" });
   // phase ∈ [0, N): integer part = current edge, fraction = progress along it.
   const [phase, setPhase] = useState(0);
-  const tRef = useRef(0);
 
-  useAnimationFrame((_, delta) => {
-    if (reduced || !inView) return;
-    // ~5.6s per full loop; smooth and unhurried.
-    tRef.current = (tRef.current + delta / 1000 / 1.12) % NODES.length;
-    setPhase(tRef.current);
-  });
+  useEffect(() => {
+    if (reduced) return;
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    let last = 0;
+    let inView = true;
+    let t = 0;
+    const loop = (now: number) => {
+      const delta = last ? now - last : 16;
+      last = now;
+      // ~5.6s per full loop; smooth and unhurried.
+      t = (t + delta / 1000 / 1.12) % NODES.length;
+      setPhase(t);
+      raf = requestAnimationFrame(loop);
+    };
+    const io = new IntersectionObserver(
+      ([e]) => {
+        inView = e.isIntersecting;
+        if (inView && !raf) {
+          last = 0;
+          raf = requestAnimationFrame(loop);
+        } else if (!inView && raf) {
+          cancelAnimationFrame(raf);
+          raf = 0;
+        }
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [reduced]);
 
   const seg = Math.floor(phase) % NODES.length;
   const frac = phase - Math.floor(phase);

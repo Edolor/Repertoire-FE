@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { playTick } from "@/lib/sound";
 
 // A canned agent loop over a fake repo. Not a real LLM call. User-driven by
-// default; Play only autosteps on explicit click and never with
-// prefers-reduced-motion.
+// default; auto-plays ONCE when scrolled into view (never with reduced-motion).
 type Step = {
   phase: "plan" | "tool" | "result" | "reflect";
   text: string;
@@ -28,11 +28,38 @@ const COLOR: Record<Step["phase"], string> = {
   result: "text-text/80",
   reflect: "text-accent",
 };
+const DOT: Record<Step["phase"], string> = {
+  plan: "bg-accent-2",
+  tool: "bg-accent-3",
+  result: "bg-text/60",
+  reflect: "bg-accent",
+};
 
 export function AgentExplorable() {
   const [i, setI] = useState(0);
   const [playing, setPlaying] = useState(false);
   const reduced = useReducedMotion();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const autoStarted = useRef(false);
+
+  // Auto-play once on scroll-in (motion budget: one pass, then it rests).
+  useEffect(() => {
+    if (reduced || autoStarted.current) return;
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !autoStarted.current) {
+          autoStarted.current = true;
+          setPlaying(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reduced]);
 
   useEffect(() => {
     if (!playing || reduced) return;
@@ -44,32 +71,73 @@ export function AgentExplorable() {
     return () => clearTimeout(t);
   }, [playing, i, reduced]);
 
+  // Tick on each step advance when sound is enabled.
+  useEffect(() => {
+    playTick(560 + i * 18);
+  }, [i]);
+
   const step = STEPS[i];
+  const done = i >= STEPS.length - 1 && !playing;
+  const progress = (i / (STEPS.length - 1)) * 100;
 
   return (
-    <div className="panel overflow-hidden border border-divider bg-surface font-mono text-sm">
+    <div
+      ref={rootRef}
+      className="panel overflow-hidden border border-divider bg-surface font-mono text-sm"
+    >
       <div className="flex items-center justify-between border-b border-divider px-3 py-2 text-xs text-text/50">
         <span>watch an agent work: step {i + 1}/{STEPS.length}</span>
-        <span>fake-repo @ main</span>
-      </div>
-      <ol className="divide-y divide-divider" aria-label="Agent loop steps">
-        {STEPS.map((s, idx) => (
-          <li
-            key={idx}
-            aria-current={idx === i ? "step" : undefined}
-            className={`flex gap-3 px-3 py-2.5 transition-opacity ${
-              idx === i ? "bg-bg" : idx < i ? "opacity-50" : "opacity-25"
-            }`}
+        <span className="flex items-center gap-2">
+          <span
+            className={`inline-flex items-center gap-1.5 ${done ? "text-accent" : "text-accent-3"}`}
           >
             <span
-              className={`w-16 shrink-0 uppercase tracking-wide ${COLOR[s.phase]}`}
+              className={`h-1.5 w-1.5 rounded-full ${done ? "bg-accent" : "bg-accent-3"} ${playing ? "animate-pulse" : ""}`}
+            />
+            {done ? "complete" : playing ? "running" : "ready"}
+          </span>
+          <span className="text-text/40">fake-repo @ main</span>
+        </span>
+      </div>
+
+      {/* animated progress connector for the whole loop */}
+      <div className="h-px w-full bg-divider/50">
+        <div
+          className="h-px bg-accent transition-[width] duration-500 ease-out motion-reduce:transition-none"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      <ol className="relative" aria-label="Agent loop steps">
+        {/* vertical tool-call rail */}
+        <span aria-hidden className="absolute left-[1.15rem] top-0 h-full w-px bg-divider" />
+        {STEPS.map((s, idx) => {
+          const current = idx === i;
+          return (
+            <li
+              key={idx}
+              aria-current={current ? "step" : undefined}
+              className={`relative flex gap-3 border-b border-divider px-3 py-2.5 transition-opacity last:border-b-0 ${
+                current ? "bg-bg" : idx < i ? "opacity-50" : "opacity-25"
+              }`}
             >
-              {s.phase}
-            </span>
-            <span className="text-text/80">{s.text}</span>
-          </li>
-        ))}
+              <span className="relative z-[1] mt-1.5 flex">
+                <span
+                  className={`h-2 w-2 rounded-full ${DOT[s.phase]} ${current && playing ? "animate-ping absolute" : ""}`}
+                />
+                <span className={`h-2 w-2 rounded-full ${DOT[s.phase]}`} />
+              </span>
+              <span className={`w-14 shrink-0 uppercase tracking-wide ${COLOR[s.phase]}`}>
+                {s.phase}
+              </span>
+              <span className={`text-text/80 ${current && playing ? "shimmer-text" : ""}`}>
+                {s.text}
+              </span>
+            </li>
+          );
+        })}
       </ol>
+
       <div
         className="border-t border-divider px-3 py-2 text-xs text-text/60"
         aria-live="polite"

@@ -1,9 +1,13 @@
 import ResumeProvider from "@/context/ResumeContext/ResumeContext";
 import { ScrollProgress } from "@/components/primitives/ScrollProgress";
 import { Crosshair } from "@/components/primitives/Crosshair";
+import { Spotlight } from "@/components/primitives/Spotlight";
 import { SmoothScroll } from "@/components/primitives/SmoothScroll";
 import { SectionRail } from "@/components/primitives/SectionRail";
 import { PageTransition } from "@/components/primitives/PageTransition";
+import { Toaster } from "@/components/primitives/Toaster";
+import { KonamiEgg } from "@/components/primitives/KonamiEgg";
+import { SelfDrivingTour } from "@/components/primitives/SelfDrivingTour";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CommandPalette } from "@/components/command/CommandPalette";
@@ -27,9 +31,13 @@ export default function RootGroupLayout({
           </a>
           <CommandPalette />
           <SmoothScroll />
+          <Spotlight />
           <ScrollProgress />
           <Crosshair />
           <SectionRail />
+          <Toaster />
+          <KonamiEgg />
+          <SelfDrivingTour />
           <Header />
           <main id="main" className="pt-16">
             <PageTransition>{children}</PageTransition>

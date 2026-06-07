@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Cursor } from "@/components/primitives/Cursor";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
+import { playTick } from "@/lib/sound";
 
 type Line = { kind: "in" | "out"; text: string };
 
@@ -108,6 +109,7 @@ export function Terminal() {
     if (!cmd) return;
     if (raw.trim()) setHistory((h) => [...h, raw.trim()]);
     histIdx.current = -1;
+    playTick(640);
     const echo: Line = { kind: "in", text: raw };
 
     if (cmd.startsWith("goto")) {

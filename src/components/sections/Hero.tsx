@@ -3,6 +3,7 @@ import { AgentGraph } from "@/components/interactive/AgentGraph";
 import { ButtonLink } from "@/components/ui/Button";
 import { Magnetic } from "@/components/primitives/Magnetic";
 import { Tilt } from "@/components/primitives/Tilt";
+import { SpecDots } from "@/components/primitives/SpecDots";
 import { RevealGroup, RevealItem } from "@/components/primitives/Reveal";
 import { PERSON, PROOF } from "@/content/site";
 import { DashedDivider } from "@/components/primitives/Section";
@@ -15,6 +16,7 @@ function HeroBackdrop() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <div className="horizon decor-heavy" />
+      <SpecDots className="decor-heavy absolute inset-0 h-full w-full opacity-70" />
       <div
         className="hero-glow absolute -left-[10%] -top-[30%] h-[60%] w-[55%] rounded-full blur-3xl"
         style={{ background: "radial-gradient(closest-side, rgb(var(--accent) / 0.16), transparent)" }}
