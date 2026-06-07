@@ -3,17 +3,9 @@
 import { usePathname } from "next/navigation";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { cn } from "@/lib/cn";
+import { HOME_SECTIONS } from "@/content/sections";
 
-const SECTIONS: { id: string; label: string }[] = [
-  { id: "hero", label: "Top" },
-  { id: "how-i-build", label: "How I build" },
-  { id: "about", label: "About" },
-  { id: "selected-work", label: "Work" },
-  { id: "agent-demo", label: "Agent loop" },
-  { id: "writing", label: "Writing" },
-  { id: "faq", label: "FAQ" },
-  { id: "contact", label: "Contact" },
-];
+const SECTIONS = HOME_SECTIONS;
 
 /**
  * Desktop spec-rail: a fixed vertical index of the page. The active section

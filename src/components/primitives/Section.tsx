@@ -1,10 +1,10 @@
 import { cn } from "@/lib/cn";
+import { sectionNumber } from "@/content/sections";
 import { Prompt } from "./Cursor";
 
 type SectionProps = {
   id: string;
   eyebrow?: string;
-  index?: string;
   title?: React.ReactNode;
   intro?: React.ReactNode;
   className?: string;
@@ -14,17 +14,19 @@ type SectionProps = {
 /**
  * Deep-linkable landmark section. The eyebrow uses the `>` prompt motif as
  * its anchor. Real <section> with an aria-labelledby heading for landmarks.
+ * The oversized index watermark is derived from the section's position in
+ * HOME_SECTIONS (see @/content/sections) — never passed in by hand.
  */
 export function Section({
   id,
   eyebrow,
-  index,
   title,
   intro,
   className,
   children,
 }: SectionProps) {
   const headingId = `${id}-heading`;
+  const index = sectionNumber(id);
   return (
     <section
       id={id}

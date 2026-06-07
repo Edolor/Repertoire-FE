@@ -9,7 +9,6 @@ export function FAQ() {
   return (
     <Section
       id="faq"
-      index="06"
       eyebrow="FAQ"
       title="Questions, answered directly"
       intro="The things people ask before reaching out."

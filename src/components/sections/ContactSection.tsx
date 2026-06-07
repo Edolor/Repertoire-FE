@@ -7,7 +7,6 @@ export function ContactSection() {
   return (
     <Section
       id="contact"
-      index="07"
       eyebrow="Contact"
       title="Let's talk"
       intro="Open to full-time systems / platform and full-stack roles, and available for contract. Hiring, or just want to talk shop? Use the form, or reach me directly below."

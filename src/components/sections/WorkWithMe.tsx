@@ -7,7 +7,6 @@ export function WorkWithMe() {
   return (
     <Section
       id="how-i-build"
-      index="01"
       eyebrow="How I build"
       title="How I build, and what I've shipped"
       intro="Three things I do well, each grounded in real work: the agentic-coding infrastructure at Farpoint, the healthcare backend at Cavista, and full-stack product across the stack."

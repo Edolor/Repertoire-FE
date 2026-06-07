@@ -10,7 +10,6 @@ export function SelectedWork() {
   return (
     <Section
       id="selected-work"
-      index="03"
       eyebrow="Selected work"
       title="Featured work"
       intro="A couple of representative builds. Each writeup: the context, the constraint, the decisions, and what I would do differently — sanitized where under NDA."

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { publishedWork } from "@/lib/content";
 import { WorkGrid } from "@/components/work/WorkGrid";
+import { PageHeader } from "@/components/primitives/PageHeader";
 import { JsonLd } from "@/components/JsonLd";
 import { graph, abs, breadcrumbNode, SITE_URL } from "@/lib/seo";
 import { PERSON } from "@/content/site";
@@ -48,17 +49,11 @@ export default function WorkIndex() {
     <div className="mx-auto w-full max-w-content px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={workLd} />
 
-      <p className="font-mono text-xs uppercase tracking-[0.125em] text-text/65">
-        <span aria-hidden className="text-accent">&gt;</span> Selected work
-      </p>
-      <h1 className="t-h2 mt-3 max-w-3xl text-balance font-bold">
-        What I&apos;ve built
-      </h1>
-      <p className="mt-5 max-w-2xl text-pretty text-text/70 sm:text-lg">
-        Engineering writeups across systems, full-stack product, and backend
-        work — the context, the constraint, the decisions, and what I&apos;d do
-        differently. Sanitized where under NDA.
-      </p>
+      <PageHeader
+        eyebrow="Selected work"
+        title="What I've built"
+        intro="Engineering writeups across systems, full-stack product, and backend work — the context, the constraint, the decisions, and what I'd do differently. Sanitized where under NDA."
+      />
 
       <section aria-labelledby="all-work" className="mt-10 sm:mt-12">
         <h2 id="all-work" className="sr-only">

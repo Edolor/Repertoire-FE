@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { publishedPosts, allTags, formatDate } from "@/lib/content";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { JsonLd } from "@/components/JsonLd";
 import { graph, abs, breadcrumbNode, SITE_URL } from "@/lib/seo";
 
@@ -55,9 +56,7 @@ export default function WritingIndex() {
   return (
     <div className="mx-auto w-full max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={writingLd} />
-      <p className="font-mono text-xs uppercase tracking-[0.125em] text-text/65">
-        <span className="text-accent">&gt;</span> Writing
-      </p>
+      <Eyebrow>Writing</Eyebrow>
       <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
         Building reliable systems
       </h1>

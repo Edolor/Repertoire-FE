@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import portrait from "@/assets/img/mena.jpg";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { AboutDetails } from "@/components/sections/AboutDetails";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { JsonLd } from "@/components/JsonLd";
@@ -41,9 +42,7 @@ export default function AboutPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
       <JsonLd data={aboutLd} />
-      <p className="font-mono text-xs uppercase tracking-[0.125em] text-text/65">
-        <span className="text-accent">&gt;</span> About
-      </p>
+      <Eyebrow>About</Eyebrow>
       <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">
         <div className="shrink-0 border border-divider bg-surface p-1.5">
           <Image
