@@ -82,6 +82,7 @@ export function Header() {
   }, [menuOpen]);
 
   return (
+    <>
     <header className="fixed inset-x-0 top-0 z-40 h-16 border-b border-divider bg-bg/90 backdrop-blur">
       <div className="mx-auto flex h-full max-w-content items-center justify-between gap-4 px-5 sm:px-8">
         <Link
@@ -201,5 +202,16 @@ export function Header() {
         </div>
       )}
     </header>
+
+      {/* Dimming backdrop behind the open mobile menu (tap to close). Sits
+          below the header's stacking context so the bar + menu stay crisp. */}
+      {menuOpen && (
+        <div
+          aria-hidden
+          onClick={() => setMenuOpen(false)}
+          className="fixed inset-x-0 bottom-0 top-16 z-30 bg-black/50 backdrop-blur-sm md:hidden"
+        />
+      )}
+    </>
   );
 }
