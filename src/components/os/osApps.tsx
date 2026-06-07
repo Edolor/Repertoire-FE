@@ -1,13 +1,13 @@
 "use client";
 
-import { WritingTeaser } from "@/components/sections/WritingTeaser";
+import Link from "next/link";
 import { AgentDemo } from "@/components/sections/AgentDemo";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { AboutDetails } from "@/components/sections/AboutDetails";
 import { WorkGrid } from "@/components/work/WorkGrid";
 import { ResearchList } from "@/components/research/ResearchList";
 import { Terminal } from "@/components/interactive/Terminal";
-import { publishedWork } from "@/lib/content";
+import { publishedWork, publishedPosts, formatDate } from "@/lib/content";
 import { ABOUT_NARRATIVE, RESEARCH } from "@/content/site";
 
 // Playful "trash" easter egg: positioning noise this site deliberately let go.
@@ -32,6 +32,9 @@ export type AppId =
   | "readme"
   | "trash"
   | "resume"
+  // Dynamic window: a post / case study opened from a link inside another
+  // window (see OsShell's reader). Not a desktop icon or an OS_APPS entry.
+  | "reader"
   | "exit";
 
 export type OsApp = {
@@ -91,6 +94,35 @@ function ResearchApp() {
   return (
     <Pane heading="research &amp; publications">
       <ResearchList items={RESEARCH} />
+    </Pane>
+  );
+}
+
+// Full post index (not just the 3-item home teaser). Each row links to the
+// post; OsShell intercepts the click and opens it in a reader window.
+function WritingApp() {
+  return (
+    <Pane heading="writing.log">
+      <ul className="divide-y divide-divider border-y border-divider">
+        {publishedPosts.map((p) => (
+          <li key={p.slug}>
+            <Link
+              href={p.permalink}
+              className="group flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between"
+            >
+              <div className="max-w-2xl">
+                <h3 className="font-bold group-hover:text-accent-2">
+                  {p.title}
+                </h3>
+                <p className="mt-1 text-sm text-text/65">{p.description}</p>
+              </div>
+              <span className="shrink-0 font-mono text-xs text-text/60 sm:pl-6">
+                {formatDate(p.date)} · {p.metadata.readingTime} min
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </Pane>
   );
 }
@@ -180,7 +212,7 @@ export const OS_APPS: OsApp[] = [
     w: 720,
     h: 480,
     hash: "#writing",
-    Body: WritingTeaser,
+    Body: WritingApp,
   },
   {
     id: "research",

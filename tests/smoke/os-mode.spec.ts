@@ -185,6 +185,64 @@ test("OS mode persists across a reload", async ({ page }, testInfo) => {
   assertNoErrors(errors, testInfo);
 });
 
+test("clicking a post in the writing window opens it in a reader window", async ({
+  page,
+}, testInfo) => {
+  // Regression: in OS mode a post <Link> navigated behind the shell, so the
+  // article never appeared. Clicks must open a reader window instead.
+  const errors = trackPageErrors(page);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+
+  await page
+    .getByRole("button", { name: "Switch to desktop mode" })
+    .click({ timeout: 30_000 });
+  await page.getByRole("button", { name: "Open writing.log" }).click();
+
+  const writing = page.getByRole("dialog", { name: /writing\.log/ });
+  await expect(writing).toBeVisible();
+
+  const firstPost = writing.getByRole("link").first();
+  const title = (await firstPost.getByRole("heading").innerText()).trim();
+  await firstPost.click();
+
+  // A reader window titled with the post opens, shows the article body, and
+  // the browser did NOT navigate away from the desktop.
+  const reader = page.getByRole("dialog", { name: title });
+  await expect(reader).toBeVisible();
+  await expect(reader.locator(".prose")).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe("/");
+
+  assertNoErrors(errors, testInfo);
+});
+
+test("clicking a work card opens the case study in a reader window", async ({
+  page,
+}, testInfo) => {
+  const errors = trackPageErrors(page);
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+
+  await page
+    .getByRole("button", { name: "Switch to desktop mode" })
+    .click({ timeout: 30_000 });
+  await page.getByRole("button", { name: "Open work/" }).click();
+
+  const work = page.getByRole("dialog", { name: /work\// });
+  await expect(work).toBeVisible();
+
+  const firstCard = work.getByRole("link").first();
+  const title = (await firstCard.getByRole("heading").innerText()).trim();
+  await firstCard.click();
+
+  const reader = page.getByRole("dialog", { name: title });
+  await expect(reader).toBeVisible();
+  await expect(reader.locator(".prose")).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe("/");
+
+  assertNoErrors(errors, testInfo);
+});
+
 test("below 1024px the OS is unavailable even if persisted", async ({
   page,
 }, testInfo) => {

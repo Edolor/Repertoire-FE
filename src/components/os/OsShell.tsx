@@ -8,6 +8,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
@@ -15,6 +16,39 @@ import { useOsMode } from "./OsModeContext";
 import { Window, MENUBAR_H, TASKBAR_H, type Rect } from "./Window";
 import { OsIcon } from "./OsIcon";
 import { OS_APPS, APP_BY_ID, type AppId, type OsApp } from "./osApps";
+import { publishedPosts, publishedWork, formatDate } from "@/lib/content";
+import { ArticleBody } from "@/components/interactive/ArticleBody";
+
+// In OS mode the document site is hidden behind the shell, so a normal
+// <Link> to a detail page would navigate "underneath" the desktop and appear
+// to do nothing. Instead we intercept internal link clicks inside windows and
+// open the content in a reader window (detail pages) or the matching app
+// window (section/index routes). These maps resolve a link href to content.
+const POST_BY_PERMALINK = new Map(publishedPosts.map((p) => [p.permalink, p]));
+const WORK_BY_PERMALINK = new Map(publishedWork.map((w) => [w.permalink, w]));
+const PATH_TO_APP: Record<string, AppId> = {
+  "/work": "work",
+  "/writing": "writing",
+  "/research": "research",
+  "/about": "about",
+  "/#contact": "contact",
+};
+
+type ReaderDoc = { title: string; subtitle: string; html: string };
+
+/** Body of the dynamic reader window: an article/case-study opened from a link. */
+function ReaderPane({ doc }: { doc: ReaderDoc }) {
+  return (
+    <div className="p-5">
+      <p className="mb-2 font-mono text-xs uppercase tracking-[0.125em] text-text/60">
+        <span className="mr-2 text-accent">&gt;</span>
+        {doc.subtitle}
+      </p>
+      <h1 className="text-2xl font-bold leading-tight">{doc.title}</h1>
+      <ArticleBody html={doc.html} />
+    </div>
+  );
+}
 
 const README_KEY = "os-readme-seen";
 const ICONS_KEY = "os-icons";
@@ -139,7 +173,9 @@ export function OsShell() {
   const { disable } = useOsMode();
   const { theme, toggle } = useTheme();
   const { open: openResume } = useResume();
+  const router = useRouter();
   const [wins, setWins] = useState<WinState[]>([]);
+  const [readerDoc, setReaderDoc] = useState<ReaderDoc | null>(null);
   const [iconPos, setIconPos] = useState<IconPos | null>(null);
   const [ctx, setCtx] = useState<Ctx | null>(null);
   const zTop = useRef(10);
@@ -201,6 +237,106 @@ export function OsShell() {
       });
     },
     [exit, openResume],
+  );
+
+  // Dynamic "reader" window: opened when a link inside a window points at a
+  // post or work case study. One reader window, reused and re-focused.
+  const openReader = useCallback((doc: ReaderDoc) => {
+    setReaderDoc(doc);
+    setWins((prev) => {
+      const z = ++zTop.current;
+      const existing = prev.find((w) => w.id === "reader");
+      if (existing)
+        return prev.map((w) =>
+          w.id === "reader" ? { ...w, z, minimized: false } : w,
+        );
+      const i = launchCount.current++;
+      const ww = Math.min(780, window.innerWidth - 80);
+      const hh = Math.min(
+        660,
+        window.innerHeight - MENUBAR_H - TASKBAR_H - 24,
+      );
+      const rect: Rect = {
+        x: Math.min(180 + i * 28, Math.max(40, window.innerWidth - ww - 24)),
+        y: MENUBAR_H + 16 + (i % 5) * 26,
+        w: ww,
+        h: hh,
+      };
+      return [
+        ...prev,
+        { id: "reader", z, minimized: false, maximized: false, rect },
+      ];
+    });
+  }, []);
+
+  // Capture-phase click interception for internal links inside windows. Runs
+  // before next/link's own handler; calling preventDefault makes Link bail, so
+  // we route the click to a window instead of a hidden navigation.
+  const onShellNavCapture = useCallback(
+    (e: React.MouseEvent) => {
+      if (
+        e.defaultPrevented ||
+        e.button !== 0 ||
+        e.metaKey ||
+        e.ctrlKey ||
+        e.shiftKey ||
+        e.altKey
+      )
+        return;
+      const anchor = (e.target as HTMLElement).closest("a");
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+      // Leave new-tab and non-internal (http/mailto/tel) links to the browser.
+      const tgt = anchor.getAttribute("target");
+      if (tgt && tgt !== "_self") return;
+      if (!href.startsWith("/") && !href.startsWith("#")) return;
+
+      const post = POST_BY_PERMALINK.get(href);
+      if (post) {
+        e.preventDefault();
+        openReader({
+          title: post.title,
+          subtitle: `writing · ${formatDate(post.date)} · ${post.metadata.readingTime} min`,
+          html: post.body,
+        });
+        return;
+      }
+      const wk = WORK_BY_PERMALINK.get(href);
+      if (wk) {
+        e.preventDefault();
+        openReader({
+          title: wk.title,
+          subtitle: `work · ${wk.client}`,
+          html: wk.body,
+        });
+        return;
+      }
+      // Section/index routes → the matching app window (stay in OS mode).
+      const hash = href.startsWith("/#")
+        ? href.slice(1)
+        : href.startsWith("#")
+          ? href
+          : null;
+      let app = hash
+        ? OS_APPS.find((a) => a.kind === "window" && a.hash === hash)
+        : undefined;
+      if (!app) {
+        const id = PATH_TO_APP[href];
+        if (id) app = APP_BY_ID[id];
+      }
+      if (app) {
+        e.preventDefault();
+        openApp(app);
+        return;
+      }
+      // Unknown internal route: leave OS mode so the destination is visible
+      // rather than rendering hidden behind the shell.
+      e.preventDefault();
+      exit();
+      router.push(href);
+    },
+    [openReader, openApp, exit, router],
   );
 
   const focus = useCallback((id: AppId) => {
@@ -404,6 +540,7 @@ export function OsShell() {
       className="fixed inset-0 z-[55] flex flex-col overflow-hidden bg-bg"
       data-os-shell
       data-lenis-prevent
+      onClickCapture={onShellNavCapture}
     >
       {/* Top menu bar */}
       <div
@@ -541,6 +678,25 @@ export function OsShell() {
         {wins
           .filter((w) => !w.minimized)
           .map((w) => {
+            if (w.id === "reader") {
+              if (!readerDoc) return null;
+              return (
+                <Window
+                  key="reader"
+                  title={readerDoc.title}
+                  focused={w.id === focusedId}
+                  zIndex={w.z}
+                  maximized={w.maximized}
+                  defaultRect={w.rect}
+                  onFocus={() => focus(w.id)}
+                  onClose={() => close(w.id)}
+                  onMinimize={() => setFlag(w.id, { minimized: true })}
+                  onToggleMax={() => setFlag(w.id, { maximized: !w.maximized })}
+                >
+                  <ReaderPane doc={readerDoc} />
+                </Window>
+              );
+            }
             const app = APP_BY_ID[w.id];
             if (app.kind !== "window") return null;
             const Body = app.Body;
@@ -574,13 +730,15 @@ export function OsShell() {
           {wins.length === 0 ? "no windows open" : "windows:"}
         </span>
         {wins.map((w) => {
-          const app = APP_BY_ID[w.id];
+          const isReader = w.id === "reader";
+          const app = isReader ? null : APP_BY_ID[w.id];
+          const label = isReader ? readerDoc?.title ?? "reader" : app!.file;
           return (
             <button
               key={w.id}
               type="button"
               onClick={() => taskbarClick(w)}
-              aria-label={`${w.minimized ? "Restore" : "Focus"} ${app.title}`}
+              aria-label={`${w.minimized ? "Restore" : "Focus"} ${label}`}
               className={cn(
                 "flex shrink-0 items-center gap-1.5 border px-2 py-1 font-mono text-[11px]",
                 w.id === focusedId && !w.minimized
@@ -590,7 +748,7 @@ export function OsShell() {
               )}
             >
               <OsIcon id={w.id} className="h-3.5 w-3.5" />
-              {app.file}
+              <span className="max-w-[12rem] truncate">{label}</span>
             </button>
           );
         })}

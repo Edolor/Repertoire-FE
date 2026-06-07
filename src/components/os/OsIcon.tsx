@@ -68,6 +68,14 @@ const PATHS: Record<AppId, React.ReactNode> = {
       <path d="M10 10.5v6M14 10.5v6" />
     </>
   ),
+  // open document being read (reader window)
+  reader: (
+    <>
+      <path d="M6 3.5h7.5L18 8v12.5H6z" />
+      <path d="M13 3.5V8h5" />
+      <path d="M8.5 11.5h7M8.5 14.5h7M8.5 17.5h4" />
+    </>
+  ),
   // badged document (resume)
   resume: (
     <>
