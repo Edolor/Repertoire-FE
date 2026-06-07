@@ -64,7 +64,7 @@ export default async function WorkPage({
   );
 
   return (
-    <article className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+    <article className="mx-auto w-full max-w-3xl px-5 pb-16 pt-6 sm:px-8 sm:pb-24 sm:pt-10">
       <JsonLd data={ld} />
       <Link
         href="/#selected-work"
