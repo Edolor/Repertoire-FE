@@ -85,7 +85,7 @@ export function AgentExplorable() {
       ref={rootRef}
       className="panel overflow-hidden border border-divider bg-surface font-mono text-sm"
     >
-      <div className="flex items-center justify-between border-b border-divider px-3 py-2 text-xs text-text/50">
+      <div className="flex items-center justify-between border-b border-divider px-3 py-2 text-xs text-text/60">
         <span>watch an agent work: step {i + 1}/{STEPS.length}</span>
         <span className="flex items-center gap-2">
           <span
@@ -96,7 +96,7 @@ export function AgentExplorable() {
             />
             {done ? "complete" : playing ? "running" : "ready"}
           </span>
-          <span className="text-text/40">fake-repo @ main</span>
+          <span className="text-text/60">fake-repo @ main</span>
         </span>
       </div>
 
@@ -108,7 +108,11 @@ export function AgentExplorable() {
         />
       </div>
 
-      <ol className="relative" aria-label="Agent loop steps">
+      {/* The full step list is visual; all 8 rows render at once (dimmed),
+          which would make a screen reader read every step out of sync with the
+          "current" state. The live region below is the AT source of truth, so
+          this list is hidden from the a11y tree. */}
+      <ol className="relative" aria-hidden="true">
         {/* vertical tool-call rail */}
         <span aria-hidden className="absolute left-[1.15rem] top-0 h-full w-px bg-divider" />
         {STEPS.map((s, idx) => {
@@ -143,6 +147,10 @@ export function AgentExplorable() {
         aria-live="polite"
       >
         now: <span className={COLOR[step.phase]}>{step.phase}</span>
+        {/* Carry the actual step content to AT (not just the phase token), so a
+            screen reader hears the substance of each step as it becomes
+            current via auto-play or the prev/next buttons. */}
+        <span className="sr-only">: {step.text}</span>
       </div>
       <div className="flex flex-wrap gap-1.5 border-t border-divider p-2 sm:gap-2">
         <button

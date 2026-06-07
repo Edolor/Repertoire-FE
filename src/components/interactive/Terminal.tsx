@@ -7,6 +7,7 @@ import { Cursor } from "@/components/primitives/Cursor";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { playTick } from "@/lib/sound";
 import { useScrollLock } from "@/lib/scroll-lock";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 import { cn } from "@/lib/cn";
 
 type WindowState = "normal" | "min" | "max";
@@ -64,7 +65,16 @@ export function Terminal() {
   const booted = useRef(false);
   const [win, setWin] = useState<WindowState>("normal");
   const [closed, setClosed] = useState(false);
+  const maxDialogRef = useRef<HTMLDivElement>(null);
   useScrollLock(win === "max");
+
+  // Maximized = a real modal: move focus into the dialog, trap Tab, and
+  // restore focus on close (the maximized dialog previously did none of this
+  // despite claiming aria-modal). Shared with Window via useFocusTrap.
+  const onDialogKeyDown = useFocusTrap(maxDialogRef, {
+    active: win === "max",
+    onEscape: () => setWin("normal"),
+  });
 
   // While maximized: lock body scroll and let Escape restore.
   useEffect(() => {
@@ -276,7 +286,7 @@ export function Terminal() {
         type="button"
         onClick={() => win === "min" && setWin("normal")}
         onDoubleClick={() => setWin((w) => (w === "max" ? "normal" : "max"))}
-        className="ml-1 select-none text-xs text-text/50"
+        className="ml-1 select-none text-xs text-text/60"
         aria-label={win === "min" ? "Restore agent shell" : "agent shell window"}
       >
         agent shell
@@ -389,11 +399,14 @@ export function Terminal() {
           onClick={() => setWin("normal")}
         />
         <div
+          ref={maxDialogRef}
           role="dialog"
           aria-modal="true"
           aria-label="Agent shell (maximized)"
+          tabIndex={-1}
+          onKeyDown={onDialogKeyDown}
           data-lenis-prevent
-          className="relative z-10 w-full max-w-3xl"
+          className="relative z-10 w-full max-w-3xl outline-none"
         >
           {shell(true)}
         </div>

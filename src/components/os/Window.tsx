@@ -2,12 +2,12 @@
 
 import {
   useCallback,
-  useEffect,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { cn } from "@/lib/cn";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
 
 export const MENUBAR_H = 44;
 export const TASKBAR_H = 38;
@@ -54,13 +54,9 @@ export function Window({
   const [rect, setRect] = useState<Rect>(defaultRect);
   const drag = useRef<{ dx: number; dy: number } | null>(null);
 
-  // Focus the window shell on open so it is announced and Escape works
-  // immediately; remember what had focus to restore it on close.
-  useEffect(() => {
-    const prev = document.activeElement as HTMLElement | null;
-    rootRef.current?.focus();
-    return () => prev?.focus?.();
-  }, []);
+  // Focus the shell on open (so it's announced and Escape works), restore
+  // focus on close, and trap Tab within the window — all shared with Terminal.
+  const onKeyDown = useFocusTrap(rootRef, { onEscape: onClose });
 
   const onTitlePointerDown = useCallback(
     (e: ReactPointerEvent) => {
@@ -97,36 +93,6 @@ export function Window({
       /* pointer already released */
     }
   }, []);
-
-  const onKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.stopPropagation();
-        onClose();
-        return;
-      }
-      if (e.key !== "Tab") return;
-      const root = rootRef.current;
-      if (!root) return;
-      const focusable = Array.from(
-        root.querySelectorAll<HTMLElement>(
-          'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])',
-        ),
-      ).filter((el) => el.offsetParent !== null || el === root);
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      const activeEl = document.activeElement as HTMLElement;
-      if (e.shiftKey && (activeEl === first || activeEl === root)) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && activeEl === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    },
-    [onClose],
-  );
 
   const style: React.CSSProperties = maximized
     ? {

@@ -570,7 +570,7 @@ export function OsShell() {
         style={{ height: TASKBAR_H }}
         className="z-20 flex shrink-0 items-center gap-1 overflow-x-auto border-t border-divider bg-bg/95 px-2 backdrop-blur"
       >
-        <span className="shrink-0 px-1 font-mono text-[11px] text-text/40">
+        <span className="shrink-0 px-1 font-mono text-[11px] text-text/60">
           {wins.length === 0 ? "no windows open" : "windows:"}
         </span>
         {wins.map((w) => {
