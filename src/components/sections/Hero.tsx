@@ -18,11 +18,11 @@ function HeroBackdrop() {
       <div className="horizon decor-heavy" />
       <SpecDots className="decor-heavy absolute inset-0 h-full w-full opacity-70" />
       <div
-        className="hero-glow absolute -left-[10%] -top-[30%] h-[60%] w-[55%] rounded-full blur-3xl"
+        className="hero-glow decor-heavy absolute -left-[10%] -top-[30%] h-[60%] w-[55%] rounded-full blur-3xl"
         style={{ background: "radial-gradient(closest-side, rgb(var(--accent) / 0.16), transparent)" }}
       />
       <div
-        className="hero-glow absolute right-[-5%] top-[5%] h-[55%] w-[45%] rounded-full blur-3xl"
+        className="hero-glow decor-heavy absolute right-[-5%] top-[5%] h-[55%] w-[45%] rounded-full blur-3xl"
         style={{ animationDelay: "-7s", background: "radial-gradient(closest-side, rgb(var(--accent-2) / 0.12), transparent)" }}
       />
       <div className="grain decor-heavy" />

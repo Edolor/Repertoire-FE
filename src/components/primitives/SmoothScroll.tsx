@@ -18,12 +18,29 @@ export function SmoothScroll() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+    // Parkable rAF: tick only while scrolling has momentum, then stop — so the
+    // page goes truly idle between interactions (no permanent 60Hz loop).
     let raf = 0;
+    let idle = 0;
     const loop = (time: number) => {
       lenis.raf(time);
+      idle = Math.abs(lenis.velocity) < 0.05 ? idle + 1 : 0;
+      if (idle > 24) {
+        raf = 0; // settled — park
+        return;
+      }
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+    const wake = () => {
+      idle = 0;
+      if (!raf) raf = requestAnimationFrame(loop);
+    };
+    window.addEventListener("wheel", wake, { passive: true });
+    window.addEventListener("touchstart", wake, { passive: true });
+    window.addEventListener("touchmove", wake, { passive: true });
+    window.addEventListener("keydown", wake);
+    lenis.on("scroll", wake);
+    wake();
 
     // Make in-page anchor clicks use Lenis so deep links glide, not jump.
     const onClick = (e: MouseEvent) => {
@@ -38,13 +55,18 @@ export function SmoothScroll() {
       const el = document.getElementById(id);
       if (!el) return;
       e.preventDefault();
+      wake();
       lenis.scrollTo(el, { offset: -72 });
       history.pushState(null, "", url.hash);
     };
     document.addEventListener("click", onClick);
 
     return () => {
-      cancelAnimationFrame(raf);
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("wheel", wake);
+      window.removeEventListener("touchstart", wake);
+      window.removeEventListener("touchmove", wake);
+      window.removeEventListener("keydown", wake);
       document.removeEventListener("click", onClick);
       lenis.destroy();
     };

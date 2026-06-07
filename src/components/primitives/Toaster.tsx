@@ -7,13 +7,21 @@ import { TOAST_EVENT, type ToastDetail } from "@/lib/toast";
 export function Toaster() {
   const [items, setItems] = useState<ToastDetail[]>([]);
   useEffect(() => {
+    const timers = new Set<ReturnType<typeof setTimeout>>();
     const onToast = (e: Event) => {
       const d = (e as CustomEvent<ToastDetail>).detail;
       setItems((x) => [...x, d]);
-      window.setTimeout(() => setItems((x) => x.filter((i) => i.id !== d.id)), 2600);
+      const t = setTimeout(() => {
+        setItems((x) => x.filter((i) => i.id !== d.id));
+        timers.delete(t);
+      }, 2600);
+      timers.add(t);
     };
     window.addEventListener(TOAST_EVENT, onToast);
-    return () => window.removeEventListener(TOAST_EVENT, onToast);
+    return () => {
+      window.removeEventListener(TOAST_EVENT, onToast);
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   return (

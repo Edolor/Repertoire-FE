@@ -2,11 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { Spring, SPRINGS, rafLoop } from "@/lib/spring";
 
 /**
- * Cursor-attracted wrapper: rAF-lerps toward the pointer while hovered and eases
- * back to rest on leave (no animation-library dep). Pointer-only and disabled
- * under reduced-motion.
+ * Cursor-attracted wrapper. Spring-physics driven (shared `@/lib/spring`) so it
+ * trails and settles with the same loose overshoot as framer-motion's magnetic
+ * spring, at no library cost. Pointer-only; disabled under reduced-motion.
  */
 export function Magnetic({
   children,
@@ -19,43 +20,54 @@ export function Magnetic({
 }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
-  const st = useRef({ tx: 0, ty: 0, cx: 0, cy: 0, raf: 0, active: false });
 
   useEffect(() => {
     if (reduced) return;
+    // Pointer-only: true no-op on touch / coarse pointers.
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const el = ref.current;
     if (!el) return;
-    const s = st.current;
-    const loop = () => {
-      s.cx += (s.tx - s.cx) * 0.2;
-      s.cy += (s.ty - s.cy) * 0.2;
-      el.style.transform = `translate(${s.cx.toFixed(2)}px,${s.cy.toFixed(2)}px)`;
-      const moving = Math.abs(s.tx - s.cx) > 0.1 || Math.abs(s.ty - s.cy) > 0.1;
-      if (moving || s.active) s.raf = requestAnimationFrame(loop);
-      else {
-        s.raf = 0;
-        el.style.transform = "translate(0,0)";
-      }
+    const sx = new Spring(0, SPRINGS.magnetic);
+    const sy = new Spring(0, SPRINGS.magnetic);
+    let active = false;
+    let rect = el.getBoundingClientRect();
+
+    const loop = rafLoop((dt) => {
+      sx.step(dt);
+      sy.step(dt);
+      el.style.transform = `translate(${sx.value.toFixed(2)}px,${sy.value.toFixed(2)}px)`;
+      return active || !sx.atRest || !sy.atRest;
+    });
+
+    const onEnter = () => {
+      rect = el.getBoundingClientRect();
     };
     const onMove = (e: MouseEvent) => {
-      const r = el.getBoundingClientRect();
-      s.tx = (e.clientX - (r.left + r.width / 2)) * strength;
-      s.ty = (e.clientY - (r.top + r.height / 2)) * strength;
-      s.active = true;
-      if (!s.raf) s.raf = requestAnimationFrame(loop);
+      sx.setTarget((e.clientX - (rect.left + rect.width / 2)) * strength);
+      sy.setTarget((e.clientY - (rect.top + rect.height / 2)) * strength);
+      active = true;
+      loop.start();
     };
     const onLeave = () => {
-      s.tx = 0;
-      s.ty = 0;
-      s.active = false;
-      if (!s.raf) s.raf = requestAnimationFrame(loop);
+      sx.setTarget(0);
+      sy.setTarget(0);
+      active = false;
+      loop.start();
     };
+    const onResize = () => {
+      rect = el.getBoundingClientRect();
+    };
+
+    el.addEventListener("mouseenter", onEnter);
     el.addEventListener("mousemove", onMove);
     el.addEventListener("mouseleave", onLeave);
+    window.addEventListener("resize", onResize);
     return () => {
+      el.removeEventListener("mouseenter", onEnter);
       el.removeEventListener("mousemove", onMove);
       el.removeEventListener("mouseleave", onLeave);
-      if (s.raf) cancelAnimationFrame(s.raf);
+      window.removeEventListener("resize", onResize);
+      loop.stop();
     };
   }, [reduced, strength]);
 

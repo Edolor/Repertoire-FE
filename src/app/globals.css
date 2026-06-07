@@ -70,7 +70,10 @@
     *::after {
       animation-duration: 0.001ms !important;
       animation-iteration-count: 1 !important;
+      animation-delay: 0ms !important;
       transition-duration: 0.001ms !important;
+      transition-delay: 0ms !important;
+      scroll-behavior: auto !important;
     }
   }
 
@@ -131,8 +134,11 @@
     }
   }
 
-  /* Scroll reveal (IntersectionObserver-driven; no animation-library dep). */
-  .reveal {
+  /* Scroll reveal (IntersectionObserver-driven; no animation-library dep).
+     The hidden start state is gated behind `html.js` so that WITHOUT
+     JavaScript the content is fully visible (no blank sections for crawlers /
+     no-JS). The `js` class is set pre-paint by the layout script. */
+  html.js .reveal {
     opacity: 0;
     transform: translateY(16px);
     transition:
@@ -140,24 +146,25 @@
       transform 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98);
     will-change: opacity, transform;
   }
-  .reveal[data-dir="down"] {
+  html.js .reveal[data-dir="down"] {
     transform: translateY(-16px);
   }
-  .reveal[data-dir="left"] {
+  html.js .reveal[data-dir="left"] {
     transform: translateX(16px);
   }
-  .reveal[data-dir="right"] {
+  html.js .reveal[data-dir="right"] {
     transform: translateX(-16px);
   }
-  .reveal.is-shown {
+  html.js .reveal.is-shown {
     opacity: 1;
     transform: none;
   }
+  /* Reduced-motion wins over the js-gated hidden state. */
   @media (prefers-reduced-motion: reduce) {
-    .reveal {
-      opacity: 1;
-      transform: none;
-      transition: none;
+    html.js .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
     }
   }
 

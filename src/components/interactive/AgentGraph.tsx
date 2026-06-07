@@ -50,12 +50,19 @@ export function AgentGraph() {
     let last = 0;
     let inView = true;
     let t = 0;
+    let acc = 0;
     const loop = (now: number) => {
       const delta = last ? now - last : 16;
       last = now;
       // ~5.6s per full loop; smooth and unhurried.
       t = (t + delta / 1000 / 1.12) % NODES.length;
-      setPhase(t);
+      // Cap React re-renders to ~30fps — plenty for this slow ambient loop,
+      // and halves the per-frame SVG re-render cost.
+      acc += delta;
+      if (acc >= 33) {
+        acc = 0;
+        setPhase(t);
+      }
       raf = requestAnimationFrame(loop);
     };
     const io = new IntersectionObserver(

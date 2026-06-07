@@ -37,6 +37,9 @@ export function playTick(freq = 620, dur = 0.03) {
       (window as unknown as { webkitAudioContext: typeof AudioContext })
         .webkitAudioContext;
     ctx = ctx || new AC();
+    // Browsers start the context suspended until a gesture; ticks fire from
+    // clicks, so resume() here is within a user gesture and is allowed.
+    if (ctx.state === "suspended") void ctx.resume();
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.type = "square";

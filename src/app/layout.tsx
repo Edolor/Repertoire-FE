@@ -86,7 +86,7 @@ export const metadata: Metadata = {
 
 // Anti-FOUC: set the theme class on <html> before first paint so the warm
 // paper / charcoal background never flashes the wrong color.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');var d=t==='dark'||(t===null&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
+const themeScript = `(function(){try{document.documentElement.classList.add('js');var t=localStorage.getItem('theme');var d=t==='dark'||(t===null&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
 
 // Anti-FOUC for the opt-in "desktop OS" alternate skin: if the visitor
 // previously chose OS mode AND this is a desktop viewport (>= 1024px),

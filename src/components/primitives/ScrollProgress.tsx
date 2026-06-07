@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { Spring, SPRINGS, rafLoop } from "@/lib/spring";
 
 const SECTION_IDS = [
   "how-i-build",
@@ -25,23 +26,60 @@ export function ScrollProgress() {
   const [ticks, setTicks] = useState<number[]>([]);
 
   useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const progress = () => {
       const docH = document.documentElement.scrollHeight - window.innerHeight;
-      const p = docH > 0 ? Math.min(1, window.scrollY / docH) : 0;
-      if (bar.current) bar.current.style.transform = `scaleX(${p})`;
+      return docH > 0 ? Math.min(1, Math.max(0, window.scrollY / docH)) : 0;
     };
+    const apply = (v: number) => {
+      if (bar.current) bar.current.style.transform = `scaleX(${v.toFixed(4)})`;
+    };
+
+    // Reduced-motion: track scroll directly, no spring smoothing.
+    if (reduced) {
+      let raf = 0;
+      const update = () => {
+        raf = 0;
+        apply(progress());
+      };
+      const onScroll = () => {
+        if (!raf) raf = requestAnimationFrame(update);
+      };
+      update();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+        if (raf) cancelAnimationFrame(raf);
+      };
+    }
+
+    // Spring-smoothed fill (matches framer-motion's useSpring feel). The value
+    // lives in 0..1, so rest thresholds are tightened ~20x vs the px/deg
+    // defaults — otherwise it would park ~1% of the bar short and snap.
+    const spring = new Spring(progress(), {
+      ...SPRINGS.smooth,
+      restDelta: 0.0005,
+      restSpeed: 0.001,
+    });
+    spring.jump(progress());
+    apply(spring.value);
+    const loop = rafLoop((dt) => {
+      spring.step(dt);
+      apply(spring.value);
+      return !spring.atRest;
+    });
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
+      spring.setTarget(progress());
+      loop.start();
     };
-    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      loop.stop();
     };
   }, []);
 
