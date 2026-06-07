@@ -91,6 +91,22 @@
     border-left-color: rgb(var(--text) / 0.14);
   }
 
+  /* Physical elevation for raised panels. Light: a soft drop + a faint top
+     highlight (light from above). Dark: shadows are near-invisible, so depth
+     comes from a 1px top highlight plus a deeper, tighter drop. Theme-aware,
+     restrained, and it composes with hover transforms. */
+  .panel {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.45),
+      0 1px 2px rgb(var(--text) / 0.05),
+      0 10px 24px -18px rgb(var(--text) / 0.18);
+  }
+  .dark .panel {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.05),
+      0 12px 30px -20px rgb(0 0 0 / 0.7);
+  }
+
   /* Graph-paper backdrop used sparingly behind interactive panels. */
   .graph-paper {
     background-image:

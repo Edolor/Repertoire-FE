@@ -14,7 +14,7 @@ export function Research() {
       <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
         {RESEARCH.map((r, idx) => (
           <Reveal key={r.title} delay={idx * 0.05}>
-            <article className="flex h-full flex-col border border-l-4 border-divider border-l-accent-3 bg-surface p-5 sm:p-6">
+            <article className="panel flex h-full flex-col border border-l-4 border-divider border-l-accent-3 bg-surface p-5 sm:p-6">
               <h3 className="text-lg font-bold">{r.title}</h3>
               <p className="mt-1 font-mono text-xs text-text/70">{r.venue}</p>
               <p className="mt-3 text-sm leading-relaxed text-text/75">{r.why}</p>

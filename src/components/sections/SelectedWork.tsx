@@ -21,7 +21,7 @@ export function SelectedWork() {
       <RevealGroup className="grid gap-5 sm:gap-6 md:grid-cols-2">
         {items.map((w) => (
           <RevealItem key={w.slug} className="h-full">
-            <article className="group relative flex h-full flex-col border border-divider bg-surface transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_18px_40px_-24px_rgb(var(--text)/0.45)] motion-reduce:transition-none motion-reduce:hover:transform-none">
+            <article className="panel group relative flex h-full flex-col border border-divider bg-surface transition-[transform,border-color,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_22px_50px_-26px_rgb(var(--accent)/0.5)] motion-reduce:transition-none motion-reduce:hover:transform-none">
               <CornerBrackets />
               <Link
                 href={w.permalink}

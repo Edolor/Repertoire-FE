@@ -15,7 +15,7 @@ export function WorkWithMe() {
       <div className="grid gap-5 sm:gap-6 md:grid-cols-3">
         {PILLARS.map((p, idx) => (
           <Reveal key={p.id} delay={idx * 0.06}>
-            <div className="flex h-full flex-col border border-divider bg-surface p-5 sm:p-6">
+            <div className="panel flex h-full flex-col border border-divider bg-surface p-5 sm:p-6">
               <p className="font-mono text-xs uppercase tracking-widest text-accent">
                 {p.name}
               </p>

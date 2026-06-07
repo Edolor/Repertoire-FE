@@ -71,7 +71,7 @@ export function AgentGraph() {
   };
 
   return (
-    <div className="relative w-full overflow-hidden border border-divider bg-surface">
+    <div className="panel relative w-full overflow-hidden border border-divider bg-surface">
       <div className="flex items-center justify-between border-b border-divider px-3 py-2 font-mono text-[11px] text-text/50">
         <span>system.graph</span>
         <span aria-hidden>{reduced ? "static" : "running"}</span>
