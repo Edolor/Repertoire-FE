@@ -7,6 +7,7 @@ export function WritingTeaser() {
   return (
     <Section
       id="writing"
+      index="05"
       eyebrow="Writing"
       title="Notes on building systems and shipping product"
       intro={

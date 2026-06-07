@@ -1,4 +1,5 @@
 import ResumeProvider from "@/context/ResumeContext/ResumeContext";
+import { ScrollProgress } from "@/components/primitives/ScrollProgress";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CommandPalette } from "@/components/command/CommandPalette";
@@ -21,6 +22,7 @@ export default function RootGroupLayout({
             Skip to content
           </a>
           <CommandPalette />
+          <ScrollProgress />
           <Header />
           <main id="main" className="pt-16">
             {children}

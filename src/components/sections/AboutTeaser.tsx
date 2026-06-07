@@ -22,6 +22,7 @@ export function AboutTeaser() {
   return (
     <Section
       id="about"
+      index="06"
       eyebrow="About"
       title="Short version"
       intro={

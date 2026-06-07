@@ -4,6 +4,7 @@ import { Prompt } from "./Cursor";
 type SectionProps = {
   id: string;
   eyebrow?: string;
+  index?: string;
   title?: React.ReactNode;
   intro?: React.ReactNode;
   className?: string;
@@ -17,6 +18,7 @@ type SectionProps = {
 export function Section({
   id,
   eyebrow,
+  index,
   title,
   intro,
   className,
@@ -33,9 +35,17 @@ export function Section({
       )}
     >
       {eyebrow && (
-        <p className="mb-4 font-mono text-xs uppercase tracking-[0.125em] text-text/60">
-          <Prompt className="mr-2" />
-          {eyebrow}
+        <p className="mb-4 flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.125em] text-text/60">
+          {index && (
+            <>
+              <span className="tabular-nums text-accent/80">{index}</span>
+              <span aria-hidden className="h-3 w-px bg-divider" />
+            </>
+          )}
+          <span>
+            <Prompt className="mr-2" />
+            {eyebrow}
+          </span>
         </p>
       )}
       {title && (

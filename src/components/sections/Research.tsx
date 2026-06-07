@@ -6,6 +6,7 @@ export function Research() {
   return (
     <Section
       id="research"
+      index="04"
       eyebrow="Research & publications"
       title="External evidence, in plain language"
       intro="Each item with a why-this-matters, not just a citation."
