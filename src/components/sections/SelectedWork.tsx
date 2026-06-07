@@ -44,9 +44,14 @@ export function SelectedWork() {
                     {w.title}
                   </h3>
                   <p className="text-sm text-text/70">{w.summary}</p>
-                  <p className="border-l-2 border-accent pl-3 text-sm text-text/80 transition-colors duration-200 group-hover:bg-accent/5 group-hover:text-text/95">
-                    {w.outcome}
-                  </p>
+                  <div className="space-y-1">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent/80">
+                      outcome
+                    </p>
+                    <p className="text-sm text-text/80 transition-colors duration-200 group-hover:text-text/95">
+                      {w.outcome}
+                    </p>
+                  </div>
                   <div className="flex flex-wrap gap-2">
                     {w.tags.map((t) => (
                       <Badge key={t}>{t}</Badge>

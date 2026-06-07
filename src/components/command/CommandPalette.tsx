@@ -8,12 +8,14 @@ import { posts } from "#content";
 import { NAV, PERSON } from "@/content/site";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
+import { useScrollLock } from "@/lib/scroll-lock";
 import { useOsMode } from "@/components/os/OsModeContext";
 
 type Item = { label: string; run: () => void; group: string };
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
+  useScrollLock(open);
   const router = useRouter();
   const { open: openResume } = useResume();
   const { toggle } = useTheme();

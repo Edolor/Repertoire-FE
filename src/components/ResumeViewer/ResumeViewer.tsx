@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { AnimatePresence, motion } from "motion/react";
 import Icon from "@/components/Icon/Icon";
+import { useScrollLock } from "@/lib/scroll-lock";
 import { resumeLink } from "@/urls";
 
 // pdf.js worker is copied into /public by scripts/copy-pdf-worker.mjs so it is
@@ -34,6 +35,9 @@ export default function ResumeViewer({ open, onClose }: ResumeViewerProps) {
     () => ({ isEvalSupported: false }),
     []
   );
+
+  // Pause Lenis so the page behind doesn't scroll while the viewer is open.
+  useScrollLock(open);
 
   // Lock body scroll while the overlay is open (same pattern as Header).
   useEffect(() => {

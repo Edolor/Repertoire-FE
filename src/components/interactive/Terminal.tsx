@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Cursor } from "@/components/primitives/Cursor";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { playTick } from "@/lib/sound";
+import { useScrollLock } from "@/lib/scroll-lock";
 import { cn } from "@/lib/cn";
 
 type WindowState = "normal" | "min" | "max";
@@ -64,6 +65,7 @@ export function Terminal() {
   const booted = useRef(false);
   const [win, setWin] = useState<WindowState>("normal");
   const [closed, setClosed] = useState(false);
+  useScrollLock(win === "max");
 
   // While maximized: lock body scroll and let Escape restore.
   useEffect(() => {

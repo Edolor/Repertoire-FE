@@ -202,7 +202,7 @@ export function Window({
           </button>
         </div>
       </div>
-      <div className="os-window-body min-h-0 flex-1 overflow-auto">
+      <div className="os-window-body thin-scroll min-h-0 flex-1 overflow-auto">
         {children}
       </div>
     </div>

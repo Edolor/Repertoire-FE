@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { motion, useReducedMotion } from "motion/react";
+import { useScrollLock } from "@/lib/scroll-lock";
 
 /**
  * Minimal image lightbox. Reusable anywhere a full-bleed zoom of a
@@ -19,6 +20,7 @@ export function Lightbox({
   onClose: () => void;
 }) {
   const reduced = useReducedMotion();
+  useScrollLock(true); // mounted only while open
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

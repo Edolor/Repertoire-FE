@@ -7,6 +7,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import portrait from "@/assets/img/mena.jpg";
 import { Section } from "@/components/primitives/Section";
 import { useAboutQuery } from "@/hooks/useQueries";
+import { useScrollLock } from "@/lib/scroll-lock";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -16,6 +17,7 @@ import { ABOUT_NARRATIVE, EXPERIENCE, PERSON } from "@/content/site";
 export function AboutTeaser() {
   const { open } = useResume();
   const [detailsOpen, setDetailsOpen] = useState(false);
+  useScrollLock(detailsOpen);
   // Prefetch the backend /about on page load (shares the ["about"] query
   // key with the popup's AboutDetails), so opening the popup is instant.
   useAboutQuery();
@@ -117,7 +119,7 @@ export function AboutTeaser() {
                 ✕
               </Dialog.Close>
             </div>
-            <div className="overflow-y-auto px-5 pb-6 pt-3">
+            <div className="thin-scroll overflow-y-auto px-5 pb-6 pt-3">
               <AboutDetails showResume={false} flush />
               <p className="mt-8 font-mono text-xs text-text/70">
                 <Link
