@@ -33,11 +33,15 @@ npm run verify   # lint + unit tests + build + smoke
 Two layers:
 
 - **Unit (Vitest)** — co-located `src/**/*.test.ts(x)`, jsdom environment.
-  Cover the pure logic: the spring engine, SEO/JSON-LD builders, sanitizers,
-  date/`cn`/contact-schema, the recover/scroll-lock/lenis/toast/sound helpers,
-  and the hooks (`useReducedMotion`, `useActiveSection`). Run `npm test` (or
-  `npm run test:watch`). Vitest config: `vitest.config.ts` (alias `@` → `src`,
-  `#content` → the velite output).
+  Cover the pure logic (spring engine, SEO/JSON-LD builders, sanitizers,
+  date/`cn`/contact-schema, media predicates, the recover/scroll-lock/lenis/
+  toast/sound helpers, section config, and the hooks incl. `useFocusTrap` /
+  `useRafPointer`) **plus React Testing Library component/route tests**
+  (`Button`, `Badge`, `WorkGrid`, `ResearchList`, `Reveal`, and the `sitemap` /
+  `robots` routes). Run `npm test` (or `npm run test:watch`). Vitest config:
+  `vitest.config.ts` (alias `@` → `src`, `#content` → the velite output,
+  automatic JSX runtime); `vitest.setup.ts` registers RTL cleanup and inert
+  `IntersectionObserver` / `matchMedia` stubs.
 - **Smoke / e2e (Playwright)** — `tests/smoke/`, Chromium. Loads the running app
   and **fails on any uncaught page or console error**, catching client-only
   issues a `next build` can't. `reuseExistingServer` reuses a running
