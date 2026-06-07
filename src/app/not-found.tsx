@@ -24,12 +24,15 @@ export default function NotFound() {
           </p>
           <p className="text-accent">error: command not found (404)</p>
           <p className="text-text/65">that path does not resolve.</p>
-          <p className="pt-3 text-text/70">
-            <span className="text-accent">&gt;</span> cd{" "}
-            <Link href="/" className="link-underline text-accent-2">
-              ~
+          <div className="pt-3">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 border border-accent bg-accent px-3 py-1.5 text-accent-fg transition-colors hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-2"
+            >
+              <span aria-hidden>&gt;</span> cd ~{" "}
+              <span className="opacity-80">· back home</span>
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </main>

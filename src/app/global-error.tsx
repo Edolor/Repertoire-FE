@@ -62,7 +62,7 @@ export default function GlobalError({
                     that failed, so avoid next/link here. */}
                 {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a href="/" className="ml-1 text-accent-2 underline-offset-2 hover:underline">
-                  &gt; cd ~
+                  &gt; cd ~ · home
                 </a>
               </div>
             </div>

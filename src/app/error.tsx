@@ -84,7 +84,7 @@ export default function Error({
               href="/"
               className="ml-1 text-accent-2 underline-offset-2 hover:underline"
             >
-              &gt; cd ~
+              &gt; cd ~ · home
             </Link>
           </div>
         </div>
