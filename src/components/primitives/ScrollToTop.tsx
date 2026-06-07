@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLenis } from "@/lib/lenis";
+import { getLenis, wakeLenis } from "@/lib/lenis";
 import { cn } from "@/lib/cn";
 
 /**
@@ -31,8 +31,12 @@ export function ScrollToTop() {
   const toTop = () => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lenis = getLenis();
-    if (lenis && !reduced) lenis.scrollTo(0, { duration: 1 });
-    else window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    if (lenis && !reduced) {
+      wakeLenis(); // revive the parked rAF so the animation has frames
+      lenis.scrollTo(0, { duration: 1, force: true });
+    } else {
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    }
   };
 
   return (

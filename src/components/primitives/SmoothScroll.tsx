@@ -19,7 +19,6 @@ export function SmoothScroll() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
-    setLenis(lenis);
     // Parkable rAF: tick only while scrolling has momentum, then stop — so the
     // page goes truly idle between interactions (no permanent 60Hz loop).
     let raf = 0;
@@ -42,6 +41,9 @@ export function SmoothScroll() {
     window.addEventListener("touchmove", wake, { passive: true });
     window.addEventListener("keydown", wake);
     lenis.on("scroll", wake);
+    // Register the instance + its wake fn so programmatic scrolls (ScrollToTop)
+    // can revive the parked loop before animating.
+    setLenis(lenis, wake);
     wake();
 
     // Make in-page anchor clicks use Lenis so deep links glide, not jump.
