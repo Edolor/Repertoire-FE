@@ -60,12 +60,16 @@ export const FAQ = [
   },
 ];
 
+// Typed labels so the Hero's `label === "Research"` lookup is checked against
+// the data: renaming a PROOF label here becomes a compile error there.
+export type ProofLabel = "Currently" | "Shipped" | "Foundation" | "Research";
+
 export const PROOF = [
   { label: "Currently", value: "Agentic AI Systems Engineer, Farpoint (Fabric)" },
   { label: "Shipped", value: "Software Engineer, Cavista (healthcare)" },
   { label: "Foundation", value: "Best Graduating Student · First Class 4.88/5.0" },
   { label: "Research", value: "MSc CS · PST 2025 (IEEE) · $20K MITACS" },
-];
+] satisfies { label: ProofLabel; value: string }[];
 
 // "How I build": three engineering pillars, each grounded in real work.
 export const PILLARS = [
@@ -103,6 +107,17 @@ export const HOW_I_WORK = {
   ],
 };
 
+// The render contract for a research/publication card. Lives with the data
+// (which `satisfies` it below) and is imported by <ResearchList>, so the
+// component and its content share exactly one definition.
+export type ResearchItem = {
+  title: string;
+  venue: string;
+  why: string;
+  href: string;
+  hrefLabel: string;
+};
+
 export const RESEARCH = [
   {
     title: "Peer-reviewed publication, PST 2025",
@@ -118,7 +133,7 @@ export const RESEARCH = [
     href: linkedinUrl,
     hrefLabel: "About the award",
   },
-];
+] satisfies ResearchItem[];
 
 // Verified academic foundation — single source of truth for these credential
 // claims. Wording mirrors the résumé/FAQ exactly (no inferred degree titles).
@@ -213,4 +228,4 @@ export const NAV = [
   { href: "/writing", label: "Writing" },
   { href: "/about", label: "About" },
   { href: "/#contact", label: "Contact" },
-];
+] satisfies { href: string; label: string }[];

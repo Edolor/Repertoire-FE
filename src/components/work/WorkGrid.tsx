@@ -1,19 +1,17 @@
 import Link from "next/link";
+import type { Work } from "#content";
 import { RevealGroup, RevealItem } from "@/components/primitives/Reveal";
 import { CornerBrackets } from "@/components/primitives/CornerBrackets";
 import { Tilt } from "@/components/primitives/Tilt";
 import { Badge } from "@/components/ui/Badge";
 
-export type WorkCardItem = {
-  slug: string;
-  permalink: string;
-  client: string;
-  locked?: boolean;
-  title: string;
-  summary: string;
-  outcome: string;
-  tags: string[];
-};
+// Derive the card contract from the Velite-validated source of truth instead
+// of redeclaring a parallel shape — a schema rename now fails here, not at a
+// random call site. (Type-only import: elided at runtime, no JSON pulled in.)
+export type WorkCardItem = Pick<
+  Work,
+  "slug" | "permalink" | "client" | "locked" | "title" | "summary" | "outcome" | "tags"
+>;
 
 /** The selected-work card grid. Shared by the home teaser and the /work index. */
 export function WorkGrid({ items }: { items: WorkCardItem[] }) {

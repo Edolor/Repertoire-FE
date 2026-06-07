@@ -1,13 +1,9 @@
 import { Reveal } from "@/components/primitives/Reveal";
 import { CornerBrackets } from "@/components/primitives/CornerBrackets";
+import type { ResearchItem } from "@/content/site";
 
-export type ResearchItem = {
-  title: string;
-  venue: string;
-  why: string;
-  href: string;
-  hrefLabel: string;
-};
+// Re-export so existing importers of the card contract keep one import path.
+export type { ResearchItem };
 
 /** Research / publication cards. Shared so the page and any teaser stay in sync. */
 export function ResearchList({ items }: { items: ResearchItem[] }) {

@@ -39,3 +39,16 @@ export type Work = {
 
 export const posts = postsJson as Post[];
 export const work = workJson as Work[];
+
+// Build-time drift guard. The hand-written `Post`/`Work` types above are kept
+// (documented, and they avoid the import-attributes parser issue in
+// `.velite/index.js`), but they must stay in lock-step with Velite's
+// schema-derived types — the real source of truth. If the velite.config schema
+// changes shape, one of these assignments stops compiling, turning silent
+// drift into a build error.
+import type { Post as VPost, Work as VWork } from "../.velite";
+type Exact<A, B> = [A] extends [B] ? ([B] extends [A] ? true : never) : never;
+const _postDrift: Exact<Post, VPost> = true;
+const _workDrift: Exact<Work, VWork> = true;
+void _postDrift;
+void _workDrift;
