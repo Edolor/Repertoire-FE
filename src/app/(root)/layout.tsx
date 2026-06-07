@@ -4,6 +4,7 @@ import { Crosshair } from "@/components/primitives/Crosshair";
 import { Spotlight } from "@/components/primitives/Spotlight";
 import { SmoothScroll } from "@/components/primitives/SmoothScroll";
 import { SectionRail } from "@/components/primitives/SectionRail";
+import { ScrollToTop } from "@/components/primitives/ScrollToTop";
 import { PageTransition } from "@/components/primitives/PageTransition";
 import { Toaster } from "@/components/primitives/Toaster";
 import { KonamiEgg } from "@/components/primitives/KonamiEgg";
@@ -35,6 +36,7 @@ export default function RootGroupLayout({
           <ScrollProgress />
           <Crosshair />
           <SectionRail />
+          <ScrollToTop />
           <Toaster />
           <KonamiEgg />
           <SelfDrivingTour />
