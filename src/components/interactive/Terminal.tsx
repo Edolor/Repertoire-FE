@@ -334,7 +334,7 @@ export function Terminal() {
               autoComplete="off"
               spellCheck={false}
               disabled={typing !== null}
-              placeholder="type a command — Tab completes, ↑ recalls, try `help`"
+              placeholder="type a command — try `help`"
               className="w-full bg-transparent outline-none placeholder:text-text/40"
             />
             <Cursor className="hidden sm:inline-block" />
