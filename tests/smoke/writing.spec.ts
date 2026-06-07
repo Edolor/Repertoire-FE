@@ -26,7 +26,9 @@ test("a cloned post renders local images, copy buttons, and lightbox", async ({
   page,
 }, testInfo) => {
   const errors = trackPageErrors(page);
-  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  // Deliberately do NOT grant clipboard permission: this exercises the real
+  // path most users hit, where the async Clipboard API is blocked and the copy
+  // must succeed via the execCommand fallback and still show "copied" feedback.
   await page.goto("/writing/role-based-access-control-nextjs-middleware");
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible({

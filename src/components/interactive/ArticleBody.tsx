@@ -4,6 +4,38 @@ import { useEffect, useRef, useState } from "react";
 import { Lightbox } from "@/components/primitives/Lightbox";
 
 /**
+ * Copy text to the clipboard, returning whether it worked. Prefers the async
+ * Clipboard API but falls back to the legacy execCommand path, which works in a
+ * user-gesture handler even when the async API is blocked (lost focus, missing
+ * permission, insecure context) — the case that left the copy button looking
+ * like it did nothing. Always succeeds on a real click in practice.
+ */
+async function copyText(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    /* fall through to the legacy path */
+  }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Renders compiled-markdown post HTML and progressively enhances it:
  *  - figure images become click-to-zoom (Lightbox) and lazy-loaded
  *  - code blocks get a copy-to-clipboard button
@@ -57,12 +89,8 @@ export function ArticleBody({ html }: { html: string }) {
         resetTimer = window.setTimeout(reset, 1800);
       };
       const onClick = async () => {
-        try {
-          await navigator.clipboard.writeText(pre.innerText);
-          flash("✓ copied", "is-copied");
-        } catch {
-          flash("✗ failed", "is-error");
-        }
+        const ok = await copyText(pre.innerText);
+        flash(ok ? "✓ copied" : "✗ failed", ok ? "is-copied" : "is-error");
       };
       btn.addEventListener("click", onClick);
       wrap.appendChild(btn);
