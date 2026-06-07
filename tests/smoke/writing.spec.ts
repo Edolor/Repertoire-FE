@@ -49,6 +49,15 @@ test("a cloned post renders local images, copy buttons, and lightbox", async ({
   await expect(copy).toContainText("copied");
   await expect(copy).toHaveClass(/is-copied/);
 
+  // Build-time syntax highlighting: code is tokenized (hljs) and the brand
+  // theme colors keyword tokens with the accent-2 blue (rgb 29 74 255).
+  await expect(page.locator("article pre code.hljs").first()).toBeVisible();
+  const keyword = page.locator("article .hljs-keyword").first();
+  await expect(keyword).toBeVisible();
+  expect(await keyword.evaluate((el) => getComputedStyle(el).color)).toBe(
+    "rgb(29, 74, 255)",
+  );
+
   // Zoomable figure opens the Lightbox; Esc closes it.
   await page.locator("article figure img.zoomable").first().click();
   const dialog = page.getByRole("dialog");

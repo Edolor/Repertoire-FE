@@ -9,6 +9,10 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/content/**/*.{md,mdx}",
   ],
+  // Syntax-highlighting token classes (hljs-*) are emitted by rehype-highlight
+  // into the build-time HTML, which the content globs above never scan — keep
+  // their theme rules from being purged, and auto-cover new token types.
+  safelist: [{ pattern: /^hljs/ }],
   theme: {
     fontFamily: {
       sans: ["var(--font-sans)", "system-ui", "sans-serif"],

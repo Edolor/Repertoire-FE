@@ -238,29 +238,38 @@
       0 12px 30px -20px rgb(0 0 0 / 0.7);
   }
 
-  /* Thin, theme-aware scrollbar for in-panel scroll regions (terminal, etc.).
-     Replaces the chunky default OS bar that clashes with the spec aesthetic. */
-  .thin-scroll {
+  /* Thin, theme-aware scrollbar — the single reusable treatment for every
+     in-panel scroll region (terminal, OS windows, code blocks, etc.). Add the
+     `.thin-scroll` class to any scroll container; code blocks (`.prose pre`)
+     opt in here so they share one definition. Replaces the chunky default OS
+     bar that clashes with the spec aesthetic. */
+  .thin-scroll,
+  .prose pre {
     scrollbar-width: thin;
     scrollbar-color: rgb(var(--text) / 0.22) transparent;
   }
-  .thin-scroll::-webkit-scrollbar {
+  .thin-scroll::-webkit-scrollbar,
+  .prose pre::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-  .thin-scroll::-webkit-scrollbar-track {
+  .thin-scroll::-webkit-scrollbar-track,
+  .prose pre::-webkit-scrollbar-track {
     background: transparent;
   }
-  .thin-scroll::-webkit-scrollbar-thumb {
+  .thin-scroll::-webkit-scrollbar-thumb,
+  .prose pre::-webkit-scrollbar-thumb {
     background-color: rgb(var(--text) / 0.22);
     /* inset via a transparent border so the thumb reads as a thin bar */
     border: 2px solid transparent;
     background-clip: padding-box;
   }
-  .thin-scroll::-webkit-scrollbar-thumb:hover {
+  .thin-scroll::-webkit-scrollbar-thumb:hover,
+  .prose pre::-webkit-scrollbar-thumb:hover {
     background-color: rgb(var(--accent) / 0.7);
   }
-  .thin-scroll::-webkit-scrollbar-corner {
+  .thin-scroll::-webkit-scrollbar-corner,
+  .prose pre::-webkit-scrollbar-corner {
     background: transparent;
   }
 
@@ -373,6 +382,69 @@
     font-size: inherit;
     color: rgb(var(--text) / 0.9);
     white-space: pre;
+  }
+
+  /* Build-time syntax-highlighting theme (rehype-highlight / highlight.js
+     tokens) mapped to the brand palette, so it reads in both light and dark via
+     the CSS variables. Reusable: applies anywhere a `.hljs` block renders
+     (articles, the desktop reader, future surfaces) — not just inside .prose. */
+  .hljs-comment,
+  .hljs-quote {
+    color: rgb(var(--text) / 0.45);
+    font-style: italic;
+  }
+  .hljs-keyword,
+  .hljs-built_in,
+  .hljs-type,
+  .hljs-literal,
+  .hljs-selector-tag,
+  .hljs-section,
+  .hljs-name,
+  .hljs-symbol {
+    color: rgb(var(--accent-2));
+  }
+  .hljs-string,
+  .hljs-regexp,
+  .hljs-char.escape_,
+  .hljs-attribute,
+  .hljs-addition,
+  .hljs-meta .hljs-string {
+    color: rgb(var(--accent-3));
+  }
+  .hljs-number,
+  .hljs-bullet,
+  .hljs-title.class_,
+  .hljs-deletion {
+    color: rgb(var(--accent));
+  }
+  .hljs-title,
+  .hljs-title.function_ {
+    color: rgb(var(--text) / 0.95);
+    font-weight: 600;
+  }
+  .hljs-attr,
+  .hljs-property,
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-params,
+  .hljs-tag {
+    color: rgb(var(--text) / 0.85);
+  }
+  .hljs-meta,
+  .hljs-meta .hljs-keyword,
+  .hljs-operator,
+  .hljs-punctuation {
+    color: rgb(var(--text) / 0.55);
+  }
+  .hljs-link {
+    color: rgb(var(--accent-2));
+    text-decoration: underline;
+  }
+  .hljs-emphasis {
+    font-style: italic;
+  }
+  .hljs-strong {
+    font-weight: 700;
   }
   /* Image zoom affordance (enhanced by ArticleBody). */
   .prose figure img.zoomable {

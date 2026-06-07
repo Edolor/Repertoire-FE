@@ -1,4 +1,5 @@
 import { defineConfig, defineCollection, s } from "velite";
+import rehypeHighlight from "rehype-highlight";
 
 // Build-time, Zod-validated content. No remote/runtime MDX: every post and
 // case study is compiled and type-checked at build, then imported as data.
@@ -64,7 +65,14 @@ export default defineConfig({
     clean: true,
   },
   collections: { posts, work },
-  markdown: { gfm: true },
+  // Build-time syntax highlighting (rehype-highlight / lowlight). Runs at build
+  // only — adds `hljs` token classes to the compiled HTML, themed in
+  // globals.css. No client JS and CSP-safe (no runtime eval). `ignoreMissing`
+  // keeps an unknown language fence from failing the build.
+  markdown: {
+    gfm: true,
+    rehypePlugins: [[rehypeHighlight, { ignoreMissing: true, detect: false }]],
+  },
   prepare: ({ posts }) => {
     const tags = new Set(posts.flatMap((p) => p.tags));
     if (tags.size > 25) {
