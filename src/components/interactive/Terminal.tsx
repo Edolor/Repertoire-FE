@@ -1,10 +1,14 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Cursor } from "@/components/primitives/Cursor";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { playTick } from "@/lib/sound";
+import { cn } from "@/lib/cn";
+
+type WindowState = "normal" | "min" | "max";
 
 type Line = { kind: "in" | "out"; text: string };
 
@@ -58,6 +62,23 @@ export function Terminal() {
   const { toggle } = useTheme();
   const scrollRef = useRef<HTMLDivElement>(null);
   const booted = useRef(false);
+  const [win, setWin] = useState<WindowState>("normal");
+  const [closed, setClosed] = useState(false);
+
+  // While maximized: lock body scroll and let Escape restore.
+  useEffect(() => {
+    if (win !== "max") return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setWin("normal");
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [win]);
 
   const toBottom = () =>
     requestAnimationFrame(() => {
@@ -213,75 +234,171 @@ export function Terminal() {
     }
   };
 
-  return (
-    <div className="panel w-full overflow-hidden border border-divider bg-surface font-mono text-sm">
-      {/* faux app-window chrome */}
-      <div className="flex items-center gap-2 border-b border-divider px-3 py-2">
-        <span className="h-2.5 w-2.5 rounded-full bg-accent" />
-        <span className="h-2.5 w-2.5 rounded-full bg-accent-3" />
-        <span className="h-2.5 w-2.5 rounded-full bg-accent-2" />
-        <span className="ml-2 text-xs text-text/50">agent shell</span>
-      </div>
-      <div
-        ref={scrollRef}
-        className="h-40 overflow-auto p-3 graph-paper"
-        aria-live="polite"
-      >
-        {lines.map((l, i) => (
-          <p key={i} className={l.kind === "in" ? "text-text/90" : "text-text/65"}>
-            {l.kind === "in" && <span className="text-accent">&gt; </span>}
-            {l.text}
-          </p>
-        ))}
-        {typing !== null && (
-          <p className="text-text/90">
-            <span className="text-accent">&gt; </span>
-            {typing}
-            <Cursor className="ml-0.5 h-[1em] w-[0.5em] translate-y-[0.1em]" />
-          </p>
+  // A traffic-light window control: small colored dot, glyph on hover.
+  const ctl = (color: string, label: string, glyph: string, onClick: () => void) => (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className="group/ctl flex h-5 w-5 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-2"
+    >
+      <span className={cn("flex h-2.5 w-2.5 items-center justify-center rounded-full", color)}>
+        <span
+          aria-hidden
+          className="text-[7px] font-bold leading-none text-bg opacity-0 transition-opacity group-hover/ctl:opacity-100"
+        >
+          {glyph}
+        </span>
+      </span>
+    </button>
+  );
+
+  const chrome = (
+    <div className="flex items-center gap-2 border-b border-divider px-3 py-2">
+      <div className="flex items-center gap-1">
+        {ctl("bg-accent", "Close agent shell", "×", () => setClosed(true))}
+        {ctl(
+          "bg-accent-3",
+          win === "min" ? "Restore agent shell" : "Minimize agent shell",
+          "–",
+          () => setWin((w) => (w === "min" ? "normal" : "min")),
+        )}
+        {ctl(
+          "bg-accent-2",
+          win === "max" ? "Restore agent shell" : "Maximize agent shell",
+          win === "max" ? "⤢" : "⤡",
+          () => setWin((w) => (w === "max" ? "normal" : "max")),
         )}
       </div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          run(value);
-          setValue("");
-        }}
-        className="flex items-center gap-2 border-t border-divider px-3 py-2"
+      <button
+        type="button"
+        onClick={() => win === "min" && setWin("normal")}
+        onDoubleClick={() => setWin((w) => (w === "max" ? "normal" : "max"))}
+        className="ml-1 select-none text-xs text-text/50"
+        aria-label={win === "min" ? "Restore agent shell" : "agent shell window"}
       >
-        <label htmlFor="term" className="sr-only">
-          Terminal command input
-        </label>
-        <span className="text-accent" aria-hidden>
-          &gt;
-        </span>
-        <input
-          id="term"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={onKeyDown}
-          autoComplete="off"
-          spellCheck={false}
-          disabled={typing !== null}
-          placeholder="type a command — Tab completes, ↑ recalls, try `help`"
-          className="w-full bg-transparent outline-none placeholder:text-text/40"
-        />
-        <Cursor className="hidden sm:inline-block" />
-      </form>
-      <div className="flex flex-wrap gap-1.5 border-t border-divider p-2 sm:gap-2">
-        {["whoami", "ls work/", "run demo", "research", "contact"].map((c) => (
-          <button
-            key={c}
-            type="button"
-            onClick={() => run(c)}
-            className={`border border-divider px-2 py-1 text-xs text-text/70 transition-colors hover:bg-bg hover:text-text focus-visible:border-accent-2 focus-visible:outline-none${
-              c === "research" || c === "contact" ? " hidden sm:inline-flex" : ""
-            }`}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
+        agent shell
+      </button>
     </div>
   );
+
+  const shell = (maximized: boolean) => (
+    <div
+      className={cn(
+        "panel flex flex-col overflow-hidden border border-divider bg-surface font-mono text-sm",
+        maximized ? "h-[80vh] w-full" : "w-full",
+      )}
+    >
+      {chrome}
+      {win !== "min" && (
+        <>
+          <div
+            ref={scrollRef}
+            className={cn("overflow-auto p-3 graph-paper", maximized ? "min-h-0 flex-1" : "h-40")}
+            aria-live="polite"
+          >
+            {lines.map((l, i) => (
+              <p key={i} className={l.kind === "in" ? "text-text/90" : "text-text/65"}>
+                {l.kind === "in" && <span className="text-accent">&gt; </span>}
+                {l.text}
+              </p>
+            ))}
+            {typing !== null && (
+              <p className="text-text/90">
+                <span className="text-accent">&gt; </span>
+                {typing}
+                <Cursor className="ml-0.5 h-[1em] w-[0.5em] translate-y-[0.1em]" />
+              </p>
+            )}
+          </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              run(value);
+              setValue("");
+            }}
+            className="flex items-center gap-2 border-t border-divider px-3 py-2"
+          >
+            <label htmlFor="term" className="sr-only">
+              Terminal command input
+            </label>
+            <span className="text-accent" aria-hidden>
+              &gt;
+            </span>
+            <input
+              id="term"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onKeyDown={onKeyDown}
+              autoComplete="off"
+              spellCheck={false}
+              disabled={typing !== null}
+              placeholder="type a command — Tab completes, ↑ recalls, try `help`"
+              className="w-full bg-transparent outline-none placeholder:text-text/40"
+            />
+            <Cursor className="hidden sm:inline-block" />
+          </form>
+          <div className="flex flex-wrap gap-1.5 border-t border-divider p-2 sm:gap-2">
+            {["whoami", "ls work/", "run demo", "research", "contact"].map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => run(c)}
+                className={`border border-divider px-2 py-1 text-xs text-text/70 transition-colors hover:bg-bg hover:text-text focus-visible:border-accent-2 focus-visible:outline-none${
+                  c === "research" || c === "contact" ? " hidden sm:inline-flex" : ""
+                }`}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  // Closed → a slim launcher docked to the side of the page (portaled out so the
+  // hero's tilt transform doesn't capture its fixed positioning).
+  if (closed) {
+    return createPortal(
+      <button
+        type="button"
+        onClick={() => {
+          setClosed(false);
+          setWin("normal");
+        }}
+        aria-label="Reopen agent shell"
+        className="panel fixed right-0 top-1/3 z-40 flex items-center gap-2 rounded-l border border-r-0 border-divider bg-surface px-2.5 py-3 font-mono text-[11px] uppercase tracking-widest text-text/70 transition-colors hover:text-accent [writing-mode:vertical-rl]"
+      >
+        <span className="h-2 w-2 rounded-full bg-accent [writing-mode:horizontal-tb]" />
+        agent shell
+      </button>,
+      document.body,
+    );
+  }
+
+  // Maximized → focused overlay with a dismissible backdrop.
+  if (win === "max") {
+    return createPortal(
+      <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-8">
+        <div
+          className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          aria-hidden
+          onClick={() => setWin("normal")}
+        />
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Agent shell (maximized)"
+          className="relative z-10 w-full max-w-3xl"
+        >
+          {shell(true)}
+        </div>
+      </div>,
+      document.body,
+    );
+  }
+
+  return shell(false);
 }
