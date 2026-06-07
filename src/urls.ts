@@ -9,13 +9,7 @@ const githubUrl = "https://github.com/edolor";
 
 const emailUrl = "me@aghoghomena.com";
 
-const hackerrankUrl = "https://www.hackerrank.com/aghoghomena3";
-const codewarsUrl = "https://www.codewars.com/users/edolor";
-const leetcodeUrl = "https://leetcode.com/edolor/";
-
 const PATHS = {
-  projects: "/projects/list/",
-  projectDetail: "/projects/",
   contact: "/contact/create-message/",
   about: "/about/",
   health: "/",
@@ -29,8 +23,5 @@ export {
   linkedinUrl,
   githubUrl,
   emailUrl,
-  hackerrankUrl,
-  codewarsUrl,
-  leetcodeUrl,
   resumeLink,
 };

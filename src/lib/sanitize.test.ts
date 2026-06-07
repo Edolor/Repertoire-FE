@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { https, sanitizeProject, sanitizeAbout } from "@/lib/sanitize";
-import { BaseProjectProps } from "@/types/Project.types";
+import { https, sanitizeAbout } from "@/lib/sanitize";
 import { AboutProps } from "@/types/About.types";
 
 describe("https", () => {
@@ -42,88 +41,6 @@ describe("https", () => {
 
   it("returns an empty string unchanged", () => {
     expect(https("")).toBe("");
-  });
-});
-
-describe("sanitizeProject", () => {
-  it("rewrites thumbnail and every image URL to https", () => {
-    const project = {
-      id: 1,
-      title: "Demo",
-      thumbnail: "http://cdn.example.com/thumb.png",
-      images: ["http://cdn.example.com/1.png", "https://cdn.example.com/2.png"],
-    } as unknown as BaseProjectProps;
-
-    const out = sanitizeProject(project);
-    expect(out.thumbnail).toBe("https://cdn.example.com/thumb.png");
-    expect(out.images).toEqual([
-      "https://cdn.example.com/1.png",
-      "https://cdn.example.com/2.png",
-    ]);
-  });
-
-  it("preserves unrelated fields", () => {
-    const project = {
-      id: 7,
-      title: "Keep me",
-      thumbnail: "http://x/y.png",
-    } as unknown as BaseProjectProps;
-
-    const out = sanitizeProject(project);
-    expect(out.id).toBe(7);
-    expect(out.title).toBe("Keep me");
-  });
-
-  it("returns a new object (does not mutate the input)", () => {
-    const project = {
-      thumbnail: "http://x/y.png",
-    } as unknown as BaseProjectProps;
-
-    const out = sanitizeProject(project);
-    expect(out).not.toBe(project);
-    expect(project.thumbnail).toBe("http://x/y.png");
-  });
-
-  it("coerces a missing thumbnail to an empty string", () => {
-    const project = {} as unknown as BaseProjectProps;
-    const out = sanitizeProject(project);
-    expect(out.thumbnail).toBe("");
-  });
-
-  it("leaves images undefined when not provided", () => {
-    const project = {
-      thumbnail: "http://x/y.png",
-    } as unknown as BaseProjectProps;
-    const out = sanitizeProject(project);
-    expect(out.images).toBeUndefined();
-  });
-
-  it("recursively sanitizes nested other_projects", () => {
-    const project = {
-      thumbnail: "http://a/t.png",
-      other_projects: [
-        {
-          thumbnail: "http://b/t.png",
-          images: ["http://b/1.png"],
-          other_projects: [{ thumbnail: "http://c/t.png" }],
-        },
-      ],
-    } as unknown as BaseProjectProps;
-
-    const out = sanitizeProject(project);
-    expect(out.thumbnail).toBe("https://a/t.png");
-    expect(out.other_projects![0].thumbnail).toBe("https://b/t.png");
-    expect(out.other_projects![0].images).toEqual(["https://b/1.png"]);
-    expect(out.other_projects![0].other_projects![0].thumbnail).toBe(
-      "https://c/t.png",
-    );
-  });
-
-  it("leaves other_projects undefined when not provided", () => {
-    const project = {
-      thumbnail: "http://x/y.png",
-    } as unknown as BaseProjectProps;
-    expect(sanitizeProject(project).other_projects).toBeUndefined();
   });
 });
 

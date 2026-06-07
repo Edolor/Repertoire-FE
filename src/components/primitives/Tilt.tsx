@@ -44,11 +44,16 @@ export function Tilt({
       el.style.transform = `perspective(900px) rotateX(${rx.value.toFixed(3)}deg) rotateY(${ry.value.toFixed(3)}deg)`;
       if (sheenRef.current)
         sheenRef.current.style.background = `radial-gradient(220px circle at ${(sx.value * 100).toFixed(1)}% 0%, rgb(255 255 255 / 0.14), transparent 60%)`;
-      return hover || !rx.atRest || !ry.atRest || !sx.atRest;
+      const animating = hover || !rx.atRest || !ry.atRest || !sx.atRest;
+      // Drop the compositor-layer hint once we settle, so N idle cards don't
+      // each keep a GPU layer alive for the page's whole lifetime.
+      if (!animating) el.style.willChange = "";
+      return animating;
     });
 
     const onEnter = () => {
       rect = el.getBoundingClientRect();
+      el.style.willChange = "transform";
     };
     const onMove = (e: MouseEvent) => {
       const px = (e.clientX - rect.left) / rect.width;
@@ -86,7 +91,7 @@ export function Tilt({
     <div
       ref={ref}
       className={className}
-      style={{ transformStyle: "preserve-3d", willChange: "transform" }}
+      style={{ transformStyle: "preserve-3d" }}
     >
       {children}
       {sheen && !reduced && (

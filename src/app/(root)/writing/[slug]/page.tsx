@@ -7,6 +7,11 @@ import { JsonLd } from "@/components/JsonLd";
 import { ArticleBody } from "@/components/interactive/ArticleBody";
 import { graph, articleNode, breadcrumbNode } from "@/lib/seo";
 
+// The content catalog is fully known at build time, so the param space is
+// closed: any slug outside generateStaticParams serves the static not-found
+// from the CDN instead of spinning up an on-demand render.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return posts.filter((p) => !p.draft).map((p) => ({ slug: p.slug }));
 }
@@ -17,7 +22,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const p = posts.find((x) => x.slug === slug);
+  const p = posts.find((x) => x.slug === slug && !x.draft);
   if (!p) return {};
   return {
     title: p.title,

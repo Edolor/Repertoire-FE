@@ -1,8 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useOsMode } from "./OsModeContext";
-import { OsShell } from "./OsShell";
 import { OsToast } from "./OsToast";
+
+// The OS shell (and every section body it embeds as a "window") is an opt-in
+// alternate skin — never rendered until a returning desktop visitor switches
+// to it. Code-split it so none of that ships in the shared First Load JS that
+// every page pays for. It's already client-only, so ssr:false is correct and
+// has no hydration/SEO impact.
+const OsShell = dynamic(() => import("./OsShell").then((m) => m.OsShell), {
+  ssr: false,
+});
 
 /**
  * Decides which skin renders. The normal document site is always mounted

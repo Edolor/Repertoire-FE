@@ -49,7 +49,17 @@ export function ButtonLink({
   size,
   ...props
 }: ButtonLinkProps) {
+  // Make the safe path the default: any link opening a new tab gets
+  // noopener/noreferrer unless the caller deliberately overrides it. Closes
+  // the reverse-tabnabbing / referrer-leak footgun at the component boundary
+  // instead of relying on every call site to remember it.
+  const rel =
+    props.target === "_blank" ? props.rel ?? "noopener noreferrer" : props.rel;
   return (
-    <Link className={cn(button({ variant, size }), className)} {...props} />
+    <Link
+      className={cn(button({ variant, size }), className)}
+      {...props}
+      rel={rel}
+    />
   );
 }
