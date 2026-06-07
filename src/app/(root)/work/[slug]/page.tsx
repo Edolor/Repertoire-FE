@@ -64,7 +64,7 @@ export default async function WorkPage({
   );
 
   return (
-    <article className="mx-auto w-full max-w-3xl px-5 pb-16 pt-6 sm:px-8 sm:pb-24 sm:pt-10">
+    <article className="mx-auto w-full max-w-3xl px-5 pb-8 pt-6 sm:px-8 sm:pb-12 sm:pt-10">
       <JsonLd data={ld} />
       <Link
         href="/#selected-work"
@@ -94,7 +94,7 @@ export default async function WorkPage({
       />
 
 
-      <div className="mt-12 border-t border-divider pt-6">
+      <div className="mt-10 border-t border-divider pt-6">
         <Link
           href="/#contact"
           className="font-mono text-sm text-accent-2 hover:underline"
