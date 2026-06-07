@@ -10,6 +10,10 @@ export default defineConfig({
       "#content": fileURLToPath(new URL("./src/content-data.ts", import.meta.url)),
     },
   },
+  // Use the automatic JSX runtime (same as Next's SWC config) so RTL component
+  // tests don't need React in scope. Without this, esbuild's classic transform
+  // emits React.createElement and JSX-rendering tests throw "React is not defined".
+  esbuild: { jsx: "automatic" },
   test: {
     environment: "jsdom",
     include: ["src/**/*.test.{ts,tsx}"],
