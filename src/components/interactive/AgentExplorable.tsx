@@ -47,7 +47,7 @@ export function AgentExplorable() {
   const step = STEPS[i];
 
   return (
-    <div className="overflow-hidden border border-divider bg-surface font-mono text-sm">
+    <div className="panel overflow-hidden border border-divider bg-surface font-mono text-sm">
       <div className="flex items-center justify-between border-b border-divider px-3 py-2 text-xs text-text/50">
         <span>watch an agent work: step {i + 1}/{STEPS.length}</span>
         <span>fake-repo @ main</span>
