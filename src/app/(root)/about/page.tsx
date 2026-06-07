@@ -56,7 +56,7 @@ export default async function AboutPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-5 py-16 sm:px-8 sm:py-24">
+    <div className="mx-auto w-full max-w-3xl px-5 pb-16 pt-6 sm:px-8 sm:pb-24 sm:pt-10">
       <JsonLd data={aboutLd} />
       <Eyebrow>About</Eyebrow>
       <div className="mt-6 flex flex-col gap-6 sm:flex-row sm:items-center">

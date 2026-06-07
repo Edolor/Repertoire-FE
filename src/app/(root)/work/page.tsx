@@ -46,7 +46,7 @@ const workLd = graph(
 
 export default function WorkIndex() {
   return (
-    <div className="mx-auto w-full max-w-content px-5 py-16 sm:px-8 sm:py-24">
+    <div className="mx-auto w-full max-w-content px-5 pb-16 pt-6 sm:px-8 sm:pb-24 sm:pt-10">
       <JsonLd data={workLd} />
 
       <PageHeader

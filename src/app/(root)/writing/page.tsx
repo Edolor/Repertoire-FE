@@ -54,7 +54,7 @@ const writingLd = graph(
 
 export default function WritingIndex() {
   return (
-    <div className="mx-auto w-full max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
+    <div className="mx-auto w-full max-w-5xl px-5 pb-16 pt-6 sm:px-8 sm:pb-24 sm:pt-10">
       <JsonLd data={writingLd} />
       <Eyebrow>Writing</Eyebrow>
       <h1 className="mt-3 text-3xl font-bold sm:text-4xl">
