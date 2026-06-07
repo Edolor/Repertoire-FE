@@ -120,6 +120,14 @@ export const RESEARCH = [
   },
 ];
 
+// Verified academic foundation — single source of truth for these credential
+// claims. Wording mirrors the résumé/FAQ exactly (no inferred degree titles).
+export const ACADEMIC_FOUNDATION = [
+  "MSc Computer Science — Ontario Tech University (Dean's Graduate Scholarship)",
+  "Babcock University — Best Graduating Student, School of Computing & Engineering Sciences (First Class, 4.88/5.0, top 1%)",
+  "AWS Machine Learning Specialty certification",
+];
+
 // Verbatim contiguous excerpts from the two named LinkedIn recommendations.
 // Fully attributed, linked to the originals, no carousel.
 export const TESTIMONIALS = [
@@ -198,11 +206,11 @@ export const EXPERTISE = [
   { k: "Quality & testing", v: "xUnit, Playwright, React Query, Zod; typed and tested end to end" },
 ];
 
+// Top nav: real destinations only (no in-page section jumps). Contact stays a
+// home anchor — the one conventional exception.
 export const NAV = [
-  { href: "/#selected-work", label: "Work" },
-  { href: "/#how-i-build", label: "How I build" },
-  { href: "/#about", label: "Experience" },
-  { href: "/#research", label: "Research" },
+  { href: "/work", label: "Work" },
   { href: "/writing", label: "Writing" },
+  { href: "/about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];

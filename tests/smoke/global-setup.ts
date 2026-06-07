@@ -18,10 +18,12 @@ async function globalSetup(config: FullConfig) {
 
   const routes = [
     "/",
+    "/work",
+    "/research",
     "/about",
     "/writing",
     "/writing/agent-reliability-is-a-systems-problem",
-    "/work/agentic-coding-platform-isolation",
+    "/work/agentic-coding-platform",
     "/feed.xml",
     "/feed.json",
   ];

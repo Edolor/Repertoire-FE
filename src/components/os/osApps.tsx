@@ -1,13 +1,14 @@
 "use client";
 
-import { SelectedWork } from "@/components/sections/SelectedWork";
-import { Research } from "@/components/sections/Research";
 import { WritingTeaser } from "@/components/sections/WritingTeaser";
 import { AgentDemo } from "@/components/sections/AgentDemo";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { AboutDetails } from "@/components/sections/AboutDetails";
+import { WorkGrid } from "@/components/work/WorkGrid";
+import { ResearchList } from "@/components/research/ResearchList";
 import { Terminal } from "@/components/interactive/Terminal";
-import { ABOUT_NARRATIVE } from "@/content/site";
+import { publishedWork } from "@/lib/content";
+import { ABOUT_NARRATIVE, RESEARCH } from "@/content/site";
 
 // Playful "trash" easter egg: positioning noise this site deliberately let go.
 const DEPRECATED = [
@@ -74,6 +75,22 @@ function AboutApp() {
         ))}
       </div>
       <AboutDetails flush showResume={false} />
+    </Pane>
+  );
+}
+
+function WorkApp() {
+  return (
+    <Pane heading="selected work">
+      <WorkGrid items={publishedWork} />
+    </Pane>
+  );
+}
+
+function ResearchApp() {
+  return (
+    <Pane heading="research &amp; publications">
+      <ResearchList items={RESEARCH} />
     </Pane>
   );
 }
@@ -153,7 +170,7 @@ export const OS_APPS: OsApp[] = [
     w: 820,
     h: 560,
     hash: "#selected-work",
-    Body: SelectedWork,
+    Body: WorkApp,
   },
   {
     id: "writing",
@@ -173,7 +190,7 @@ export const OS_APPS: OsApp[] = [
     w: 760,
     h: 520,
     hash: "#research",
-    Body: Research,
+    Body: ResearchApp,
   },
   {
     id: "agent",

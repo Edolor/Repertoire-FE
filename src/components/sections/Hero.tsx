@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Terminal } from "@/components/interactive/Terminal";
 import { AgentGraph } from "@/components/interactive/AgentGraph";
 import { ButtonLink } from "@/components/ui/Button";
@@ -115,7 +116,16 @@ export function Hero() {
             <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-text/65">
               {p.label}
             </p>
-            <p className="mt-1 text-sm font-medium text-text/85">{p.value}</p>
+            {p.label === "Research" ? (
+              <Link
+                href="/research"
+                className="link-underline mt-1 inline-block text-sm font-medium text-text/85 hover:text-accent"
+              >
+                {p.value}
+              </Link>
+            ) : (
+              <p className="mt-1 text-sm font-medium text-text/85">{p.value}</p>
+            )}
           </RevealItem>
         ))}
       </RevealGroup>

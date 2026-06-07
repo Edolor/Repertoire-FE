@@ -9,10 +9,10 @@ import { playTick } from "@/lib/sound";
 const STEPS = [
   { id: "hero", say: "plan: map the system, then walk it top to bottom" },
   { id: "how-i-build", say: "act: scroll → how I build (the three pillars)" },
-  { id: "selected-work", say: "observe: selected work, NDA-sanitized" },
-  { id: "agent-demo", say: "act: this is the agent loop I structure" },
-  { id: "research", say: "observe: external evidence (PST 2025, MITACS)" },
-  { id: "about", say: "act: who's behind it + experience" },
+  { id: "about", say: "observe: who's behind it" },
+  { id: "selected-work", say: "act: selected work, NDA-sanitized" },
+  { id: "agent-demo", say: "observe: the agent loop I structure" },
+  { id: "writing", say: "act: notes on building systems" },
   { id: "contact", say: "reflect: that's the tour — here's how to reach me" },
 ];
 

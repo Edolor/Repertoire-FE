@@ -1,10 +1,9 @@
 import { Hero } from "@/components/sections/Hero";
 import { WorkWithMe } from "@/components/sections/WorkWithMe";
+import { AboutTeaser } from "@/components/sections/AboutTeaser";
 import { SelectedWork } from "@/components/sections/SelectedWork";
 import { AgentDemo } from "@/components/sections/AgentDemo";
-import { Research } from "@/components/sections/Research";
 import { WritingTeaser } from "@/components/sections/WritingTeaser";
-import { AboutTeaser } from "@/components/sections/AboutTeaser";
 import { FAQ } from "@/components/sections/FAQ";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { DashedDivider } from "@/components/primitives/Section";
@@ -20,13 +19,13 @@ export default function HomePage() {
       <Hero />
       <WorkWithMe />
       <DashedDivider className="mx-auto max-w-content" />
+      <AboutTeaser />
+      <DashedDivider className="mx-auto max-w-content" />
       <SelectedWork />
       <AgentDemo />
       <DashedDivider className="mx-auto max-w-content" />
-      <Research />
       <WritingTeaser />
       <DashedDivider className="mx-auto max-w-content" />
-      <AboutTeaser />
       <FAQ />
       <DashedDivider className="mx-auto max-w-content" />
       <ContactSection />

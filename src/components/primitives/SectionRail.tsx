@@ -7,11 +7,10 @@ import { cn } from "@/lib/cn";
 const SECTIONS: { id: string; label: string }[] = [
   { id: "hero", label: "Top" },
   { id: "how-i-build", label: "How I build" },
+  { id: "about", label: "About" },
   { id: "selected-work", label: "Work" },
   { id: "agent-demo", label: "Agent loop" },
-  { id: "research", label: "Research" },
   { id: "writing", label: "Writing" },
-  { id: "about", label: "About" },
   { id: "faq", label: "FAQ" },
   { id: "contact", label: "Contact" },
 ];

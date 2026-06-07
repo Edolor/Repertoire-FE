@@ -7,6 +7,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const stat: MetadataRoute.Sitemap = [
     { url: SITE_URL, lastModified: now, changeFrequency: "weekly", priority: 1 },
     {
+      url: `${SITE_URL}/work`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: `${SITE_URL}/writing`,
       lastModified: now,
       changeFrequency: "weekly",
@@ -17,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/research`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
   ];
   const posts: MetadataRoute.Sitemap = publishedPosts.map((p) => ({

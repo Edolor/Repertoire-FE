@@ -67,6 +67,12 @@ export function Footer() {
               {n.label}
             </Link>
           ))}
+          <Link
+            href="/research"
+            className="link-underline text-text/70 transition-[font-weight] hover:font-semibold hover:text-text"
+          >
+            Research
+          </Link>
         </nav>
       </div>
       <div className="border-t border-divider">

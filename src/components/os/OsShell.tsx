@@ -403,6 +403,7 @@ export function OsShell() {
     <div
       className="fixed inset-0 z-[55] flex flex-col overflow-hidden bg-bg"
       data-os-shell
+      data-lenis-prevent
     >
       {/* Top menu bar */}
       <div

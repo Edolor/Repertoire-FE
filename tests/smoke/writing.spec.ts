@@ -10,7 +10,7 @@ test("writing index lists posts and a post renders", async ({
   // Generous first-paint timeout: the dev server compiles this route on
   // first hit, and the smoke harness boots `next dev` (see CLAUDE.md).
   await expect(
-    page.getByRole("heading", { name: "Building and breaking agents" }),
+    page.getByRole("heading", { name: "Building reliable systems" }),
   ).toBeVisible({ timeout: 30_000 });
 
   const firstPost = page.locator("main ul li a").first();
@@ -61,12 +61,13 @@ test("a selected-work case study renders its sanitized writeup", async ({
   page,
 }, testInfo) => {
   const errors = trackPageErrors(page);
-  await page.goto("/work/agentic-coding-platform-isolation");
+  await page.goto("/work/agentic-coding-platform");
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible({
     timeout: 30_000,
   });
-  await expect(page.getByText("What I would do differently")).toBeVisible();
+  // The compiled-markdown writeup body renders as real HTML.
+  await expect(page.locator("article .prose").first()).toBeVisible();
 
   assertNoErrors(errors, testInfo);
 });

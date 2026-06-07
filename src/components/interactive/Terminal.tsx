@@ -30,11 +30,10 @@ const HELP =
 const SECTIONS = [
   "hero",
   "how-i-build",
+  "about",
   "selected-work",
   "agent-demo",
-  "research",
   "writing",
-  "about",
   "faq",
   "contact",
 ];
@@ -180,7 +179,7 @@ export function Terminal() {
         break;
       case "research":
         push([echo, { kind: "out", text: "→ research & publications" }]);
-        setTimeout(() => router.push("/#research"), 300);
+        setTimeout(() => router.push("/research"), 300);
         break;
       case "contact":
         push([echo, { kind: "out", text: "→ contact" }]);

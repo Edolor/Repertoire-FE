@@ -3,16 +3,22 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 import { setLenis } from "@/lib/lenis";
+import { useOsMode } from "@/components/os/OsModeContext";
 
 /**
  * Inertial smooth scrolling via Lenis. Uses real scroll position (so motion's
  * useScroll, hash links, and the scroll-progress ruler all keep working).
- * Disabled under reduced-motion and in the scroll-locked desktop OS skin.
+ * Disabled under reduced-motion and in the desktop OS skin — and it now reacts
+ * to OS mode toggling at runtime (re-running on `active`), so Lenis is fully
+ * torn down when you switch into desktop mode. Otherwise Lenis keeps its
+ * non-passive wheel listener alive and swallows gesture scroll inside OS
+ * windows.
  */
 export function SmoothScroll() {
+  const { active: osActive } = useOsMode();
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (document.documentElement.classList.contains("os-mode")) return;
+    if (osActive) return;
 
     const lenis = new Lenis({
       duration: 1.05,
@@ -75,7 +81,7 @@ export function SmoothScroll() {
       setLenis(null);
       lenis.destroy();
     };
-  }, []);
+  }, [osActive]);
 
   return null;
 }

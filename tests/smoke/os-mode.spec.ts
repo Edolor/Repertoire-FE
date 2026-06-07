@@ -34,12 +34,50 @@ test("opening the work app yields a dialog with the real section", async ({
 
   const dialog = page.getByRole("dialog", { name: /work\// });
   await expect(dialog).toBeVisible();
-  // The window body renders the EXISTING SelectedWork section verbatim.
-  await expect(
-    dialog.getByRole("heading", {
-      name: "What I have actually built and broken",
-    }),
-  ).toBeVisible();
+  // The window body renders the real shared WorkGrid (card headings present).
+  await expect(dialog.getByRole("heading").first()).toBeVisible();
+
+  assertNoErrors(errors, testInfo);
+});
+
+test("desktop-mode windows scroll with the wheel/gesture", async ({
+  page,
+}, testInfo) => {
+  // Regression: enabling OS mode at runtime used to leave Lenis (smooth
+  // scroll) alive, whose non-passive wheel listener swallowed gesture scroll
+  // inside OS windows. Lenis must tear down when OS mode activates.
+  const errors = trackPageErrors(page);
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto("/");
+
+  await page
+    .getByRole("button", { name: "Switch to desktop mode" })
+    .click({ timeout: 30_000 });
+  await page.getByRole("button", { name: "Open work/" }).click();
+
+  const dialog = page.getByRole("dialog", { name: /work\// });
+  await expect(dialog).toBeVisible();
+
+  const body = dialog.locator(".os-window-body");
+  await expect(body).toBeVisible();
+
+  // The window body must actually overflow, or the test proves nothing.
+  const metrics = await body.evaluate((el) => ({
+    sh: el.scrollHeight,
+    ch: el.clientHeight,
+  }));
+  expect(metrics.sh).toBeGreaterThan(metrics.ch);
+
+  // Wheel over the window body -> the body scrolls (not the locked page).
+  const box = await body.boundingBox();
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+  await page.mouse.wheel(0, 600);
+  await expect
+    .poll(async () => body.evaluate((el) => el.scrollTop))
+    .toBeGreaterThan(20);
+
+  // The underlying page never scrolls in OS mode.
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
 
   assertNoErrors(errors, testInfo);
 });

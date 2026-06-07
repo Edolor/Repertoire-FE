@@ -16,9 +16,7 @@ test("hero terminal runs a canned command and routes into a section", async ({
 
   // Routes to #selected-work; that section heading must come into view.
   await expect(
-    page.getByRole("heading", {
-      name: "What I have actually built and broken",
-    }),
+    page.getByRole("heading", { name: "Featured work" }),
   ).toBeVisible();
 
   assertNoErrors(errors, testInfo);
@@ -46,29 +44,25 @@ test("command palette opens with the keyboard and navigates", async ({
   assertNoErrors(errors, testInfo);
 });
 
-// The home About details (large backend-driven section) is behind a
-// popup. Assert the popup mechanism, not backend content (no network dep).
-test("home About details open in a popup", async ({ page }, testInfo) => {
+// The home About is a slim teaser; the full experience/education/honours now
+// live on the dedicated /about page. Assert the teaser links there (no popup,
+// no backend dependency).
+test("home About teaser links to the full /about page", async ({
+  page,
+}, testInfo) => {
   const errors = trackPageErrors(page);
-  await page.goto("/#about");
+  await page.goto("/");
 
-  const trigger = page.getByRole("button", {
-    name: /View experience, education/i,
+  const link = page.getByRole("link", {
+    name: /Full background & experience/i,
   });
-  await expect(trigger).toBeVisible({ timeout: 30_000 });
-  await trigger.click();
+  await expect(link).toBeVisible({ timeout: 30_000 });
+  await link.click();
 
-  const dialog = page.getByRole("dialog");
-  await expect(dialog).toBeVisible();
+  await expect(page).toHaveURL(/\/about$/, { timeout: 30_000 });
   await expect(
-    dialog.getByText("Experience, education & certifications"),
-  ).toBeVisible();
-  await expect(
-    dialog.getByRole("link", { name: /open the full About page/i }),
-  ).toBeVisible();
-
-  await page.keyboard.press("Escape");
-  await expect(dialog).toBeHidden();
+    page.getByRole("heading", { level: 1, name: /Aghoghomena Akasukpe/i }),
+  ).toBeVisible({ timeout: 30_000 });
 
   assertNoErrors(errors, testInfo);
 });

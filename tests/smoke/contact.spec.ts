@@ -11,7 +11,7 @@ test("contact form validates and exposes the ungated mailto fallback", async ({
   await page.goto("/#contact");
 
   await expect(
-    page.getByRole("heading", { name: "Tell me the problem in one line" }),
+    page.getByRole("heading", { name: "Let's talk" }),
   ).toBeVisible({ timeout: 30_000 });
 
   // Submitting empty triggers client-side Zod errors, not a network call.

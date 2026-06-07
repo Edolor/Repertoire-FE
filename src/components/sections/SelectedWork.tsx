@@ -1,78 +1,38 @@
 import Link from "next/link";
-import { work } from "#content";
+import { publishedWork } from "@/lib/content";
 import { Section } from "@/components/primitives/Section";
-import { RevealGroup, RevealItem } from "@/components/primitives/Reveal";
-import { CornerBrackets } from "@/components/primitives/CornerBrackets";
-import { Tilt } from "@/components/primitives/Tilt";
-import { Badge } from "@/components/ui/Badge";
+import { WorkGrid } from "@/components/work/WorkGrid";
 
 export function SelectedWork() {
-  const items = work
-    .filter((w) => !w.draft)
-    .sort((a, b) => a.order - b.order);
+  const all = publishedWork;
+  const featured = all.slice(0, 2);
 
   return (
     <Section
       id="selected-work"
-      index="02"
+      index="03"
       eyebrow="Selected work"
-      title="What I've built"
-      intro="Engineering writeups, sanitized where under NDA. Each one: the context, the constraint, the decisions, and what I would do differently."
+      title="Featured work"
+      intro="A couple of representative builds. Each writeup: the context, the constraint, the decisions, and what I would do differently — sanitized where under NDA."
     >
-      <RevealGroup className="grid gap-5 sm:gap-6 md:grid-cols-2">
-        {items.map((w) => (
-          <RevealItem key={w.slug} className="h-full">
-            <Tilt max={6} sheen className="group relative h-full">
-            <article className="panel relative flex h-full flex-col border border-divider bg-surface transition-[border-color,box-shadow] duration-200 ease-out hover:border-accent/40 hover:shadow-[0_22px_50px_-26px_rgb(var(--accent)/0.5)] motion-reduce:transition-none">
-              <CornerBrackets />
-              <Link
-                href={w.permalink}
-                className="flex h-full flex-col p-5 sm:p-6"
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-[11px] uppercase tracking-widest text-text/65">
-                    {w.client}
-                  </span>
-                  {w.locked && (
-                    <span className="font-mono text-[11px] text-accent">
-                      details under NDA
-                    </span>
-                  )}
-                </div>
-                <div className="mt-3 space-y-3">
-                  <h3 className="text-lg font-bold leading-snug transition-colors group-hover:text-accent-2">
-                    {w.title}
-                  </h3>
-                  <p className="text-sm text-text/70">{w.summary}</p>
-                  <div className="space-y-1">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent/80">
-                      outcome
-                    </p>
-                    <p className="text-sm text-text/80 transition-colors duration-200 group-hover:text-text/95">
-                      {w.outcome}
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {w.tags.map((t) => (
-                      <Badge key={t}>{t}</Badge>
-                    ))}
-                  </div>
-                </div>
-                <span className="mt-auto inline-flex items-center gap-1.5 pt-4 font-mono text-xs text-accent-2">
-                  <span className="group-hover:underline">read the writeup</span>
-                  <span
-                    aria-hidden
-                    className="inline-block transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none"
-                  >
-                    &gt;
-                  </span>
-                </span>
-              </Link>
-            </article>
-            </Tilt>
-          </RevealItem>
-        ))}
-      </RevealGroup>
+      <WorkGrid items={featured} />
+      <div className="mt-8">
+        <Link
+          href="/work"
+          className="group inline-flex items-center gap-1.5 border border-divider px-4 py-2.5 font-mono text-sm text-text/80 transition-colors hover:border-accent hover:text-accent focus-visible:border-accent-2 focus-visible:outline-none"
+        >
+          See all work
+          <span className="text-text/45 group-hover:text-accent">
+            ({all.length})
+          </span>
+          <span
+            aria-hidden
+            className="inline-block transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transition-none"
+          >
+            &gt;
+          </span>
+        </Link>
+      </div>
     </Section>
   );
 }

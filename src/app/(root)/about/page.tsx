@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Image from "next/image";
 import portrait from "@/assets/img/mena.jpg";
 import { ABOUT_NARRATIVE, PERSON } from "@/content/site";
@@ -66,6 +67,18 @@ export default function AboutPage() {
         {ABOUT_NARRATIVE.map((p) => (
           <p key={p.slice(0, 24)}>{p}</p>
         ))}
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-sm">
+        <Link href="/work" className="link-underline text-accent-2">
+          Selected work &gt;
+        </Link>
+        <Link href="/research" className="link-underline text-accent-2">
+          Research &amp; publications &gt;
+        </Link>
+        <Link href="/writing" className="link-underline text-accent-2">
+          Writing &gt;
+        </Link>
       </div>
 
       <Testimonials className="mt-12" />

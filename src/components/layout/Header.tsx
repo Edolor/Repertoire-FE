@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useActiveSection } from "@/hooks/useActiveSection";
 import { useResume } from "@/context/ResumeContext/ResumeContext";
 import { useTheme } from "@/context/ThemeContext/ThemeContext";
 import { useOsMode } from "@/components/os/OsModeContext";
@@ -69,10 +68,13 @@ export function Header() {
   const { enable, desktop, mounted } = useOsMode();
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
-  const sectionIds = NAV.filter((n) => n.href.startsWith("/#")).map((n) =>
-    n.href.slice(2),
-  );
-  const activeId = useActiveSection(sectionIds);
+  // Active when on the destination page (covers nested routes like
+  // /work/[slug] -> Work). Hash links (Contact) never light up.
+  const isNavActive = (href: string) =>
+    href.startsWith("/") &&
+    !href.includes("#") &&
+    href !== "/" &&
+    (pathname === href || pathname.startsWith(`${href}/`));
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -100,10 +102,7 @@ export function Header() {
           className="hidden items-center gap-1 font-mono text-sm md:flex"
         >
           {NAV.map((n) => {
-            const isActive =
-              pathname === "/" &&
-              n.href.startsWith("/#") &&
-              n.href.slice(2) === activeId;
+            const isActive = isNavActive(n.href);
             return (
               <Link
                 key={n.href}
@@ -177,18 +176,26 @@ export function Header() {
       {menuOpen && (
         <div className="border-b border-divider bg-bg md:hidden">
           <nav aria-label="Mobile" className="flex flex-col p-4 font-mono">
-            {NAV.map((n) => (
-              <Link
-                key={n.href}
-                href={n.href}
-                onClick={() => setMenuOpen(false)}
-                className={cn(
-                  "border-b border-divider py-3 text-text/80 last:border-0",
-                )}
-              >
-                <span className="text-accent">&gt;</span> {n.label}
-              </Link>
-            ))}
+            {NAV.map((n) => {
+              const isActive = isNavActive(n.href);
+              return (
+                <Link
+                  key={n.href}
+                  href={n.href}
+                  onClick={() => setMenuOpen(false)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "border-b border-divider py-3 last:border-0",
+                    isActive ? "text-accent" : "text-text/80",
+                  )}
+                >
+                  <span aria-hidden className="text-accent">
+                    &gt;
+                  </span>{" "}
+                  {n.label}
+                </Link>
+              );
+            })}
             <a
               href={PERSON.github}
               target="_blank"

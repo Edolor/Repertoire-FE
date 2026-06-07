@@ -6,11 +6,10 @@ import { Spring, SPRINGS, rafLoop } from "@/lib/spring";
 
 const SECTION_IDS = [
   "how-i-build",
+  "about",
   "selected-work",
   "agent-demo",
-  "research",
   "writing",
-  "about",
   "faq",
   "contact",
 ];
