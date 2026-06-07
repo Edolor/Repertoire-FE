@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { AnimatePresence, motion } from "motion/react";
 import Icon from "@/components/Icon/Icon";
 import { useScrollLock } from "@/lib/scroll-lock";
+import { cn } from "@/lib/cn";
 import { resumeLink } from "@/urls";
 
 // pdf.js worker is copied into /public by scripts/copy-pdf-worker.mjs so it is
@@ -93,21 +93,19 @@ export default function ResumeViewer({ open, onClose }: ResumeViewerProps) {
   const pageWidth = Math.max(240, containerWidth) * scale;
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[60] flex flex-col bg-black/80 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Resume preview"
-          data-lenis-prevent
-          onClick={onClose}
-        >
-          {/* Toolbar */}
+    <div
+      className={cn(
+        "fixed inset-0 z-[60] flex flex-col bg-black/80 backdrop-blur-sm transition-opacity duration-200 ease-out motion-reduce:transition-none",
+        open ? "opacity-100" : "pointer-events-none invisible opacity-0",
+      )}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Resume preview"
+      data-lenis-prevent
+      aria-hidden={!open}
+      onClick={onClose}
+    >
+      {/* Toolbar */}
           <div
             className="flex items-center justify-between gap-2 px-3 py-3 bg-white dark:bg-zinc-900 shadow-md sm:px-6"
             onClick={(e) => e.stopPropagation()}
@@ -243,8 +241,6 @@ export default function ResumeViewer({ open, onClose }: ResumeViewerProps) {
               </div>
             )}
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </div>
   );
 }

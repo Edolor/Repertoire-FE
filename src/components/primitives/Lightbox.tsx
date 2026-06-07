@@ -1,14 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useState } from "react";
 import { useScrollLock } from "@/lib/scroll-lock";
 
 /**
  * Minimal image lightbox. Reusable anywhere a full-bleed zoom of a
  * same-origin image is wanted (post figures, screenshots). CSP-safe:
  * no eval, same-origin <img>. Esc / backdrop click / button closes;
- * body scroll is locked while open; honors prefers-reduced-motion.
+ * body scroll is locked while open. The fade-in is a CSS opacity
+ * transition (no animation library), auto-disabled under reduced motion.
  */
 export function Lightbox({
   src,
@@ -19,10 +19,12 @@ export function Lightbox({
   alt: string;
   onClose: () => void;
 }) {
-  const reduced = useReducedMotion();
+  const [shown, setShown] = useState(false);
   useScrollLock(true); // mounted only while open
 
   useEffect(() => {
+    // Flip to opacity:1 on the next frame so the CSS transition runs.
+    const raf = requestAnimationFrame(() => setShown(true));
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
@@ -30,22 +32,21 @@ export function Lightbox({
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
+      cancelAnimationFrame(raf);
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
   }, [onClose]);
 
   return (
-    <motion.div
+    <div
       role="dialog"
       aria-modal="true"
       aria-label={alt || "Image preview"}
       data-lenis-prevent
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-bg/90 p-4 sm:p-8"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-bg/90 p-4 transition-opacity duration-150 ease-out motion-reduce:transition-none sm:p-8"
+      style={{ opacity: shown ? 1 : 0 }}
       onClick={onClose}
-      initial={reduced ? false : { opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.15 }}
     >
       <button
         type="button"
@@ -62,6 +63,6 @@ export function Lightbox({
         onClick={(e) => e.stopPropagation()}
         className="max-h-full max-w-full cursor-zoom-out border border-divider object-contain"
       />
-    </motion.div>
+    </div>
   );
 }
