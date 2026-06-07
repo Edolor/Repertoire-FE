@@ -54,3 +54,7 @@ CLAUDE.md
 /.velite
 # velite copied content assets
 /public/static
+
+# UI optimization pass artifacts
+screenshots/
+design-journal.md

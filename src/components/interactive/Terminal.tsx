@@ -100,7 +100,7 @@ export function Terminal() {
       </div>
       <div
         ref={scrollRef}
-        className="h-56 overflow-auto p-3 graph-paper"
+        className="h-40 overflow-auto p-3 graph-paper"
         aria-live="polite"
       >
         {lines.map((l, i) => (

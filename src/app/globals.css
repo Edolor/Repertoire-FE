@@ -241,6 +241,60 @@
     position: relative;
   }
 
+  /* Hero headline word cascade. CSS-driven so it's no-JS safe and SSR-correct
+     (the words are real text in the markup); reduced-motion turns it off so the
+     headline is simply, immediately present. */
+  .hero-word {
+    display: inline-block;
+    margin-right: 0.26em;
+    animation: hero-word 0.62s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+  }
+  @keyframes hero-word {
+    from {
+      opacity: 0;
+      transform: translateY(0.42em);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Generic on-load fade-up for hero satellite blocks (subhead, CTAs, panel). */
+  .hero-rise {
+    animation: hero-rise 0.7s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Ambient hero glow: slow, theme-aware breathing. Decorative only. */
+  .hero-glow {
+    animation: hero-glow 14s ease-in-out infinite alternate;
+  }
+  @keyframes hero-glow {
+    from {
+      opacity: 0.55;
+      transform: translate3d(-2%, -1%, 0) scale(1);
+    }
+    to {
+      opacity: 0.9;
+      transform: translate3d(2%, 1%, 0) scale(1.08);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-word,
+    .hero-rise,
+    .hero-glow {
+      animation: none !important;
+    }
+  }
+
   .blink {
     animation: blink 1.05s steps(1) infinite;
   }
