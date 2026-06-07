@@ -451,10 +451,11 @@
     content: "";
     position: absolute;
     inset: 0;
-    opacity: 0.35;
-    mix-blend-mode: overlay;
+    /* soft-light + low opacity: a faint paper tooth, never harsh speckle. */
+    opacity: 0.12;
+    mix-blend-mode: soft-light;
     background-image: url("/noise.png");
-    background-size: 128px 128px;
+    background-size: 140px 140px;
   }
   .dark .grain::after {
     opacity: 0.28;
