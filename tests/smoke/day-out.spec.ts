@@ -51,6 +51,16 @@ test("day-out invitation renders cleanly on a phone", async ({ page }, testInfo)
     })
     .toBe("1");
 
+  // Tap-to-say-yes: swaps to the sign-off, blooms petals, and survives a reload.
+  const yes = page.getByRole("button", { name: "I’ll be there" });
+  await yes.scrollIntoViewIfNeeded();
+  await yes.click();
+  await expect(page.getByRole("button", { name: "See you soon." })).toBeVisible();
+  await expect(page.locator("[data-petal]")).toHaveCount(26);
+  await page.reload();
+  await expect(page.getByRole("button", { name: "See you soon." })).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator("[data-petal]")).toHaveCount(0);
+
   // Private page: not for search engines (meta + header, see next.config.js).
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
   const head = await page.request.head("/day-out");

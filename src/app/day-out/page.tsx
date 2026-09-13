@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Nunito } from "next/font/google";
 import styles from "./day-out.module.css";
 import { Reveal } from "./Reveal";
+import { Rsvp } from "./Rsvp";
 import {
   MatchaArt,
   LighthouseArt,
@@ -137,6 +138,7 @@ export default function DayOutPage() {
         <Reveal className={styles.closing}>
           <p className={styles.signoff}>That’s the day. The rest we make up as we go.</p>
           <p className={styles.note}>Excited to see you.</p>
+          <Rsvp />
         </Reveal>
 
         <Reveal className={styles.flourish}>

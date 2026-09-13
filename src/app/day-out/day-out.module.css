@@ -245,3 +245,118 @@
 .stopTitle + .blurb {
   margin-top: 0.85rem;
 }
+
+/* Tap-to-say-yes. Pure client theatre, see Rsvp.tsx. */
+.rsvp {
+  position: relative;
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.rsvpBtn {
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  padding: 0.95rem 1.8rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--matcha);
+  color: #fffdf8;
+  box-shadow: 0 14px 28px -16px rgba(74, 58, 48, 0.4);
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 0.35s ease;
+}
+
+.rsvpBtn:hover {
+  background: var(--matcha-deep);
+}
+
+.rsvpBtn:active {
+  transform: scale(0.97);
+}
+
+.rsvpBtn:focus-visible,
+.rsvpDone:focus-visible {
+  outline: 2px solid var(--matcha-deep);
+  outline-offset: 4px;
+}
+
+.rsvpDone {
+  font-family: var(--font-day-serif), "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.7rem;
+  line-height: 1.3;
+  padding: 0.4rem 1rem;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.bloom {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  left: -7px;
+  top: -9px;
+  width: 14px;
+  height: 18px;
+  border-radius: 90% 10% 90% 10% / 70% 30% 70% 30%;
+  opacity: 0;
+  transform-origin: center;
+  animation: bloom 1.35s cubic-bezier(0.2, 0.6, 0.3, 1) var(--d) forwards;
+}
+
+.petal.dot {
+  left: -3px;
+  top: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.blush {
+  background: var(--blush);
+}
+.matcha {
+  background: var(--matcha);
+}
+.blushDeep {
+  background: var(--blush-deep);
+}
+
+@keyframes bloom {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg) scale(0.4);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petal {
+    animation: none;
+    opacity: 0;
+  }
+  .rsvpBtn {
+    transition: none;
+  }
+}
