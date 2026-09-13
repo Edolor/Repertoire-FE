@@ -8,6 +8,10 @@ import { SITE_URL } from "@/lib/seo";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
+      // /day-out (a private invitation shared by link) is deliberately NOT
+      // disallowed here: a disallowed URL is never fetched, so its noindex
+      // is never seen and the bare URL can still be listed. It is kept out
+      // via meta robots + an X-Robots-Tag header (next.config.js) instead.
       { userAgent: "*", allow: "/" },
       {
         userAgent: [

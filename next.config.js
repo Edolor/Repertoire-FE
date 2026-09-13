@@ -63,6 +63,21 @@ const nextConfig = {
 
     return [
       {
+        // /day-out is a private invitation shared by link. Header-level
+        // noindex reaches crawlers that never parse the HTML (and covers
+        // the generated opengraph-image under the same prefix).
+        source: "/day-out/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+        ],
+      },
+      {
+        source: "/day-out",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+        ],
+      },
+      {
         source: "/(.*)",
         headers: [
           { key: "X-Frame-Options", value: "DENY" },

@@ -26,6 +26,7 @@ async function globalSetup(config: FullConfig) {
     "/work/agentic-coding-platform",
     "/feed.xml",
     "/feed.json",
+    "/day-out",
   ];
 
   for (const r of routes) {
